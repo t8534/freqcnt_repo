@@ -36,10 +36,10 @@ int main(void)
 	char *msg = "1234567890ABCDEF";
 
 
-	lcd_init();
-	lcd_on();
-	lcd_clear();
-	lcd_puts(msg);
+	HD44780_init();
+	HD44780_on();
+	HD44780_clear();
+	HD44780_puts(msg);
 
 	LCD_LED_CONFIG;
 	while (1)

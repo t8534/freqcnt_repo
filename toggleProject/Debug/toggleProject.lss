@@ -23,11 +23,11 @@ Idx Name          Size      VMA       LMA       File off  Algn
                   CONTENTS, READONLY, DEBUGGING
   9 .debug_frame  000001e0  00000000  00000000  000032f4  2**2
                   CONTENTS, READONLY, DEBUGGING
- 10 .debug_str    000006f7  00000000  00000000  000034d4  2**0
+ 10 .debug_str    0000075b  00000000  00000000  000034d4  2**0
                   CONTENTS, READONLY, DEBUGGING
- 11 .debug_loc    0000034f  00000000  00000000  00003bcb  2**0
+ 11 .debug_loc    0000034f  00000000  00000000  00003c2f  2**0
                   CONTENTS, READONLY, DEBUGGING
- 12 .debug_ranges 000000d0  00000000  00000000  00003f1a  2**0
+ 12 .debug_ranges 000000d0  00000000  00000000  00003f7e  2**0
                   CONTENTS, READONLY, DEBUGGING
 
 Disassembly of section .text:
@@ -117,18 +117,18 @@ Disassembly of section .text:
 000000e6 <__bad_interrupt>:
   e6:	0c 94 00 00 	jmp	0	; 0x0 <__vectors>
 
-000000ea <lcd_write_nibble>:
+000000ea <HD44780_write_nibble>:
   if (row > 1) {
     row = 1;
   }
 
   _delay_ms(5);  //todo: test is it necessary
-  lcd_command(LCD_SETDDRAMADDR | (col + offsets[row]));
+  HD44780_command(HD44780_SETDDRAMADDR | (col + offsets[row]));
   ea:	e1 ee       	ldi	r30, 0xE1	; 225
   ec:	f4 e0       	ldi	r31, 0x04	; 4
   ee:	31 97       	sbiw	r30, 0x01	; 1
-  f0:	f1 f7       	brne	.-4      	; 0xee <lcd_write_nibble+0x4>
-  f2:	00 c0       	rjmp	.+0      	; 0xf4 <lcd_write_nibble+0xa>
+  f0:	f1 f7       	brne	.-4      	; 0xee <HD44780_write_nibble+0x4>
+  f2:	00 c0       	rjmp	.+0      	; 0xf4 <HD44780_write_nibble+0xa>
   f4:	00 00       	nop
   f6:	9b b1       	in	r25, 0x0b	; 11
   f8:	90 7f       	andi	r25, 0xF0	; 240
@@ -140,85 +140,85 @@ Disassembly of section .text:
  104:	89 ef       	ldi	r24, 0xF9	; 249
  106:	90 e0       	ldi	r25, 0x00	; 0
  108:	01 97       	sbiw	r24, 0x01	; 1
- 10a:	f1 f7       	brne	.-4      	; 0x108 <lcd_write_nibble+0x1e>
- 10c:	00 c0       	rjmp	.+0      	; 0x10e <lcd_write_nibble+0x24>
+ 10a:	f1 f7       	brne	.-4      	; 0x108 <HD44780_write_nibble+0x1e>
+ 10c:	00 c0       	rjmp	.+0      	; 0x10e <HD44780_write_nibble+0x24>
  10e:	00 00       	nop
  110:	46 98       	cbi	0x08, 6	; 8
  112:	e9 ef       	ldi	r30, 0xF9	; 249
  114:	f0 e0       	ldi	r31, 0x00	; 0
  116:	31 97       	sbiw	r30, 0x01	; 1
- 118:	f1 f7       	brne	.-4      	; 0x116 <lcd_write_nibble+0x2c>
- 11a:	00 c0       	rjmp	.+0      	; 0x11c <lcd_write_nibble+0x32>
+ 118:	f1 f7       	brne	.-4      	; 0x116 <HD44780_write_nibble+0x2c>
+ 11a:	00 c0       	rjmp	.+0      	; 0x11c <HD44780_write_nibble+0x32>
  11c:	00 00       	nop
  11e:	46 9a       	sbi	0x08, 6	; 8
  120:	89 ef       	ldi	r24, 0xF9	; 249
  122:	90 e0       	ldi	r25, 0x00	; 0
  124:	01 97       	sbiw	r24, 0x01	; 1
- 126:	f1 f7       	brne	.-4      	; 0x124 <lcd_write_nibble+0x3a>
- 128:	00 c0       	rjmp	.+0      	; 0x12a <lcd_write_nibble+0x40>
+ 126:	f1 f7       	brne	.-4      	; 0x124 <HD44780_write_nibble+0x3a>
+ 128:	00 c0       	rjmp	.+0      	; 0x12a <HD44780_write_nibble+0x40>
  12a:	00 00       	nop
  12c:	46 98       	cbi	0x08, 6	; 8
  12e:	e9 ef       	ldi	r30, 0xF9	; 249
  130:	f0 e0       	ldi	r31, 0x00	; 0
  132:	31 97       	sbiw	r30, 0x01	; 1
- 134:	f1 f7       	brne	.-4      	; 0x132 <lcd_write_nibble+0x48>
- 136:	00 c0       	rjmp	.+0      	; 0x138 <lcd_write_nibble+0x4e>
+ 134:	f1 f7       	brne	.-4      	; 0x132 <HD44780_write_nibble+0x48>
+ 136:	00 c0       	rjmp	.+0      	; 0x138 <HD44780_write_nibble+0x4e>
  138:	00 00       	nop
  13a:	08 95       	ret
 
-0000013c <lcd_send>:
+0000013c <HD44780_send>:
  13c:	cf 93       	push	r28
  13e:	c8 2f       	mov	r28, r24
  140:	89 ef       	ldi	r24, 0xF9	; 249
  142:	90 e0       	ldi	r25, 0x00	; 0
  144:	01 97       	sbiw	r24, 0x01	; 1
- 146:	f1 f7       	brne	.-4      	; 0x144 <lcd_send+0x8>
- 148:	00 c0       	rjmp	.+0      	; 0x14a <lcd_send+0xe>
+ 146:	f1 f7       	brne	.-4      	; 0x144 <HD44780_send+0x8>
+ 148:	00 c0       	rjmp	.+0      	; 0x14a <HD44780_send+0xe>
  14a:	00 00       	nop
  14c:	66 23       	and	r22, r22
- 14e:	11 f0       	breq	.+4      	; 0x154 <lcd_send+0x18>
+ 14e:	11 f0       	breq	.+4      	; 0x154 <HD44780_send+0x18>
  150:	5c 9a       	sbi	0x0b, 4	; 11
- 152:	01 c0       	rjmp	.+2      	; 0x156 <lcd_send+0x1a>
+ 152:	01 c0       	rjmp	.+2      	; 0x156 <HD44780_send+0x1a>
  154:	5c 98       	cbi	0x0b, 4	; 11
  156:	89 ef       	ldi	r24, 0xF9	; 249
  158:	90 e0       	ldi	r25, 0x00	; 0
  15a:	01 97       	sbiw	r24, 0x01	; 1
- 15c:	f1 f7       	brne	.-4      	; 0x15a <lcd_send+0x1e>
- 15e:	00 c0       	rjmp	.+0      	; 0x160 <lcd_send+0x24>
+ 15c:	f1 f7       	brne	.-4      	; 0x15a <HD44780_send+0x1e>
+ 15e:	00 c0       	rjmp	.+0      	; 0x160 <HD44780_send+0x24>
  160:	00 00       	nop
  162:	5f 98       	cbi	0x0b, 7	; 11
  164:	89 ef       	ldi	r24, 0xF9	; 249
  166:	90 e0       	ldi	r25, 0x00	; 0
  168:	01 97       	sbiw	r24, 0x01	; 1
- 16a:	f1 f7       	brne	.-4      	; 0x168 <lcd_send+0x2c>
- 16c:	00 c0       	rjmp	.+0      	; 0x16e <lcd_send+0x32>
+ 16a:	f1 f7       	brne	.-4      	; 0x168 <HD44780_send+0x2c>
+ 16c:	00 c0       	rjmp	.+0      	; 0x16e <HD44780_send+0x32>
  16e:	00 00       	nop
  170:	8c 2f       	mov	r24, r28
  172:	82 95       	swap	r24
  174:	8f 70       	andi	r24, 0x0F	; 15
- 176:	0e 94 75 00 	call	0xea	; 0xea <lcd_write_nibble>
+ 176:	0e 94 75 00 	call	0xea	; 0xea <HD44780_write_nibble>
  17a:	81 ee       	ldi	r24, 0xE1	; 225
  17c:	94 e0       	ldi	r25, 0x04	; 4
  17e:	01 97       	sbiw	r24, 0x01	; 1
- 180:	f1 f7       	brne	.-4      	; 0x17e <lcd_send+0x42>
- 182:	00 c0       	rjmp	.+0      	; 0x184 <lcd_send+0x48>
+ 180:	f1 f7       	brne	.-4      	; 0x17e <HD44780_send+0x42>
+ 182:	00 c0       	rjmp	.+0      	; 0x184 <HD44780_send+0x48>
  184:	00 00       	nop
  186:	8c 2f       	mov	r24, r28
- 188:	0e 94 75 00 	call	0xea	; 0xea <lcd_write_nibble>
+ 188:	0e 94 75 00 	call	0xea	; 0xea <HD44780_write_nibble>
  18c:	cf 91       	pop	r28
  18e:	08 95       	ret
 
-00000190 <lcd_command>:
+00000190 <HD44780_command>:
  190:	60 e0       	ldi	r22, 0x00	; 0
- 192:	0e 94 9e 00 	call	0x13c	; 0x13c <lcd_send>
+ 192:	0e 94 9e 00 	call	0x13c	; 0x13c <HD44780_send>
  196:	08 95       	ret
 
-00000198 <lcd_write>:
+00000198 <HD44780_write>:
  198:	61 e0       	ldi	r22, 0x01	; 1
- 19a:	0e 94 9e 00 	call	0x13c	; 0x13c <lcd_send>
+ 19a:	0e 94 9e 00 	call	0x13c	; 0x13c <HD44780_send>
  19e:	08 95       	ret
 
-000001a0 <lcd_init>:
+000001a0 <HD44780_init>:
  1a0:	54 9a       	sbi	0x0a, 4	; 10
  1a2:	57 9a       	sbi	0x0a, 7	; 10
  1a4:	3e 9a       	sbi	0x07, 6	; 7
@@ -228,8 +228,8 @@ Disassembly of section .text:
  1ac:	85 ea       	ldi	r24, 0xA5	; 165
  1ae:	9e e0       	ldi	r25, 0x0E	; 14
  1b0:	01 97       	sbiw	r24, 0x01	; 1
- 1b2:	f1 f7       	brne	.-4      	; 0x1b0 <lcd_init+0x10>
- 1b4:	00 c0       	rjmp	.+0      	; 0x1b6 <lcd_init+0x16>
+ 1b2:	f1 f7       	brne	.-4      	; 0x1b0 <HD44780_init+0x10>
+ 1b4:	00 c0       	rjmp	.+0      	; 0x1b6 <HD44780_init+0x16>
  1b6:	00 00       	nop
  1b8:	46 98       	cbi	0x08, 6	; 8
  1ba:	5c 98       	cbi	0x0b, 4	; 11
@@ -237,88 +237,88 @@ Disassembly of section .text:
  1be:	80 e0       	ldi	r24, 0x00	; 0
  1c0:	94 e0       	ldi	r25, 0x04	; 4
  1c2:	01 97       	sbiw	r24, 0x01	; 1
- 1c4:	f1 f7       	brne	.-4      	; 0x1c2 <lcd_init+0x22>
- 1c6:	00 c0       	rjmp	.+0      	; 0x1c8 <lcd_init+0x28>
+ 1c4:	f1 f7       	brne	.-4      	; 0x1c2 <HD44780_init+0x22>
+ 1c6:	00 c0       	rjmp	.+0      	; 0x1c8 <HD44780_init+0x28>
  1c8:	00 00       	nop
  1ca:	83 e0       	ldi	r24, 0x03	; 3
- 1cc:	0e 94 75 00 	call	0xea	; 0xea <lcd_write_nibble>
+ 1cc:	0e 94 75 00 	call	0xea	; 0xea <HD44780_write_nibble>
  1d0:	81 ee       	ldi	r24, 0xE1	; 225
  1d2:	94 e0       	ldi	r25, 0x04	; 4
  1d4:	01 97       	sbiw	r24, 0x01	; 1
- 1d6:	f1 f7       	brne	.-4      	; 0x1d4 <lcd_init+0x34>
- 1d8:	00 c0       	rjmp	.+0      	; 0x1da <lcd_init+0x3a>
+ 1d6:	f1 f7       	brne	.-4      	; 0x1d4 <HD44780_init+0x34>
+ 1d8:	00 c0       	rjmp	.+0      	; 0x1da <HD44780_init+0x3a>
  1da:	00 00       	nop
  1dc:	83 e0       	ldi	r24, 0x03	; 3
- 1de:	0e 94 75 00 	call	0xea	; 0xea <lcd_write_nibble>
+ 1de:	0e 94 75 00 	call	0xea	; 0xea <HD44780_write_nibble>
  1e2:	81 ee       	ldi	r24, 0xE1	; 225
  1e4:	94 e0       	ldi	r25, 0x04	; 4
  1e6:	01 97       	sbiw	r24, 0x01	; 1
- 1e8:	f1 f7       	brne	.-4      	; 0x1e6 <lcd_init+0x46>
- 1ea:	00 c0       	rjmp	.+0      	; 0x1ec <lcd_init+0x4c>
+ 1e8:	f1 f7       	brne	.-4      	; 0x1e6 <HD44780_init+0x46>
+ 1ea:	00 c0       	rjmp	.+0      	; 0x1ec <HD44780_init+0x4c>
  1ec:	00 00       	nop
  1ee:	83 e0       	ldi	r24, 0x03	; 3
- 1f0:	0e 94 75 00 	call	0xea	; 0xea <lcd_write_nibble>
+ 1f0:	0e 94 75 00 	call	0xea	; 0xea <HD44780_write_nibble>
  1f4:	81 ee       	ldi	r24, 0xE1	; 225
  1f6:	94 e0       	ldi	r25, 0x04	; 4
  1f8:	01 97       	sbiw	r24, 0x01	; 1
- 1fa:	f1 f7       	brne	.-4      	; 0x1f8 <lcd_init+0x58>
- 1fc:	00 c0       	rjmp	.+0      	; 0x1fe <lcd_init+0x5e>
+ 1fa:	f1 f7       	brne	.-4      	; 0x1f8 <HD44780_init+0x58>
+ 1fc:	00 c0       	rjmp	.+0      	; 0x1fe <HD44780_init+0x5e>
  1fe:	00 00       	nop
  200:	82 e0       	ldi	r24, 0x02	; 2
- 202:	0e 94 75 00 	call	0xea	; 0xea <lcd_write_nibble>
+ 202:	0e 94 75 00 	call	0xea	; 0xea <HD44780_write_nibble>
  206:	88 e2       	ldi	r24, 0x28	; 40
- 208:	0e 94 c8 00 	call	0x190	; 0x190 <lcd_command>
+ 208:	0e 94 c8 00 	call	0x190	; 0x190 <HD44780_command>
  20c:	10 92 12 01 	sts	0x0112, r1	; 0x800112 <__data_end>
  210:	88 e0       	ldi	r24, 0x08	; 8
- 212:	0e 94 c8 00 	call	0x190	; 0x190 <lcd_command>
+ 212:	0e 94 c8 00 	call	0x190	; 0x190 <HD44780_command>
  216:	08 95       	ret
 
-00000218 <lcd_on>:
+00000218 <HD44780_on>:
  218:	80 91 12 01 	lds	r24, 0x0112	; 0x800112 <__data_end>
  21c:	98 2f       	mov	r25, r24
  21e:	94 60       	ori	r25, 0x04	; 4
  220:	90 93 12 01 	sts	0x0112, r25	; 0x800112 <__data_end>
  224:	8c 60       	ori	r24, 0x0C	; 12
- 226:	0e 94 c8 00 	call	0x190	; 0x190 <lcd_command>
+ 226:	0e 94 c8 00 	call	0x190	; 0x190 <HD44780_command>
  22a:	08 95       	ret
 
-0000022c <lcd_clear>:
+0000022c <HD44780_clear>:
  22c:	81 e0       	ldi	r24, 0x01	; 1
- 22e:	0e 94 c8 00 	call	0x190	; 0x190 <lcd_command>
+ 22e:	0e 94 c8 00 	call	0x190	; 0x190 <HD44780_command>
  232:	83 ed       	ldi	r24, 0xD3	; 211
  234:	90 e3       	ldi	r25, 0x30	; 48
  236:	01 97       	sbiw	r24, 0x01	; 1
- 238:	f1 f7       	brne	.-4      	; 0x236 <lcd_clear+0xa>
- 23a:	00 c0       	rjmp	.+0      	; 0x23c <lcd_clear+0x10>
+ 238:	f1 f7       	brne	.-4      	; 0x236 <HD44780_clear+0xa>
+ 23a:	00 c0       	rjmp	.+0      	; 0x23c <HD44780_clear+0x10>
  23c:	00 00       	nop
  23e:	08 95       	ret
 
-00000240 <lcd_puts>:
+00000240 <HD44780_puts>:
 }
 
-void lcd_puts(char *string) {
+void HD44780_puts(char *string) {
  240:	cf 93       	push	r28
  242:	df 93       	push	r29
  244:	ec 01       	movw	r28, r24
   for (char *it = string; *it; it++) {
  246:	88 81       	ld	r24, Y
  248:	88 23       	and	r24, r24
- 24a:	31 f0       	breq	.+12     	; 0x258 <lcd_puts+0x18>
+ 24a:	31 f0       	breq	.+12     	; 0x258 <HD44780_puts+0x18>
  24c:	21 96       	adiw	r28, 0x01	; 1
 	//_delay_ms(2);   // seems to be not necessary, but in case something is wrong add it
-    lcd_write(*it);
- 24e:	0e 94 cc 00 	call	0x198	; 0x198 <lcd_write>
+    HD44780_write(*it);
+ 24e:	0e 94 cc 00 	call	0x198	; 0x198 <HD44780_write>
   _delay_ms(5);  //todo: test is it necessary
-  lcd_command(LCD_SETDDRAMADDR | (col + offsets[row]));
+  HD44780_command(HD44780_SETDDRAMADDR | (col + offsets[row]));
 }
 
-void lcd_puts(char *string) {
+void HD44780_puts(char *string) {
   for (char *it = string; *it; it++) {
  252:	89 91       	ld	r24, Y+
  254:	81 11       	cpse	r24, r1
- 256:	fb cf       	rjmp	.-10     	; 0x24e <lcd_puts+0xe>
+ 256:	fb cf       	rjmp	.-10     	; 0x24e <HD44780_puts+0xe>
 	//_delay_ms(2);   // seems to be not necessary, but in case something is wrong add it
-    lcd_write(*it);
+    HD44780_write(*it);
   }
 }
  258:	df 91       	pop	r29
@@ -331,16 +331,16 @@ void lcd_puts(char *string) {
 	char *msg = "1234567890ABCDEF";
 
 
-	lcd_init();
- 25e:	0e 94 d0 00 	call	0x1a0	; 0x1a0 <lcd_init>
-	lcd_on();
- 262:	0e 94 0c 01 	call	0x218	; 0x218 <lcd_on>
-	lcd_clear();
- 266:	0e 94 16 01 	call	0x22c	; 0x22c <lcd_clear>
-	lcd_puts(msg);
+	HD44780_init();
+ 25e:	0e 94 d0 00 	call	0x1a0	; 0x1a0 <HD44780_init>
+	HD44780_on();
+ 262:	0e 94 0c 01 	call	0x218	; 0x218 <HD44780_on>
+	HD44780_clear();
+ 266:	0e 94 16 01 	call	0x22c	; 0x22c <HD44780_clear>
+	HD44780_puts(msg);
  26a:	80 e0       	ldi	r24, 0x00	; 0
  26c:	91 e0       	ldi	r25, 0x01	; 1
- 26e:	0e 94 20 01 	call	0x240	; 0x240 <lcd_puts>
+ 26e:	0e 94 20 01 	call	0x240	; 0x240 <HD44780_puts>
 
 	LCD_LED_CONFIG;
  272:	24 9a       	sbi	0x04, 4	; 4
