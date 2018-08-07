@@ -118,22 +118,10 @@
     </ToolchainSettings>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="lcd.c">
+    <Compile Include="HD44780.c">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="lcd.h">
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="lcd_hit._c">
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="lcd_hit._h">
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="_lcd._c">
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="_lcd._h">
+    <Compile Include="HD44780.h">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="main.c">

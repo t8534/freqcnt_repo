@@ -19,15 +19,15 @@ Idx Name          Size      VMA       LMA       File off  Algn
                   CONTENTS, READONLY, DEBUGGING
   7 .debug_abbrev 00000c67  00000000  00000000  00001ddf  2**0
                   CONTENTS, READONLY, DEBUGGING
-  8 .debug_line   000008a4  00000000  00000000  00002a46  2**0
+  8 .debug_line   000008ac  00000000  00000000  00002a46  2**0
                   CONTENTS, READONLY, DEBUGGING
-  9 .debug_frame  000001e0  00000000  00000000  000032ec  2**2
+  9 .debug_frame  000001e0  00000000  00000000  000032f4  2**2
                   CONTENTS, READONLY, DEBUGGING
- 10 .debug_str    000006f3  00000000  00000000  000034cc  2**0
+ 10 .debug_str    000006f7  00000000  00000000  000034d4  2**0
                   CONTENTS, READONLY, DEBUGGING
- 11 .debug_loc    0000034f  00000000  00000000  00003bbf  2**0
+ 11 .debug_loc    0000034f  00000000  00000000  00003bcb  2**0
                   CONTENTS, READONLY, DEBUGGING
- 12 .debug_ranges 000000d0  00000000  00000000  00003f0e  2**0
+ 12 .debug_ranges 000000d0  00000000  00000000  00003f1a  2**0
                   CONTENTS, READONLY, DEBUGGING
 
 Disassembly of section .text:
@@ -344,7 +344,7 @@ void lcd_puts(char *string) {
 
 	LCD_LED_CONFIG;
  272:	24 9a       	sbi	0x04, 4	; 4
-	while (1)   //loop forever
+	while (1)
 	{
 		LCD_LED_SET;
  274:	2c 9a       	sbi	0x05, 4	; 5

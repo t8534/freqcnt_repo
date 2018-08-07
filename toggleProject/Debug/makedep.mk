@@ -2,7 +2,7 @@
 # Automatically-generated file. Do not edit or delete the file
 ################################################################################
 
-lcd.c
+HD44780.c
 
 main.c
 

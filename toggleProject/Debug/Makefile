@@ -37,7 +37,7 @@ SUBDIRS :=
 
 # Add inputs and outputs from these tool invocations to the build variables 
 C_SRCS +=  \
-../lcd.c \
+../HD44780.c \
 ../main.c
 
 
@@ -48,19 +48,19 @@ ASM_SRCS +=
 
 
 OBJS +=  \
-lcd.o \
+HD44780.o \
 main.o
 
 OBJS_AS_ARGS +=  \
-lcd.o \
+HD44780.o \
 main.o
 
 C_DEPS +=  \
-lcd.d \
+HD44780.d \
 main.d
 
 C_DEPS_AS_ARGS +=  \
-lcd.d \
+HD44780.d \
 main.d
 
 OUTPUT_FILE_PATH +=toggleProject.elf
