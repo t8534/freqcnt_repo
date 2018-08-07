@@ -1,0 +1,61 @@
+/*
+ * lcd_hit.c
+ *
+ * Created: 2018-08-05 18:47:55
+ *  Author: arek
+ */ 
+
+#include <stdarg.h>
+#include <stdio.h>
+#include <util/delay.h>
+
+#include "lcd_hit.h"
+
+
+void LCD_STROBE(void)
+{
+	//EN = 1;
+	LCD_EN_SET;
+	_delay_us(2);
+	//EN = 0;
+	LCD_EN_RESET;
+}
+
+
+
+void cmd_4bit(unsigned char c)
+{
+	unsigned char x;
+	x = (c)& 0xf0 ;
+	databits =  (databits & 0x0f) | x ;
+	__delay_us(50);
+	RS = 0;
+	LCD_STROBE();
+	x = (c << 4);
+	databits =  (databits & 0x0f) | x ;
+	RS = 0;
+	LCD_STROBE();
+}
+
+
+void lcd_init(void)
+{
+  LCD_RS_CONFIG;
+  LCD_RW_CONFIG;
+  LCD_EN_CONFIG;
+  LCD_DATA_NIBBLE_CONFIG;
+
+
+	_delay_ms(15);
+	cmd_4bit(0x38);
+	_delay_ms(1);
+	cmd_4bit(0x38);
+	_delay_us(100);
+	cmd_4bit(0x38);
+	cmd_4bit(0x28);            // Function set (4-bit interface, 2 lines, 5*7Pixels)
+	cmd_4bit(0x28);            // Function set (4-bit interface, 2 lines, 5*7Pixels)
+	cmd_4bit(0x0c);            // Make cursorinvisible
+	cmd_4bit(0x01);
+	_delay_ms(2);            // Clear screen
+	cmd_4bit(0x6);            // Set entry Mode(auto increment of cursor)
+}
