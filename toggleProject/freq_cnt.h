@@ -32,71 +32,27 @@
  * good resolution even for very low frequencies.
  */
 
+ 
+ // TODO: There is no blocker for many times include this file.
+ 
+#include <stdio.h>
+#include <string.h>
 #include <avr/io.h>
+#include <avr/interrupt.h>
+#include <util/delay.h>
 
-#define F_CPU 16000000UL
-#include "util/delay.h"
+#define DEBUG 0                   //todo: move to .c
 
-#include "freq_cnt.h"
-#include "HD44780.h"
-
-// Blinking LED for tests.
-#define LCD_LED_CONFIG	DDRB |=  (1 << PB4)
-#define LCD_LED_SET		PORTB |= (1 << PB4)
-#define LCD_LED_RESET	PORTB &= ~(1 << PB4)
+#define MAX_PERIOD 0xffffffffUL   //todo: move to .c
+typedef unsigned long tick_t;     //todo: move to .c
 
 
-static uint8_t buff_txt[10];
-
-int main(void)
-{
-
-/*
-	LCD_LED_CONFIG;
-    while (1)   //loop forever
-    {
-	    LCD_LED_SET;
-	    _delay_ms(500);
-		LCD_LED_RESET;
-		_delay_ms(500);
-	    //wait 1 second
-    }
-*/
-
-	// HD44780 lcd test
-/*
-	char *msg = "1234567890ABCDEF";
-
-	HD44780_init();
-	HD44780_on();
-	HD44780_clear();
-	HD44780_puts(msg);
-
-	LCD_LED_CONFIG;
-	while (1)
-	{
-		LCD_LED_SET;
-		_delay_ms(500);
-		LCD_LED_RESET;
-		_delay_ms(500);
-	}
-*/
-
-
-	// Frequency counter
-	_delay_ms(100);		/* Wait for stable power */
-		
-	FREQCNT_Init();
-	lcd_init();
-		
-	for (;;) {
-		_delay_ms(100);
-		FREQCNT_Cyclic100ms();
-		FREQCNT_GetFrequencyTxt(buff_txt);
-		lcd_display_msg(buff_txt);
-	}
+void FREQCNT_Init(void);
+void FREQCNT_Cyclic100ms(void);  //todo: period of call should be not related to frequency measurement window.
+uint32_t FREQCNT_GetFrequencyHz(void)
+void FREQCNT_GetFrequencyTxt(uint8_t *buff);
 
 
 
-}
+
 

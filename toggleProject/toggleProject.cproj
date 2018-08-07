@@ -118,6 +118,12 @@
     </ToolchainSettings>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="freq_cnt.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="freq_cnt.h">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="HD44780.c">
       <SubType>compile</SubType>
     </Compile>
@@ -125,6 +131,9 @@
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="main.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="main_orig._c">
       <SubType>compile</SubType>
     </Compile>
   </ItemGroup>
