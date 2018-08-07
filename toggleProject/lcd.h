@@ -2,40 +2,10 @@
 
 #include <avr/io.h>
 
-// Edit these - orig design
-/*
-#define LCD_DDR  DDRF
-#define LCD_PORT PORTF
 
-#define LCD_RS 0
-#define LCD_RW 1
-#define LCD_EN 2
-#define LCD_D0 3
-#define LCD_D1 4
-#define LCD_D2 5
-#define LCD_D3 6
-*/
-
-
-
-
-// PD0 - PD3: nibble
-// PD4, PD7, PC6
-//
-//		#define MACRO(arg1, arg2) do {	\
-//				/* declarations */	\
-//				stmt1;			\
-//				stmt2;			\
-//				/* ... */		\
-//				} while(0)	/* (no trailing ; ) */
-//
-
-//new design - Edit this
-
-// data nibble
-//LCD_PORT = (LCD_PORT & 0xff & ~(0x0f << LCD_D0)) | ((nibble & 0x0f) << LCD_D0);
-// PORTD = PORTD & 0xf0;
-// PORTD = PORTD | (nibble & 0x0F);
+///////////////////////////////////////////////////////////////////////////////
+// Communication with uP
+///////////////////////////////////////////////////////////////////////////////
 		
 #define LCD_DATA_NIBBLE_CONFIG	DDRD |= 0b00001111;  // 1 - output for PD0 to PD3
 #define LCD_DATA_NIBBLE_WRITE(nibble)        do {                                    \
@@ -55,13 +25,7 @@
 #define LCD_EN_SET		PORTC |= (1 << PC6)
 #define LCD_EN_RESET	PORTC &= ~(1 << PC6)
 
-
-
-
-
-
-
-
+///////////////////////////////////////////////////////////////////////////////
 
 #define LCD_COL_COUNT 16
 #define LCD_ROW_COUNT 2

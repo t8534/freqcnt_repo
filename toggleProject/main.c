@@ -47,7 +47,7 @@ int main(void)
     }
 */
 
-	char *msg = "test";
+	char *msg = "1234567890ABCDEF";
 
 
 	lcd_init();
