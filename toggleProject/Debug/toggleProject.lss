@@ -383,10 +383,10 @@ void lcd_puts(char *string) {
  2c2:	08 95       	ret
 
 000002c4 <main>:
-    }
 */
 
 	char *msg = "test";
+
 
 	lcd_init();
  2c4:	0e 94 d3 00 	call	0x1a6	; 0x1a6 <lcd_init>
@@ -398,7 +398,6 @@ void lcd_puts(char *string) {
  2d0:	80 e0       	ldi	r24, 0x00	; 0
  2d2:	91 e0       	ldi	r25, 0x01	; 1
  2d4:	0e 94 4d 01 	call	0x29a	; 0x29a <lcd_puts>
-
 
 	LCD_LED_CONFIG;
  2d8:	24 9a       	sbi	0x04, 4	; 4

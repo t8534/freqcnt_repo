@@ -49,11 +49,11 @@ int main(void)
 
 	char *msg = "test";
 
+
 	lcd_init();
 	lcd_on();
 	lcd_clear();
 	lcd_puts(msg);
-
 
 	LCD_LED_CONFIG;
 	while (1)   //loop forever
