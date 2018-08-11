@@ -7,23 +7,23 @@
 // Communication with uP
 ///////////////////////////////////////////////////////////////////////////////
 		
-#define HD44780_DATA_NIBBLE_CONFIG	DDRD |= 0b00001111;  // 1 - output for PD0 to PD3
+#define HD44780_DATA_NIBBLE_CONFIG	DDRC |= 0b00001111;  // 1 - output for PC0 to PC3
 #define HD44780_DATA_NIBBLE_WRITE(nibble)        do {                                    \
-                                                 PORTD = PORTD & 0xf0;               \
-                                                 PORTD = PORTD | (nibble & 0x0F);    \
+                                                 PORTC = PORTC & 0xf0;               \
+                                                 PORTC = PORTC | (nibble & 0x0F);    \
                                              } while(0)
 
-#define HD44780_RS_CONFIG	DDRD |=  (1 << PD4)
-#define HD44780_RS_SET		PORTD |= (1 << PD4) 
-#define HD44780_RS_RESET	PORTD &= ~(1 << PD4) 
+#define HD44780_RS_CONFIG	DDRC |=  (1 << PC5)
+#define HD44780_RS_SET		PORTC |= (1 << PC5) 
+#define HD44780_RS_RESET	PORTC &= ~(1 << PC5) 
 
-#define HD44780_RW_CONFIG	DDRD |=  (1 << PD7);
-#define HD44780_RW_SET		PORTD |= (1 << PD7)
-#define HD44780_RW_RESET	PORTD &= ~(1 << PD7)
+#define HD44780_RW_CONFIG	DDRB |=  (1 << PB0);
+#define HD44780_RW_SET		PORTB |= (1 << PB0)
+#define HD44780_RW_RESET	PORTB &= ~(1 << PB0)
 
-#define HD44780_EN_CONFIG	DDRC |=  (1 << PC6);
-#define HD44780_EN_SET		PORTC |= (1 << PC6)
-#define HD44780_EN_RESET	PORTC &= ~(1 << PC6)
+#define HD44780_EN_CONFIG	DDRC |=  (1 << PC4);
+#define HD44780_EN_SET		PORTC |= (1 << PC4)
+#define HD44780_EN_RESET	PORTC &= ~(1 << PC4)
 
 ///////////////////////////////////////////////////////////////////////////////
 
