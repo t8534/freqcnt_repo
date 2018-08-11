@@ -13,9 +13,9 @@
 #include "HD44780.h"
 
 // Blinking LED for tests.
-#define LCD_LED_CONFIG	DDRB |=  (1 << PB4)
-#define LCD_LED_SET		PORTB |= (1 << PB4)
-#define LCD_LED_RESET	PORTB &= ~(1 << PB4)
+#define LCD_LED_CONFIG	DDRD |=  (1 << PD7)
+#define LCD_LED_SET		PORTD |= (1 << PD7)
+#define LCD_LED_RESET	PORTD &= ~(1 << PD7)
 
 
 int main(void)

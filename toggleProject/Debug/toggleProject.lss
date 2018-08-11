@@ -326,11 +326,11 @@ void HD44780_puts(char *string) {
  22a:	0e 94 fe 00 	call	0x1fc	; 0x1fc <HD44780_puts>
 
 	LCD_LED_CONFIG;
- 22e:	24 9a       	sbi	0x04, 4	; 4
+ 22e:	57 9a       	sbi	0x0a, 7	; 10
 	while (1)
 	{
 		LCD_LED_SET;
- 230:	2c 9a       	sbi	0x05, 4	; 5
+ 230:	5f 9a       	sbi	0x0b, 7	; 11
 	#else
 		//round up by default
 		__ticks_dc = (uint32_t)(ceil(fabs(__tmp)));
@@ -348,7 +348,7 @@ void HD44780_puts(char *string) {
  242:	00 00       	nop
 		_delay_ms(500);
 		LCD_LED_RESET;
- 244:	2c 98       	cbi	0x05, 4	; 5
+ 244:	5f 98       	cbi	0x0b, 7	; 11
  246:	2f ef       	ldi	r18, 0xFF	; 255
  248:	89 e6       	ldi	r24, 0x69	; 105
  24a:	98 e1       	ldi	r25, 0x18	; 24
