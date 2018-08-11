@@ -40,6 +40,15 @@
  //
  //
  
+// atmega32u4
+//
+// atmega84: T1 is 16-bit at PA4
+// atmega32u4: T1 is 16-bit at PD6
+//
+// atmega84: INT0 is at PB2
+// atmega32u4: INT0 is at PD0, unfortunately it touch lcd display, could we move it to INT6 (PE6)
+
+
  
 #include <stdio.h>
 #include <string.h>
@@ -144,7 +153,7 @@ static void lcd_putc(char c);
 #if DEBUG
 static void inline debug_show_state(uint8_t n);
 #endif
-static inline unsigned long cli_ticks(void)
+static inline unsigned long cli_ticks(void)  // Used only by ISR from T0 overload and cli_ticks()
     __attribute__ ((always_inline));
 static void init_time_keeping(void);
 static void init_event_counting(void);
@@ -224,23 +233,60 @@ void debug_show_state(uint8_t n)
  * Time keeping. We count "ticks" (1 tick = 64 cpu cycles) and only
  * convert to time when we'll need to show the frequency.
  */
-
+// The Timer0 is initialized here, which is 8 bit.
+// Once initiated this is running continuously until whole application is running.
+// The cli_ticks() is called by ISR for slow and fast mode, to get the current tics values.
 static void init_time_keeping(void)
 {
     /*
      * Set prescaler to 64. Using a 20Mhz clock, that will give
      * a timer tick time of appr. 3.2 us, and timer overflow appr.
-     * 819 us.
+     * 819 us. The Timer 0 is 8 bit. 819/3.2 = 255.9375
      */
 
-    TCCR0B = _BV(CS01) | _BV(CS00);
+	 // We have 16 MHz clock
+	 // The prescaled clock has a frequency: of either fCLK_I/O/8, fCLK_I/O/64, fCLK_I/O/256, or fCLK_I/O/1024.
+	 // 16/64 = 2.5 us -> 640us while timer overflow
+	 // 16/8  = 20 uS -> 5129 us while timer overflow
+	 
+	 
+    TCCR0B = _BV(CS01) | _BV(CS00); // Set prescaler to clk/64
 
     /* Enable the overflow interrupt for time 0 */
+
+	// When the TOIE0 bit is written to one, and the I-bit in the Status Register is set, the
+	// Timer/Counter0 Overflow interrupt is enabled. The corresponding interrupt is executed if an
+	// overflow in Timer/Counter0 occurs, i.e., when the TOV0 bit is set in the Timer/Counter 0 Interrupt
+	// Flag Register – TIFR0.
+	
     TIMSK0 = _BV(TOIE0);
+
+
+	
+	////////////////////////////////////////////////////////////////////////////////
+	// Code for T0 atmega32u4
+	////////////////////////////////////////////////////////////////////////////////
+
+	// Set prescaler to clk/64 -> this is 2.5us per tic, with 16MHz clock.
+	// it is 256 x 2.5 = 640 us.
+	TCCR0B = _BV(CS01) | _BV(CS00); 
+	
+    /* Enable the overflow interrupt for time 0 */
+	// When the TOIE0 bit is written to one, and the I-bit in the Status Register is set, the
+    // Timer/Counter0 Overflow interrupt is enabled. The corresponding interrupt is executed if an
+    // overflow in Timer/Counter0 occurs, i.e., when the TOV0 bit is set in the Timer/Counter 0 Interrupt
+    // Flag Register – TIFR0.
+	
+    TIMSK0 = _BV(TOIE0); 
+
+
+	
+	
 }
 
-static volatile unsigned long timer0_overflow_count = 0;
+static volatile unsigned long timer0_overflow_count = 0;   // move it up
 
+// ISR from T0 overflow
 ISR(TIM0_OVF_vect)
 {
     timer0_overflow_count++;
@@ -250,15 +296,17 @@ ISR(TIM0_OVF_vect)
  * Return the number of timer ticks elapsed. Interrupts MUST
  * be disabled when calling this function.
  */
+ // It return T0 tics continuously from the beginning of application start.
+ // This is called by ISR for slow and fast mode.
 static tick_t cli_ticks(void)
 {
     uint8_t t;
     tick_t m;
 
     m = timer0_overflow_count;
-    t = TCNT0;
-    if (TIFR0 & _BV(TOV0) && t < 255) {
-	m++;
+    t = TCNT0;  // Timer data
+    if (TIFR0 & _BV(TOV0) && t < 255) { // Timer Interrupt Flag Register (TIFR0), The Timer/Counter Overflow Flag (TOV0)
+		m++;
     }
     return (m << 8) | t;
 }
@@ -290,6 +338,17 @@ static tick_t cli_ticks(void)
  * ====================================================================
  */
 
+// todo:
+// Check is it really true for atmega32U4.
+// And if not simplify code.
+//
+// * We can count events using timer 1 in CTC mode. However, it seems
+// * that the minimum number of events that can be counted is 2.
+// * Therefore, to react faster while counting low frequencies (less
+// * than 20Hz), we use the external interrupt to count individual
+// * falling edges.
+
+
 static void init_event_counting(void)
 {
     /*
@@ -301,24 +360,159 @@ static void init_event_counting(void)
      * FALLING edges.
      */
 
+	// atmega32u4
+	//
+	// atmega84: T1 is 16-bit at PA4
+	// atmega32u4: T1 is 16-bit at PD6
+	//
+	// atmega84: INT0 is at PB2
+	// atmega32u4: INT0 is at PD0, unfortunately it touch lcd display, could we move it to INT6 (PE6)
+
+
     /*
      * Generate interrupts on the falling edge of the signal on PB2.
      */
+	// This is for slow mode, measure by external pin.
 
+	// Bits 1:0 – ISC01, ISC00: Interrupt Sense Control 0 Bit 1 and Bit 0
+	// The External Interrupt 0 is activated by the external pin INT0 if the SREG I-flag and the corresponding
+	// interrupt mask are set. The level and edges on the external INT0 pin that activate the
+	// interrupt are defined in Table 9-2. The value on the INT0 pin is sampled before detecting edges.
+	// If edge or toggle interrupt is selected, pulses that last longer than one clock period will generate
+	// an interrupt. Shorter pulses are not guaranteed to generate an interrupt. If low level interrupt is
+	// selected, the low level must be held until the completion of the currently executing instruction to
+	// generate an interrupt.
     MCUCR = _BV(ISC01);
-    GIMSK = _BV(INT0);
+
+
+	// Bit 6 – INT0: External Interrupt Request 0 Enable
+	// When the INT0 bit is set (one) and the I-bit in the Status Register (SREG) is set (one), the external
+	// pin interrupt is enabled. The Interrupt Sense Control bits (ISC01 and ISC00) in the External
+	// Interrupt Control Register A (EICRA) define whether the external interrupt is activated on rising
+	// and/or falling edge of the INT0 pin or level sensed. Activity on the pin will cause an interrupt
+	// request even if INT0 is configured as an output. The corresponding interrupt of External Interrupt
+	// Request 0 is executed from the INT0 Interrupt Vector.
+	
+    GIMSK = _BV(INT0);  // General Interrupt Mask Register
 
     /*
      * Set up timer 1 in CTC mode, using the input signal on PA4 as
-     * the clock for the timer.
+     * the clock for the timer. PA4 this is also T1 label
      */
 
-    TCCR1A = 0;
-    TCCR1B = _BV(WGM12) | _BV(CS12) | _BV(CS11);
-    set_timer_cmp_reg(fast_cnt.current_log2num_events);
-    TCNT1 = 0;
-    TIMSK1 = _BV(OCIE1A);
-    TIFR1 |= _BV(OCF1A);
+    // Timer/Counter1 Control Register A,
+    // Compare Output disconnected
+	// WGM12 = 1, and WGM 10, 11, 13 = 0 Wafeorm Generation Mode4 - CTC (Clear Timer on Compare)
+	//   TOP - OCR1A - Update of OCR1x immediate, TOV1 flag set on MAX
+	TCCR1A = 0;  
+    
+	// Bit 7 – ICNC1: Input Capture Noise Canceler - not activated
+	// Bit 6 – ICES1: Input Capture Edge Select
+	//   This bit selects which edge on the Input Capture pin (ICP1) that is used to trigger a capture
+	//   event. When the ICES1 bit is written to zero, a falling (negative) edge is used as trigger, and
+	//   when the ICES1 bit is written to one, a rising (positive) edge will trigger the capture.
+	//   When a capture is triggered according to the ICES1 setting, the counter value is copied into the
+	//   Input Capture Register (ICR1). The event will also set the Input Capture Flag (ICF1), and this
+	//   can be used to cause an Input Capture Interrupt, if this interrupt is enabled.
+	//   When the ICR1 is used as TOP value (see description of the WGM13:0 bits located in the
+	//   TCCR1A and the TCCR1B Register), the ICP1 is disconnected and consequently the Input Capture
+	//   function is disabled.
+	//
+	// WGM12 = 1, and WGM 10, 11, 13 = 0 Wafeorm Generation Mode4 - CTC (Clear Timer on Compare)
+	//   TOP - OCR1A - Update of OCR1x immediate, TOV1 flag set on MAX
+    // Clock select:
+	// CS10=0, CS11=1, CS12=1 - External clock source on T1 pin. Clock on falling edge.
+	//   If external pin modes are used for the Timer/Counter1, transitions on the T1 pin will clock the
+	//   counter even if the pin is configured as an output. This feature allows software control of the
+	//   counting.
+	TCCR1B = _BV(WGM12) | _BV(CS12) | _BV(CS11);  //CS12, CS11, CS10: 110: External clock source on T1 pin. Clock on falling edge.
+    set_timer_cmp_reg(fast_cnt.current_log2num_events);  //WGM 10/11/12/13: CTC (Clear Timer on Compare), TOP in OCR1A
+    TCNT1 = 0;    // 16 bit counter 
+	
+	// Timer/Counter Interrupt Mask Register 1
+	// Bit 1 – OCIE1A: Timer/Counter1, Output Compare A Match Interrupt Enable
+	//   When this bit is written to one, and the I-flag in the Status Register is set (interrupts globally
+	//   enabled), the Timer/Counter1 Output Compare A Match interrupt is enabled. The corresponding
+	//   Interrupt Vector (see “Interrupts” on page 48) is executed when the OCF1A flag, located in
+	//   TIFR1, is set.
+    TIMSK1 = _BV(OCIE1A);  // If interrupts are globally enabled (I-flag in the Status Register is set), enable interrupt if Counter achive OCR1A value.
+    
+	// Timer/Counter Interrupt Flag Register 1
+	// Bit 1 – OCF1A: Timer/Counter1, Output Compare A Match Flag
+	//   This flag is set in the timer clock cycle after the counter (TCNT1) value matches the Output
+	//   Compare Register A (OCR1A).
+	//   Note that a Forced Output Compare (1A) strobe will not set the OCF1A flag.
+	//   OCF1A is automatically cleared when the Output Compare Match A Interrupt Vector is executed.
+	//   Alternatively, OCF1A can be cleared by writing a logic one to its bit location.
+	TIFR1 |= _BV(OCF1A);
+
+    /*
+     * Start up in slow mode. The interrupt handler for slow
+     * mode will shift to fast mode if the frequency is too high.
+     */
+
+    current = &slow_cnt;
+	
+	
+	////////////////////////////////////////////////////////////////////////
+	// Code related to atmega32u4
+	////////////////////////////////////////////////////////////////////////
+
+	//todo for pin ISR
+	// Configure for INT0, but it could be INT6, INT3:0
+	EICRA = 0;
+	EICRA = _BV(ISC01);  // The falling edge of INT0 generates asynchronously an interrupt request.
+	
+	// Bits 7..0 – INT6, INT3 – INT0: External Interrupt Request 6, 3 - 0 Enable
+	// When an INT[6;3:0] bit is written to one and the I-bit in the Status Register (SREG) is set (one), the
+	// corresponding external pin interrupt is enabled. The Interrupt Sense Control bits in the External Interrupt Control
+	// Registers – EICRA and EICRB – defines whether the external interrupt is activated on rising or falling edge or
+	// level sensed. Activity on any of these pins will trigger an interrupt request even if the pin is enabled as an output.
+	// This provides a way of generating a software interrupt.
+	EIMSK = 0;
+	EIMSK = _BV(INT0); 
+	
+	
+	// todo: what about this ?
+	// Bits 7..0 – INTF6, INTF3 - INTF0: External Interrupt Flags 6, 3 - 0
+	// When an edge or logic change on the INT[6;3:0] pin triggers an interrupt request, INTF7:0 becomes set (one). If
+	// the I-bit in SREG and the corresponding interrupt enable bit, INT[6;3:0] in EIMSK, are set (one), the MCU will
+	// jump to the interrupt vector. The flag is cleared when the interrupt routine is executed. Alternatively, the flag can
+	// be cleared by writing a logical one to it. These flags are always cleared when INT[6;3:0] are configured as level
+	// interrupt. Note that when entering sleep mode with the INT3:0 interrupts disabled, the input buffers on these
+	// pins will be disabled. This may cause a logic change in internal signals which will set the INTF3:0 flags. See
+	//“Digital Input Enable and Sleep Modes” on page 71 for more information.
+	
+	// EIFR -> but we do not use GIFR in atmega84
+	
+	
+    /*
+     * Set up timer 1 in CTC mode, using the input signal on PA4 as
+     * the clock for the timer. PA4 this is also T1 label
+     */
+	// Timer/Counter mode of operation: CTC - Mode 4
+	// Top: OCRnA
+	// Update of OCRnX at: Immediate
+	// TOVn flag set on: MAX
+	// WGMn0 = 0
+	// WGMn1 = 0
+	// WGMn2 = 1
+	// WGMn3 = 0
+	TCCR1A = 0;  // WGM10 = 0, WGM11 = 0
+	// WGM12 = 1, WGM13 = 0, CS12, CS11, CS10: 110: External clock source on T1 pin. Clock on falling edge.
+	TCCR1B = _BV(WGM12) | _BV(CS12) | _BV(CS11);
+	set_timer_cmp_reg(fast_cnt.current_log2num_events);  //todo: check is something to change inside
+	TCNT1 = 0;  // Clear data counter.
+
+	// If interrupts are globally enabled (I-flag in the Status Register is set),
+    // enable interrupt if Counter achive OCR1A value.
+    TIMSK1 = _BV(OCIE1A);  
+
+	// This flag is set in the timer clock cycle after the counter (TCNT1) value matches the Output
+	// Compare Register A (OCR1A).
+	// OCF1A is automatically cleared when the Output Compare Match A Interrupt Vector is executed.
+	// Alternatively, OCF1A can be cleared by writing a logic one to its bit location.
+    TIFR1 |= _BV(OCF1A);  // Clear the flag related on interrupt when OCR1A match TCNT1
 
     /*
      * Start up in slow mode. The interrupt handler for slow
@@ -331,6 +525,7 @@ static void init_event_counting(void)
 /*
  * Interrupt service routine for the slow counting mode.
  */
+ // This is ISR from external pin irq.
 ISR(EXT_INT0_vect)
 {
     tick_t cs = cli_ticks();
@@ -359,12 +554,24 @@ ISR(EXT_INT0_vect)
 	 * than the external interrupt will ever be called.
 	 */
 	if (period < 100UL) {
-	    GIMSK = 0;
+	    
+		//GIMSK = 0;
+		EIMSK = 0;
+		
 	    fast_cnt.period = MAX_PERIOD;
 	    fast_cnt.first_time = 1;
 	    fast_cnt.current_log2num_events = 1;
 	    fast_cnt.prev_ticks = cs;
+		
+		// The Output Compare Registers contain a 16-bit value that is continuously compared with the
+		// counter value (TCNT1). A match can be used to generate an Output Compare interrupt, or to
+		// generate a waveform output on the OC1x pin.
+		// The Output Compare Registers are 16-bit in size. To ensure that both the high and low bytes are
+		// written simultaneously when the CPU writes to these registers, the access is performed using an
+		// 8-bit temporary high byte register (TEMP). This temporary register is shared by all the other 16-
+		// bit registers. See “Accessing 16-bit Registers” on page 105.
 	    OCR1A = (1 << fast_cnt.current_log2num_events) - 1;
+
 	    TCNT1 = 0;
 	    current = &fast_cnt;
 	}
@@ -378,7 +585,10 @@ ISR(EXT_INT0_vect)
 static void slow_mode(void)
 {
     cli();
-    GIMSK = _BV(INT0);
+    
+	//GIMSK = _BV(INT0);
+	EIMSK = _BV(INT0);
+	
     slow_cnt.first_time = 1;
     slow_cnt.period = MAX_PERIOD;
     current = &slow_cnt;
@@ -489,7 +699,9 @@ ISR(TIM1_COMPA_vect)
 	    /*
 	     * Too long period. Switch to slow mode.
 	     */
-	    GIMSK = _BV(INT0);
+		//GIMSK = _BV(INT0);
+		EIMSK = _BV(INT0);
+		
 	    slow_cnt.period = period / 2;
 	    slow_cnt.prev_ticks = ticks;
 	    slow_cnt.first_time = 1;
@@ -499,7 +711,9 @@ ISR(TIM1_COMPA_vect)
 	/*
 	 * Running too fast for slow mode. Switch to fast mode.
 	 */
-	GIMSK = 0;
+	//GIMSK = 0;
+	EIMSK = 0;
+	
 	current = &fast_cnt;
     }
 }

@@ -41,11 +41,6 @@
 #include <avr/interrupt.h>
 #include <util/delay.h>
 
-#define DEBUG 0                   //todo: move to .c
-
-#define MAX_PERIOD 0xffffffffUL   //todo: move to .c
-typedef unsigned long tick_t;     //todo: move to .c
-
 
 void FREQCNT_Init(void);
 void FREQCNT_Cyclic100ms(void);  //todo: period of call should be not related to frequency measurement window.
