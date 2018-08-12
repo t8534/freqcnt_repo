@@ -32,6 +32,22 @@
  * good resolution even for very low frequencies.
  */
 
+
+// Notes:
+//
+// 1.
+//
+// 20 MHz = 50 ns
+// 14 MHz = 71.428572... ns
+// 12 MHz = 83.33333333 ns
+// 16 MHz = 62.5 ns
+//  8 MHz = 125 ns
+//  4 MHz = 250 ns
+//  1 MHz = 1000 ns
+//
+// 64 ns = 15.625 MHz
+// 
+
  // TODO:
  //
  // 1.
@@ -52,6 +68,7 @@
  
 #include <stdio.h>
 #include <string.h>
+#include <stdlib.h>   // ultoa()
 #include <avr/io.h>
 #include <avr/interrupt.h>
 #include <util/delay.h>
@@ -63,6 +80,50 @@
 #define MAX_PERIOD 0xffffffffUL
 typedef unsigned long tick_t;
 
+
+/*
+ * Other functions.
+ */
+#if DEBUG
+static void inline debug_show_state(uint8_t n);
+#endif
+static inline unsigned long cli_ticks(void)  // Used only by ISR from T0 overload and cli_ticks()
+    __attribute__ ((always_inline));
+void init_time_keeping(void);  //todo: after tests move back to static
+void init_event_counting(void);  //todo: after tests move back to static
+static void slow_mode(void);
+static void inline set_timer_cmp_reg(uint8_t log2ne)
+    __attribute__ ((always_inline));
+static unsigned long display_measurement(uint8_t n, tick_t p);
+static void show_line(char* s);
+static void display_freq(unsigned long freq, unsigned char *buff);
+
+struct counter {
+    /*
+     * The current frequency can be calculated as:
+     *
+     *     2^log2num_events / (64 * F_CPU * period)
+     *
+     * A tick is 64 cpu cycles.
+     */
+    tick_t period;	/* Length of last measured period (in ticks) */
+    uint8_t log2num_events;	/* log2 of number of events that occurred. */
+
+    /*
+     * Internal data for the interrupt routines to keep track of the
+     * current measuring period.
+     */
+    uint8_t first_time;
+    uint8_t current_log2num_events; /* For the current counting period.   */
+    tick_t prev_ticks;	     /* Number of ticks at start of period. */
+};
+
+static volatile struct counter slow_cnt = { MAX_PERIOD, 0, 1, 0, 0 };
+static volatile struct counter fast_cnt = { MAX_PERIOD, 0, 1, 1, 0 };
+static struct counter volatile *current;
+
+#define WD_TOP 4
+static volatile signed char fast_wd = WD_TOP;
 
 
 void FREQCNT_Init(void)
@@ -143,55 +204,14 @@ void FREQCNT_GetFrequencyTxt(uint8_t *buff)
  * of display can be used if those functions are
  * reimplemnted.
  */
+/*
 static void lcd_init(void);
 static void lcd_home(void);
 static void lcd_putc(char c);
+*/
+
 
 /*
- * Other functions.
- */
-#if DEBUG
-static void inline debug_show_state(uint8_t n);
-#endif
-static inline unsigned long cli_ticks(void)  // Used only by ISR from T0 overload and cli_ticks()
-    __attribute__ ((always_inline));
-static void init_time_keeping(void);
-static void init_event_counting(void);
-static void slow_mode(void);
-static void inline set_timer_cmp_reg(uint8_t log2ne)
-    __attribute__ ((always_inline));
-static void display_measurement(uint8_t n, tick_t p);
-static void show_line(char* s);
-static void display_freq(unsigned long freq);
-
-struct counter {
-    /*
-     * The current frequency can be calculated as:
-     *
-     *     2^log2num_events / (64 * F_CPU * period)
-     *
-     * A tick is 64 cpu cycles.
-     */
-    tick_t period;	/* Length of last measured period (in ticks) */
-    uint8_t log2num_events;	/* log2 of number of events that occurred. */
-
-    /*
-     * Internal data for the interrupt routines to keep track of the
-     * current measuring period.
-     */
-    uint8_t first_time;
-    uint8_t current_log2num_events; /* For the current counting period.   */
-    tick_t prev_ticks;	     /* Number of ticks at start of period. */
-};
-
-static volatile struct counter slow_cnt = { MAX_PERIOD, 0, 1, 0, 0 };
-static volatile struct counter fast_cnt = { MAX_PERIOD, 0, 1, 1, 0 };
-static struct counter volatile *current;
-
-#define WD_TOP 4
-static volatile signed char fast_wd = WD_TOP;
-
-
 #if DEBUG
 void debug_show_state(uint8_t n)
 {
@@ -199,13 +219,13 @@ void debug_show_state(uint8_t n)
 
     DDRA |= _BV(PA5) | _BV(PA6);
 
-    /*
-     * Show the 2 logarithm for the number of events as a number of
-     * square wave cycles on output port PA5. (Connect an oscilloscope
-     * probe to PA5 to see it. Set the triggering mode to Normal or
-     * increase the trigger Holdoff time so that the square wave stays
-     * on the screen.)
-     */
+    //
+    // Show the 2 logarithm for the number of events as a number of
+    // square wave cycles on output port PA5. (Connect an oscilloscope
+    // probe to PA5 to see it. Set the triggering mode to Normal or
+    // increase the trigger Holdoff time so that the square wave stays
+    // on the screen.)
+    //
 
     nc = 2 * n;
     while (nc-- > 0) {
@@ -216,10 +236,10 @@ void debug_show_state(uint8_t n)
 	}
     }
 
-    /*
-     * Set PA6 high if we are in slow mode and low otherwise.
-     * (Connect a LED or logic probe to PA6 to see the mode.)
-     */
+    //
+    // Set PA6 high if we are in slow mode and low otherwise.
+    // (Connect a LED or logic probe to PA6 to see the mode.)
+    //
 
     if (current == &slow_cnt) {
 	PORTA |= _BV(PA6);
@@ -228,6 +248,8 @@ void debug_show_state(uint8_t n)
     }
 }
 #endif
+*/
+
 
 /*
  * Time keeping. We count "ticks" (1 tick = 64 cpu cycles) and only
@@ -236,14 +258,34 @@ void debug_show_state(uint8_t n)
 // The Timer0 is initialized here, which is 8 bit.
 // Once initiated this is running continuously until whole application is running.
 // The cli_ticks() is called by ISR for slow and fast mode, to get the current tics values.
-static void init_time_keeping(void)
+//
+// Atmega328p T0 prescaler settings:
+//
+// MCU clock 8 MHz - 125ns
+//
+//   8:1  -> tick = 125ns, overflow = 256 x 125ns =   32us
+//   8:8  -> tick = 1us,   overflow = 256 x   1us =  256us
+//   8:64 -> tick = 8us,   overflow = 256 x   8us = 2048us
+//
+// MCU clock 16 MHz - 62.5ns
+//
+//  16:1   -> tick = 62.5ns, overflow = 256 x 62.5ns =     16us
+//  16:8   -> tick = 500ns,  overflow = 256 x 500ns  =    128us
+//  16:64  -> tick = 4us,    overflow = 256 x 4us    =   1024us
+//  16:256 -> tick = 16us,   overflow = 256 x 16us   =   4096us
+//
+void init_time_keeping(void)  // todo: after tests move back to static
 {
-    /*
-     * Set prescaler to 64. Using a 20Mhz clock, that will give
-     * a timer tick time of appr. 3.2 us, and timer overflow appr.
-     * 819 us. The Timer 0 is 8 bit. 819/3.2 = 255.9375
-     */
-
+	
+	///////////////////////////////////////////////////////////////////////////
+	// Atiny 84
+    ///////////////////////////////////////////////////////////////////////////
+	/*
+    //
+    // Set prescaler to 64. Using a 20Mhz clock, that will give
+    // a timer tick time of appr. 3.2 us, and timer overflow appr.
+    // 819 us. The Timer 0 is 8 bit. 819/3.2 = 255.9375
+    //
 	 // We have 16 MHz clock
 	 // The prescaled clock has a frequency: of either fCLK_I/O/8, fCLK_I/O/64, fCLK_I/O/256, or fCLK_I/O/1024.
 	 // 16/64 = 2.5 us -> 640us while timer overflow
@@ -252,7 +294,7 @@ static void init_time_keeping(void)
 	 
     TCCR0B = _BV(CS01) | _BV(CS00); // Set prescaler to clk/64
 
-    /* Enable the overflow interrupt for time 0 */
+    // Enable the overflow interrupt for time 0 
 
 	// When the TOIE0 bit is written to one, and the I-bit in the Status Register is set, the
 	// Timer/Counter0 Overflow interrupt is enabled. The corresponding interrupt is executed if an
@@ -260,27 +302,47 @@ static void init_time_keeping(void)
 	// Flag Register – TIFR0.
 	
     TIMSK0 = _BV(TOIE0);
-
-
+	*/
 	
 	////////////////////////////////////////////////////////////////////////////////
 	// Code for T0 atmega32u4
 	////////////////////////////////////////////////////////////////////////////////
 
+	/*
 	// Set prescaler to clk/64 -> this is 2.5us per tic, with 16MHz clock.
 	// it is 256 x 2.5 = 640 us.
 	TCCR0B = _BV(CS01) | _BV(CS00); 
 	
-    /* Enable the overflow interrupt for time 0 */
+    // Enable the overflow interrupt for time 0 
 	// When the TOIE0 bit is written to one, and the I-bit in the Status Register is set, the
     // Timer/Counter0 Overflow interrupt is enabled. The corresponding interrupt is executed if an
     // overflow in Timer/Counter0 occurs, i.e., when the TOV0 bit is set in the Timer/Counter 0 Interrupt
     // Flag Register – TIFR0.
 	
     TIMSK0 = _BV(TOIE0); 
+	*/
 
 
+	///////////////////////////////////////////////////////////////////////////
+	// Code for Atmega328p
 	
+	TCCR0A = 0x00;  // Normal mode, TOP=0xFF, TOV flag set on MAX = 0xFF.
+	
+	TCCR0B = 0x00;  // Normal mode, 
+	
+	// MCU clock 8 MHz
+	// Prescaler 8:64
+	// Timer clock tick = 8us
+	// Timer overflow = 256 x 8us = 2048us
+	//
+	// CS00 = 1 
+	// CS01 = 1
+	// CS02 = 0
+	TCCR0B = _BV(CS01) | _BV(CS00);  
+	
+	// Enable interrupts
+	TIMSK0 = 0x00;
+	TIMSK0 = _BV(TOIE0); 
 	
 }
 
@@ -349,7 +411,7 @@ static tick_t cli_ticks(void)
 // * falling edges.
 
 
-static void init_event_counting(void)
+void init_event_counting(void)  //todo after tests move back to static
 {
     /*
      * Our hardware outside the microcontroller has converted the
@@ -360,7 +422,11 @@ static void init_event_counting(void)
      * FALLING edges.
      */
 
+	//////////////////////////////////////////////////////////////////////////////
 	// atmega32u4
+	//////////////////////////////////////////////////////////////////////////////
+	
+	/*
 	//
 	// atmega84: T1 is 16-bit at PA4
 	// atmega32u4: T1 is 16-bit at PD6
@@ -368,10 +434,9 @@ static void init_event_counting(void)
 	// atmega84: INT0 is at PB2
 	// atmega32u4: INT0 is at PD0, unfortunately it touch lcd display, could we move it to INT6 (PE6)
 
-
-    /*
-     * Generate interrupts on the falling edge of the signal on PB2.
-     */
+    //
+    // Generate interrupts on the falling edge of the signal on PB2.
+    //
 	// This is for slow mode, measure by external pin.
 
 	// Bits 1:0 – ISC01, ISC00: Interrupt Sense Control 0 Bit 1 and Bit 0
@@ -384,7 +449,6 @@ static void init_event_counting(void)
 	// generate an interrupt.
     MCUCR = _BV(ISC01);
 
-
 	// Bit 6 – INT0: External Interrupt Request 0 Enable
 	// When the INT0 bit is set (one) and the I-bit in the Status Register (SREG) is set (one), the external
 	// pin interrupt is enabled. The Interrupt Sense Control bits (ISC01 and ISC00) in the External
@@ -395,10 +459,10 @@ static void init_event_counting(void)
 	
     GIMSK = _BV(INT0);  // General Interrupt Mask Register
 
-    /*
-     * Set up timer 1 in CTC mode, using the input signal on PA4 as
-     * the clock for the timer. PA4 this is also T1 label
-     */
+    //
+    // Set up timer 1 in CTC mode, using the input signal on PA4 as
+    // the clock for the timer. PA4 this is also T1 label
+    //
 
     // Timer/Counter1 Control Register A,
     // Compare Output disconnected
@@ -446,18 +510,18 @@ static void init_event_counting(void)
 	//   Alternatively, OCF1A can be cleared by writing a logic one to its bit location.
 	TIFR1 |= _BV(OCF1A);
 
-    /*
-     * Start up in slow mode. The interrupt handler for slow
-     * mode will shift to fast mode if the frequency is too high.
-     */
+    //
+    // Start up in slow mode. The interrupt handler for slow
+    // mode will shift to fast mode if the frequency is too high.
+    //
 
     current = &slow_cnt;
-	
+	*/
 	
 	////////////////////////////////////////////////////////////////////////
 	// Code related to atmega32u4
 	////////////////////////////////////////////////////////////////////////
-
+	/*
 	//todo for pin ISR
 	// Configure for INT0, but it could be INT6, INT3:0
 	EICRA = 0;
@@ -472,7 +536,6 @@ static void init_event_counting(void)
 	EIMSK = 0;
 	EIMSK = _BV(INT0); 
 	
-	
 	// todo: what about this ?
 	// Bits 7..0 – INTF6, INTF3 - INTF0: External Interrupt Flags 6, 3 - 0
 	// When an edge or logic change on the INT[6;3:0] pin triggers an interrupt request, INTF7:0 becomes set (one). If
@@ -485,11 +548,10 @@ static void init_event_counting(void)
 	
 	// EIFR -> but we do not use GIFR in atmega84
 	
-	
-    /*
-     * Set up timer 1 in CTC mode, using the input signal on PA4 as
-     * the clock for the timer. PA4 this is also T1 label
-     */
+    //
+    // Set up timer 1 in CTC mode, using the input signal on PA4 as
+    // the clock for the timer. PA4 this is also T1 label
+    //
 	// Timer/Counter mode of operation: CTC - Mode 4
 	// Top: OCRnA
 	// Update of OCRnX at: Immediate
@@ -514,12 +576,77 @@ static void init_event_counting(void)
 	// Alternatively, OCF1A can be cleared by writing a logic one to its bit location.
     TIFR1 |= _BV(OCF1A);  // Clear the flag related on interrupt when OCR1A match TCNT1
 
+    //
+    // Start up in slow mode. The interrupt handler for slow
+    // mode will shift to fast mode if the frequency is too high.
+    //
+
+    current = &slow_cnt;
+	*/
+	
+	
+	////////////////////////////////////////////////////////////////////////
+	// Code related to atmega328p
+	////////////////////////////////////////////////////////////////////////
+	
+	//todo for pin ISR (slow freq algo)
+	
+	// Configure for INT0, but it could be INT6, INT3:0
+	EICRA = 0;
+	EICRA = _BV(ISC01);  // The falling edge of INT0 generates asynchronously an interrupt request.
+
+	// External Interrupt Request 0 Enable
+	// Bit 0 – INT0: External Interrupt Request 0 Enable
+	// When the INT0 bit is set and the I-bit in the Status Register (SREG) is set, the external pin interrupt is
+	// enabled. The Interrupt Sense Control0 bits 1/0 (ISC01 and ISC00) in the External Interrupt Control
+	// Register A (EICRA) define whether the external interrupt is activated on rising and/or falling edge of the
+	// INT0 pin or level sensed. Activity on the pin will cause an interrupt request even if INT0 is configured as
+	// an output. The corresponding interrupt of External Interrupt Request 0 is executed from the INT0 Interrupt
+	// Vector.	
+	EIMSK = 0;
+	EIMSK = _BV(INT0);
+
+
+	// Timer T1 (fast freq algo)
+	// Timer/Counter mode of operation: CTC - Mode 4
+	// Top: OCRnA
+	// Update of OCRnX at: Immediate
+	// TOVn flag set on: MAX
+	// WGMn0 = 0
+	// WGMn1 = 0
+	// WGMn2 = 1
+	// WGMn3 = 0
+	TCCR1A = 0;  // WGM10 = 0, WGM11 = 0
+	
+	// WGM12 = 1, WGM13 = 0 -> part of CTC mode 4 settings
+	// External clock source on T1 pin. Clock on falling edge:
+	// CS12 = 1
+	// CS11 = 1
+	// CS10 = 0
+	TCCR1B = _BV(WGM12) | _BV(CS12) | _BV(CS11);
+	set_timer_cmp_reg(fast_cnt.current_log2num_events);  //todo: check is something to change inside
+	TCNT1 = 0;  // Clear data counter.
+
+	// If interrupts are globally enabled (I-flag in the Status Register is set),
+	// enable interrupt if Counter achive OCR1A value.
+	TIMSK1 = _BV(OCIE1A);
+	
+	// This flag is set in the timer clock cycle after the counter (TCNT1) value matches the Output
+	// Compare Register A (OCR1A).
+	// OCF1A is automatically cleared when the Output Compare Match A Interrupt Vector is executed.
+	// Alternatively, OCF1A can be cleared by writing a logic one to its bit location.
+	TIFR1 |= _BV(OCF1A);  // Clear the flag related on interrupt when OCR1A match TCNT1
+
     /*
      * Start up in slow mode. The interrupt handler for slow
      * mode will shift to fast mode if the frequency is too high.
      */
 
     current = &slow_cnt;
+
+	
+	
+	
 }
 
 /*
@@ -675,7 +802,10 @@ ISR(TIM1_COMPA_vect)
 	    period *= 2;
 	} while (period < MIN_PERIOD && log2ne < 20);
 	set_timer_cmp_reg(log2ne);
-	GIMSK = 0;
+	
+	//GIMSK = 0;
+	EIMSK = 0;
+	
 	current = &fast_cnt;
 	fast_cnt.current_log2num_events = log2ne;
     } else if (period > MIN_PERIOD*3 && log2ne > 1) {
@@ -1038,11 +1168,47 @@ static void display_freq(unsigned long freq, unsigned char *buff)  //todo: there
 
 
 
+
+///////////////////////////////////////////////////////////////////////////////
+// Tests
+///////////////////////////////////////////////////////////////////////////////
+
+
+
+void getTicksT0(char *buff)
+{
+	tick_t t = 0;
+
+
+//	cli();
+//	t = cli_ticks();
+//	sei();
+
+	t = 11223344;
+
+	//char bufor[ROZMIAR];
+	//int liczba;
+	//sprintf(bufor, "wynik: %d", liczba);
+
+	//char buffer[7];//przykadowo 7
+	//int  num;
+	//itoa( num, buffer, 10);   // convert interger into string (decimal format)
+
+	// Function ultoa()
+	// Convert an unsigned long integer to a string.
+	//
+	// char * ultoa(unsigned long val, char * s, int radix)
+	ultoa(t, buff, 10);
+
+	
+}
+
+
 /* ================================================================
  * HD44780 display support.
  * ================================================================
  */
-
+/*
 static void lcd_init(void)
 {
 	HD44780_Init();
@@ -1059,7 +1225,7 @@ static void lcd_putc(char c)
 {
     HD44780_Putc(c);
 }
-
+*/
 
 
 

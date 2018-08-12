@@ -44,10 +44,12 @@
 
 void FREQCNT_Init(void);
 void FREQCNT_Cyclic100ms(void);  //todo: period of call should be not related to frequency measurement window.
-uint32_t FREQCNT_GetFrequencyHz(void)
+uint32_t FREQCNT_GetFrequencyHz(void);
 void FREQCNT_GetFrequencyTxt(uint8_t *buff);
 
-
+// for tests only
+void init_time_keeping(void);
+void getTicksT0(char *buff);
 
 
 

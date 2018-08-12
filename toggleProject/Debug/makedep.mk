@@ -2,6 +2,8 @@
 # Automatically-generated file. Do not edit or delete the file
 ################################################################################
 
+freq_cnt.c
+
 HD44780.c
 
 main.c

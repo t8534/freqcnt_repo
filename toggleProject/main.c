@@ -46,7 +46,7 @@
 #define LCD_LED_RESET	PORTB &= ~(1 << PB4)
 
 
-static uint8_t buff_txt[10];
+static uint8_t buff_txt[15];
 
 int main(void)
 {
@@ -82,9 +82,13 @@ int main(void)
 	}
 */
 
-
+	//////////////////////////////////////////////////////////////////////////////
 	// Frequency counter
-	_delay_ms(100);		/* Wait for stable power */
+	//////////////////////////////////////////////////////////////////////////////
+	
+	// final proposal
+	/*
+	_delay_ms(100);		// Wait for stable power 
 		
 	FREQCNT_Init();
 	lcd_init();
@@ -95,7 +99,30 @@ int main(void)
 		FREQCNT_GetFrequencyTxt(buff_txt);
 		lcd_display_msg(buff_txt);
 	}
+	*/
 
+	// tests
+	static uint8_t buff_empty_txt[15] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+	
+    _delay_ms(100);		/* Wait for stable power */
+    init_time_keeping();
+    //init_event_counting();
+    sei();
+
+	HD44780_init();
+	HD44780_on();
+	HD44780_clear();
+	
+	
+	for (;;) {
+		_delay_ms(1000);
+		
+		getTicksT0(buff_txt);
+
+		HD44780_puts(buff_empty_txt);
+		_delay_ms(20);
+		HD44780_puts(buff_txt);
+	}
 
 
 }
