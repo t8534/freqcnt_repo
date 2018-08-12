@@ -1177,14 +1177,14 @@ static void display_freq(unsigned long freq, unsigned char *buff)  //todo: there
 
 void getTicksT0(char *buff)
 {
-	tick_t t = 0;
+	static tick_t t = 0;
 
 
 //	cli();
 //	t = cli_ticks();
 //	sei();
 
-	t = 11223344;
+	t = t + 1;
 
 	//char bufor[ROZMIAR];
 	//int liczba;

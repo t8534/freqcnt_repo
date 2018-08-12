@@ -3,31 +3,31 @@ toggleProject.elf:     file format elf32-avr
 
 Sections:
 Idx Name          Size      VMA       LMA       File off  Algn
-  0 .data         00000000  00800100  00800100  0000037e  2**0
+  0 .data         00000010  00800100  00000302  00000396  2**0
                   CONTENTS, ALLOC, LOAD, DATA
-  1 .text         0000030a  00000000  00000000  00000074  2**1
+  1 .text         00000302  00000000  00000000  00000094  2**1
                   CONTENTS, ALLOC, LOAD, READONLY, CODE
-  2 .bss          0000001f  00800100  00800100  0000037e  2**0
+  2 .bss          00000005  00800110  00800110  000003a6  2**0
                   ALLOC
-  3 .comment      00000030  00000000  00000000  0000037e  2**0
+  3 .comment      00000030  00000000  00000000  000003a6  2**0
                   CONTENTS, READONLY
-  4 .note.gnu.avr.deviceinfo 00000040  00000000  00000000  000003b0  2**2
+  4 .note.gnu.avr.deviceinfo 00000040  00000000  00000000  000003d8  2**2
                   CONTENTS, READONLY
-  5 .debug_aranges 00000160  00000000  00000000  000003f0  2**0
+  5 .debug_aranges 00000160  00000000  00000000  00000418  2**0
                   CONTENTS, READONLY, DEBUGGING
-  6 .debug_info   00001f99  00000000  00000000  00000550  2**0
+  6 .debug_info   00001f47  00000000  00000000  00000578  2**0
                   CONTENTS, READONLY, DEBUGGING
-  7 .debug_abbrev 00000ce8  00000000  00000000  000024e9  2**0
+  7 .debug_abbrev 00000cf5  00000000  00000000  000024bf  2**0
                   CONTENTS, READONLY, DEBUGGING
-  8 .debug_line   00000f2b  00000000  00000000  000031d1  2**0
+  8 .debug_line   00000f2a  00000000  00000000  000031b4  2**0
                   CONTENTS, READONLY, DEBUGGING
-  9 .debug_frame  00000444  00000000  00000000  000040fc  2**2
+  9 .debug_frame  00000444  00000000  00000000  000040e0  2**2
                   CONTENTS, READONLY, DEBUGGING
- 10 .debug_str    00000832  00000000  00000000  00004540  2**0
+ 10 .debug_str    00000832  00000000  00000000  00004524  2**0
                   CONTENTS, READONLY, DEBUGGING
- 11 .debug_loc    00000df4  00000000  00000000  00004d72  2**0
+ 11 .debug_loc    00000e48  00000000  00000000  00004d56  2**0
                   CONTENTS, READONLY, DEBUGGING
- 12 .debug_ranges 00000160  00000000  00000000  00005b66  2**0
+ 12 .debug_ranges 00000160  00000000  00000000  00005b9e  2**0
                   CONTENTS, READONLY, DEBUGGING
 
 Disassembly of section .text:
@@ -72,18 +72,18 @@ Disassembly of section .text:
   74:	11 e0       	ldi	r17, 0x01	; 1
   76:	a0 e0       	ldi	r26, 0x00	; 0
   78:	b1 e0       	ldi	r27, 0x01	; 1
-  7a:	ea e0       	ldi	r30, 0x0A	; 10
+  7a:	e2 e0       	ldi	r30, 0x02	; 2
   7c:	f3 e0       	ldi	r31, 0x03	; 3
   7e:	02 c0       	rjmp	.+4      	; 0x84 <__do_copy_data+0x10>
   80:	05 90       	lpm	r0, Z+
   82:	0d 92       	st	X+, r0
-  84:	a0 30       	cpi	r26, 0x00	; 0
+  84:	a0 31       	cpi	r26, 0x10	; 16
   86:	b1 07       	cpc	r27, r17
   88:	d9 f7       	brne	.-10     	; 0x80 <__do_copy_data+0xc>
 
 0000008a <__do_clear_bss>:
   8a:	21 e0       	ldi	r18, 0x01	; 1
-  8c:	a0 e0       	ldi	r26, 0x00	; 0
+  8c:	a0 e1       	ldi	r26, 0x10	; 16
   8e:	b1 e0       	ldi	r27, 0x01	; 1
   90:	01 c0       	rjmp	.+2      	; 0x94 <.do_clear_bss_start>
 
@@ -91,387 +91,383 @@ Disassembly of section .text:
   92:	1d 92       	st	X+, r1
 
 00000094 <.do_clear_bss_start>:
-  94:	af 31       	cpi	r26, 0x1F	; 31
+  94:	a5 31       	cpi	r26, 0x15	; 21
   96:	b2 07       	cpc	r27, r18
   98:	e1 f7       	brne	.-8      	; 0x92 <.do_clear_bss_loop>
-  9a:	0e 94 20 01 	call	0x240	; 0x240 <main>
-  9e:	0c 94 83 01 	jmp	0x306	; 0x306 <_exit>
+  9a:	0e 94 28 01 	call	0x250	; 0x250 <main>
+  9e:	0c 94 7f 01 	jmp	0x2fe	; 0x2fe <_exit>
 
 000000a2 <__bad_interrupt>:
   a2:	0c 94 00 00 	jmp	0	; 0x0 <__vectors>
 
-000000a6 <init_time_keeping>:
-	//GIMSK = 0;
-	EIMSK = 0;
-	
-	current = &fast_cnt;
-    }
-}
-  a6:	14 bc       	out	0x24, r1	; 36
-  a8:	15 bc       	out	0x25, r1	; 37
-  aa:	83 e0       	ldi	r24, 0x03	; 3
-  ac:	85 bd       	out	0x25, r24	; 37
-  ae:	ee e6       	ldi	r30, 0x6E	; 110
-  b0:	f0 e0       	ldi	r31, 0x00	; 0
-  b2:	10 82       	st	Z, r1
-  b4:	81 e0       	ldi	r24, 0x01	; 1
-  b6:	80 83       	st	Z, r24
-  b8:	08 95       	ret
+000000a6 <getTicksT0>:
+///////////////////////////////////////////////////////////////////////////////
 
-000000ba <getTicksT0>:
+
+
+void getTicksT0(char *buff)
+{
+  a6:	ac 01       	movw	r20, r24
+
+//	cli();
+//	t = cli_ticks();
+//	sei();
+
+	t = t + 1;
+  a8:	80 91 10 01 	lds	r24, 0x0110	; 0x800110 <__data_end>
+  ac:	90 91 11 01 	lds	r25, 0x0111	; 0x800111 <__data_end+0x1>
+  b0:	a0 91 12 01 	lds	r26, 0x0112	; 0x800112 <__data_end+0x2>
+  b4:	b0 91 13 01 	lds	r27, 0x0113	; 0x800113 <__data_end+0x3>
+  b8:	bc 01       	movw	r22, r24
+  ba:	cd 01       	movw	r24, r26
+  bc:	6f 5f       	subi	r22, 0xFF	; 255
+  be:	7f 4f       	sbci	r23, 0xFF	; 255
+  c0:	8f 4f       	sbci	r24, 0xFF	; 255
+  c2:	9f 4f       	sbci	r25, 0xFF	; 255
+  c4:	60 93 10 01 	sts	0x0110, r22	; 0x800110 <__data_end>
+  c8:	70 93 11 01 	sts	0x0111, r23	; 0x800111 <__data_end+0x1>
+  cc:	80 93 12 01 	sts	0x0112, r24	; 0x800112 <__data_end+0x2>
+  d0:	90 93 13 01 	sts	0x0113, r25	; 0x800113 <__data_end+0x3>
     } else if (__radix < 2 || __radix > 36) {
 	*__s = 0;
 	return __s;
     } else {
 	extern char *__ultoa_ncheck (unsigned long, char *, unsigned char);
 	return __ultoa_ncheck (__val, __s, __radix);
-  ba:	2a e0       	ldi	r18, 0x0A	; 10
-  bc:	ac 01       	movw	r20, r24
-  be:	60 e3       	ldi	r22, 0x30	; 48
-  c0:	71 e4       	ldi	r23, 0x41	; 65
-  c2:	8b ea       	ldi	r24, 0xAB	; 171
-  c4:	90 e0       	ldi	r25, 0x00	; 0
-  c6:	0e 94 51 01 	call	0x2a2	; 0x2a2 <__ultoa_ncheck>
-  ca:	08 95       	ret
+  d4:	2a e0       	ldi	r18, 0x0A	; 10
+  d6:	0e 94 4d 01 	call	0x29a	; 0x29a <__ultoa_ncheck>
+  da:	08 95       	ret
 
-000000cc <HD44780_write_nibble>:
+000000dc <HD44780_write_nibble>:
   if (row > 1) {
     row = 1;
   }
 
   _delay_ms(5);  //todo: test is it necessary
   HD44780_command(HD44780_SETDDRAMADDR | (col + offsets[row]));
-  cc:	e1 ee       	ldi	r30, 0xE1	; 225
-  ce:	f4 e0       	ldi	r31, 0x04	; 4
-  d0:	31 97       	sbiw	r30, 0x01	; 1
-  d2:	f1 f7       	brne	.-4      	; 0xd0 <HD44780_write_nibble+0x4>
-  d4:	00 c0       	rjmp	.+0      	; 0xd6 <HD44780_write_nibble+0xa>
-  d6:	00 00       	nop
-  d8:	98 b1       	in	r25, 0x08	; 8
-  da:	90 7f       	andi	r25, 0xF0	; 240
-  dc:	98 b9       	out	0x08, r25	; 8
-  de:	98 b1       	in	r25, 0x08	; 8
-  e0:	8f 70       	andi	r24, 0x0F	; 15
-  e2:	89 2b       	or	r24, r25
-  e4:	88 b9       	out	0x08, r24	; 8
-  e6:	89 ef       	ldi	r24, 0xF9	; 249
-  e8:	90 e0       	ldi	r25, 0x00	; 0
-  ea:	01 97       	sbiw	r24, 0x01	; 1
-  ec:	f1 f7       	brne	.-4      	; 0xea <HD44780_write_nibble+0x1e>
-  ee:	00 c0       	rjmp	.+0      	; 0xf0 <HD44780_write_nibble+0x24>
-  f0:	00 00       	nop
-  f2:	44 98       	cbi	0x08, 4	; 8
-  f4:	e9 ef       	ldi	r30, 0xF9	; 249
-  f6:	f0 e0       	ldi	r31, 0x00	; 0
-  f8:	31 97       	sbiw	r30, 0x01	; 1
-  fa:	f1 f7       	brne	.-4      	; 0xf8 <HD44780_write_nibble+0x2c>
-  fc:	00 c0       	rjmp	.+0      	; 0xfe <HD44780_write_nibble+0x32>
-  fe:	00 00       	nop
- 100:	44 9a       	sbi	0x08, 4	; 8
- 102:	89 ef       	ldi	r24, 0xF9	; 249
- 104:	90 e0       	ldi	r25, 0x00	; 0
- 106:	01 97       	sbiw	r24, 0x01	; 1
- 108:	f1 f7       	brne	.-4      	; 0x106 <HD44780_write_nibble+0x3a>
- 10a:	00 c0       	rjmp	.+0      	; 0x10c <HD44780_write_nibble+0x40>
- 10c:	00 00       	nop
- 10e:	44 98       	cbi	0x08, 4	; 8
- 110:	e9 ef       	ldi	r30, 0xF9	; 249
- 112:	f0 e0       	ldi	r31, 0x00	; 0
- 114:	31 97       	sbiw	r30, 0x01	; 1
- 116:	f1 f7       	brne	.-4      	; 0x114 <HD44780_write_nibble+0x48>
- 118:	00 c0       	rjmp	.+0      	; 0x11a <HD44780_write_nibble+0x4e>
- 11a:	00 00       	nop
- 11c:	08 95       	ret
+  dc:	e1 ee       	ldi	r30, 0xE1	; 225
+  de:	f4 e0       	ldi	r31, 0x04	; 4
+  e0:	31 97       	sbiw	r30, 0x01	; 1
+  e2:	f1 f7       	brne	.-4      	; 0xe0 <HD44780_write_nibble+0x4>
+  e4:	00 c0       	rjmp	.+0      	; 0xe6 <HD44780_write_nibble+0xa>
+  e6:	00 00       	nop
+  e8:	98 b1       	in	r25, 0x08	; 8
+  ea:	90 7f       	andi	r25, 0xF0	; 240
+  ec:	98 b9       	out	0x08, r25	; 8
+  ee:	98 b1       	in	r25, 0x08	; 8
+  f0:	8f 70       	andi	r24, 0x0F	; 15
+  f2:	89 2b       	or	r24, r25
+  f4:	88 b9       	out	0x08, r24	; 8
+  f6:	89 ef       	ldi	r24, 0xF9	; 249
+  f8:	90 e0       	ldi	r25, 0x00	; 0
+  fa:	01 97       	sbiw	r24, 0x01	; 1
+  fc:	f1 f7       	brne	.-4      	; 0xfa <HD44780_write_nibble+0x1e>
+  fe:	00 c0       	rjmp	.+0      	; 0x100 <HD44780_write_nibble+0x24>
+ 100:	00 00       	nop
+ 102:	44 98       	cbi	0x08, 4	; 8
+ 104:	e9 ef       	ldi	r30, 0xF9	; 249
+ 106:	f0 e0       	ldi	r31, 0x00	; 0
+ 108:	31 97       	sbiw	r30, 0x01	; 1
+ 10a:	f1 f7       	brne	.-4      	; 0x108 <HD44780_write_nibble+0x2c>
+ 10c:	00 c0       	rjmp	.+0      	; 0x10e <HD44780_write_nibble+0x32>
+ 10e:	00 00       	nop
+ 110:	44 9a       	sbi	0x08, 4	; 8
+ 112:	89 ef       	ldi	r24, 0xF9	; 249
+ 114:	90 e0       	ldi	r25, 0x00	; 0
+ 116:	01 97       	sbiw	r24, 0x01	; 1
+ 118:	f1 f7       	brne	.-4      	; 0x116 <HD44780_write_nibble+0x3a>
+ 11a:	00 c0       	rjmp	.+0      	; 0x11c <HD44780_write_nibble+0x40>
+ 11c:	00 00       	nop
+ 11e:	44 98       	cbi	0x08, 4	; 8
+ 120:	e9 ef       	ldi	r30, 0xF9	; 249
+ 122:	f0 e0       	ldi	r31, 0x00	; 0
+ 124:	31 97       	sbiw	r30, 0x01	; 1
+ 126:	f1 f7       	brne	.-4      	; 0x124 <HD44780_write_nibble+0x48>
+ 128:	00 c0       	rjmp	.+0      	; 0x12a <HD44780_write_nibble+0x4e>
+ 12a:	00 00       	nop
+ 12c:	08 95       	ret
 
-0000011e <HD44780_send>:
- 11e:	cf 93       	push	r28
- 120:	c8 2f       	mov	r28, r24
- 122:	89 ef       	ldi	r24, 0xF9	; 249
- 124:	90 e0       	ldi	r25, 0x00	; 0
- 126:	01 97       	sbiw	r24, 0x01	; 1
- 128:	f1 f7       	brne	.-4      	; 0x126 <HD44780_send+0x8>
- 12a:	00 c0       	rjmp	.+0      	; 0x12c <HD44780_send+0xe>
- 12c:	00 00       	nop
- 12e:	66 23       	and	r22, r22
- 130:	11 f0       	breq	.+4      	; 0x136 <HD44780_send+0x18>
- 132:	45 9a       	sbi	0x08, 5	; 8
- 134:	01 c0       	rjmp	.+2      	; 0x138 <HD44780_send+0x1a>
- 136:	45 98       	cbi	0x08, 5	; 8
- 138:	89 ef       	ldi	r24, 0xF9	; 249
- 13a:	90 e0       	ldi	r25, 0x00	; 0
- 13c:	01 97       	sbiw	r24, 0x01	; 1
- 13e:	f1 f7       	brne	.-4      	; 0x13c <HD44780_send+0x1e>
- 140:	00 c0       	rjmp	.+0      	; 0x142 <HD44780_send+0x24>
- 142:	00 00       	nop
- 144:	28 98       	cbi	0x05, 0	; 5
- 146:	89 ef       	ldi	r24, 0xF9	; 249
- 148:	90 e0       	ldi	r25, 0x00	; 0
- 14a:	01 97       	sbiw	r24, 0x01	; 1
- 14c:	f1 f7       	brne	.-4      	; 0x14a <HD44780_send+0x2c>
- 14e:	00 c0       	rjmp	.+0      	; 0x150 <HD44780_send+0x32>
- 150:	00 00       	nop
- 152:	8c 2f       	mov	r24, r28
- 154:	82 95       	swap	r24
- 156:	8f 70       	andi	r24, 0x0F	; 15
- 158:	0e 94 66 00 	call	0xcc	; 0xcc <HD44780_write_nibble>
- 15c:	81 ee       	ldi	r24, 0xE1	; 225
- 15e:	94 e0       	ldi	r25, 0x04	; 4
- 160:	01 97       	sbiw	r24, 0x01	; 1
- 162:	f1 f7       	brne	.-4      	; 0x160 <HD44780_send+0x42>
- 164:	00 c0       	rjmp	.+0      	; 0x166 <HD44780_send+0x48>
- 166:	00 00       	nop
- 168:	8c 2f       	mov	r24, r28
- 16a:	0e 94 66 00 	call	0xcc	; 0xcc <HD44780_write_nibble>
- 16e:	cf 91       	pop	r28
- 170:	08 95       	ret
-
-00000172 <HD44780_command>:
- 172:	60 e0       	ldi	r22, 0x00	; 0
- 174:	0e 94 8f 00 	call	0x11e	; 0x11e <HD44780_send>
- 178:	08 95       	ret
-
-0000017a <HD44780_write>:
- 17a:	61 e0       	ldi	r22, 0x01	; 1
- 17c:	0e 94 8f 00 	call	0x11e	; 0x11e <HD44780_send>
+0000012e <HD44780_send>:
+ 12e:	cf 93       	push	r28
+ 130:	c8 2f       	mov	r28, r24
+ 132:	89 ef       	ldi	r24, 0xF9	; 249
+ 134:	90 e0       	ldi	r25, 0x00	; 0
+ 136:	01 97       	sbiw	r24, 0x01	; 1
+ 138:	f1 f7       	brne	.-4      	; 0x136 <HD44780_send+0x8>
+ 13a:	00 c0       	rjmp	.+0      	; 0x13c <HD44780_send+0xe>
+ 13c:	00 00       	nop
+ 13e:	66 23       	and	r22, r22
+ 140:	11 f0       	breq	.+4      	; 0x146 <HD44780_send+0x18>
+ 142:	45 9a       	sbi	0x08, 5	; 8
+ 144:	01 c0       	rjmp	.+2      	; 0x148 <HD44780_send+0x1a>
+ 146:	45 98       	cbi	0x08, 5	; 8
+ 148:	89 ef       	ldi	r24, 0xF9	; 249
+ 14a:	90 e0       	ldi	r25, 0x00	; 0
+ 14c:	01 97       	sbiw	r24, 0x01	; 1
+ 14e:	f1 f7       	brne	.-4      	; 0x14c <HD44780_send+0x1e>
+ 150:	00 c0       	rjmp	.+0      	; 0x152 <HD44780_send+0x24>
+ 152:	00 00       	nop
+ 154:	28 98       	cbi	0x05, 0	; 5
+ 156:	89 ef       	ldi	r24, 0xF9	; 249
+ 158:	90 e0       	ldi	r25, 0x00	; 0
+ 15a:	01 97       	sbiw	r24, 0x01	; 1
+ 15c:	f1 f7       	brne	.-4      	; 0x15a <HD44780_send+0x2c>
+ 15e:	00 c0       	rjmp	.+0      	; 0x160 <HD44780_send+0x32>
+ 160:	00 00       	nop
+ 162:	8c 2f       	mov	r24, r28
+ 164:	82 95       	swap	r24
+ 166:	8f 70       	andi	r24, 0x0F	; 15
+ 168:	0e 94 6e 00 	call	0xdc	; 0xdc <HD44780_write_nibble>
+ 16c:	81 ee       	ldi	r24, 0xE1	; 225
+ 16e:	94 e0       	ldi	r25, 0x04	; 4
+ 170:	01 97       	sbiw	r24, 0x01	; 1
+ 172:	f1 f7       	brne	.-4      	; 0x170 <HD44780_send+0x42>
+ 174:	00 c0       	rjmp	.+0      	; 0x176 <HD44780_send+0x48>
+ 176:	00 00       	nop
+ 178:	8c 2f       	mov	r24, r28
+ 17a:	0e 94 6e 00 	call	0xdc	; 0xdc <HD44780_write_nibble>
+ 17e:	cf 91       	pop	r28
  180:	08 95       	ret
 
-00000182 <HD44780_init>:
- 182:	3d 9a       	sbi	0x07, 5	; 7
- 184:	20 9a       	sbi	0x04, 0	; 4
- 186:	3c 9a       	sbi	0x07, 4	; 7
- 188:	87 b1       	in	r24, 0x07	; 7
- 18a:	8f 60       	ori	r24, 0x0F	; 15
- 18c:	87 b9       	out	0x07, r24	; 7
- 18e:	85 ea       	ldi	r24, 0xA5	; 165
- 190:	9e e0       	ldi	r25, 0x0E	; 14
- 192:	01 97       	sbiw	r24, 0x01	; 1
- 194:	f1 f7       	brne	.-4      	; 0x192 <HD44780_init+0x10>
- 196:	00 c0       	rjmp	.+0      	; 0x198 <HD44780_init+0x16>
- 198:	00 00       	nop
- 19a:	44 98       	cbi	0x08, 4	; 8
- 19c:	45 98       	cbi	0x08, 5	; 8
- 19e:	28 98       	cbi	0x05, 0	; 5
- 1a0:	80 e0       	ldi	r24, 0x00	; 0
- 1a2:	94 e0       	ldi	r25, 0x04	; 4
- 1a4:	01 97       	sbiw	r24, 0x01	; 1
- 1a6:	f1 f7       	brne	.-4      	; 0x1a4 <HD44780_init+0x22>
- 1a8:	00 c0       	rjmp	.+0      	; 0x1aa <HD44780_init+0x28>
- 1aa:	00 00       	nop
- 1ac:	83 e0       	ldi	r24, 0x03	; 3
- 1ae:	0e 94 66 00 	call	0xcc	; 0xcc <HD44780_write_nibble>
- 1b2:	81 ee       	ldi	r24, 0xE1	; 225
- 1b4:	94 e0       	ldi	r25, 0x04	; 4
- 1b6:	01 97       	sbiw	r24, 0x01	; 1
- 1b8:	f1 f7       	brne	.-4      	; 0x1b6 <HD44780_init+0x34>
- 1ba:	00 c0       	rjmp	.+0      	; 0x1bc <HD44780_init+0x3a>
- 1bc:	00 00       	nop
- 1be:	83 e0       	ldi	r24, 0x03	; 3
- 1c0:	0e 94 66 00 	call	0xcc	; 0xcc <HD44780_write_nibble>
- 1c4:	81 ee       	ldi	r24, 0xE1	; 225
- 1c6:	94 e0       	ldi	r25, 0x04	; 4
- 1c8:	01 97       	sbiw	r24, 0x01	; 1
- 1ca:	f1 f7       	brne	.-4      	; 0x1c8 <HD44780_init+0x46>
- 1cc:	00 c0       	rjmp	.+0      	; 0x1ce <HD44780_init+0x4c>
- 1ce:	00 00       	nop
- 1d0:	83 e0       	ldi	r24, 0x03	; 3
- 1d2:	0e 94 66 00 	call	0xcc	; 0xcc <HD44780_write_nibble>
- 1d6:	81 ee       	ldi	r24, 0xE1	; 225
- 1d8:	94 e0       	ldi	r25, 0x04	; 4
- 1da:	01 97       	sbiw	r24, 0x01	; 1
- 1dc:	f1 f7       	brne	.-4      	; 0x1da <HD44780_init+0x58>
- 1de:	00 c0       	rjmp	.+0      	; 0x1e0 <HD44780_init+0x5e>
- 1e0:	00 00       	nop
- 1e2:	82 e0       	ldi	r24, 0x02	; 2
- 1e4:	0e 94 66 00 	call	0xcc	; 0xcc <HD44780_write_nibble>
- 1e8:	88 e2       	ldi	r24, 0x28	; 40
- 1ea:	0e 94 b9 00 	call	0x172	; 0x172 <HD44780_command>
- 1ee:	10 92 00 01 	sts	0x0100, r1	; 0x800100 <__data_end>
- 1f2:	88 e0       	ldi	r24, 0x08	; 8
- 1f4:	0e 94 b9 00 	call	0x172	; 0x172 <HD44780_command>
- 1f8:	08 95       	ret
+00000182 <HD44780_command>:
+ 182:	60 e0       	ldi	r22, 0x00	; 0
+ 184:	0e 94 97 00 	call	0x12e	; 0x12e <HD44780_send>
+ 188:	08 95       	ret
 
-000001fa <HD44780_on>:
- 1fa:	80 91 00 01 	lds	r24, 0x0100	; 0x800100 <__data_end>
- 1fe:	98 2f       	mov	r25, r24
- 200:	94 60       	ori	r25, 0x04	; 4
- 202:	90 93 00 01 	sts	0x0100, r25	; 0x800100 <__data_end>
- 206:	8c 60       	ori	r24, 0x0C	; 12
- 208:	0e 94 b9 00 	call	0x172	; 0x172 <HD44780_command>
- 20c:	08 95       	ret
+0000018a <HD44780_write>:
+ 18a:	61 e0       	ldi	r22, 0x01	; 1
+ 18c:	0e 94 97 00 	call	0x12e	; 0x12e <HD44780_send>
+ 190:	08 95       	ret
 
-0000020e <HD44780_clear>:
- 20e:	81 e0       	ldi	r24, 0x01	; 1
- 210:	0e 94 b9 00 	call	0x172	; 0x172 <HD44780_command>
- 214:	83 ed       	ldi	r24, 0xD3	; 211
- 216:	90 e3       	ldi	r25, 0x30	; 48
- 218:	01 97       	sbiw	r24, 0x01	; 1
- 21a:	f1 f7       	brne	.-4      	; 0x218 <HD44780_clear+0xa>
- 21c:	00 c0       	rjmp	.+0      	; 0x21e <HD44780_clear+0x10>
- 21e:	00 00       	nop
- 220:	08 95       	ret
+00000192 <HD44780_init>:
+ 192:	3d 9a       	sbi	0x07, 5	; 7
+ 194:	20 9a       	sbi	0x04, 0	; 4
+ 196:	3c 9a       	sbi	0x07, 4	; 7
+ 198:	87 b1       	in	r24, 0x07	; 7
+ 19a:	8f 60       	ori	r24, 0x0F	; 15
+ 19c:	87 b9       	out	0x07, r24	; 7
+ 19e:	85 ea       	ldi	r24, 0xA5	; 165
+ 1a0:	9e e0       	ldi	r25, 0x0E	; 14
+ 1a2:	01 97       	sbiw	r24, 0x01	; 1
+ 1a4:	f1 f7       	brne	.-4      	; 0x1a2 <HD44780_init+0x10>
+ 1a6:	00 c0       	rjmp	.+0      	; 0x1a8 <HD44780_init+0x16>
+ 1a8:	00 00       	nop
+ 1aa:	44 98       	cbi	0x08, 4	; 8
+ 1ac:	45 98       	cbi	0x08, 5	; 8
+ 1ae:	28 98       	cbi	0x05, 0	; 5
+ 1b0:	80 e0       	ldi	r24, 0x00	; 0
+ 1b2:	94 e0       	ldi	r25, 0x04	; 4
+ 1b4:	01 97       	sbiw	r24, 0x01	; 1
+ 1b6:	f1 f7       	brne	.-4      	; 0x1b4 <HD44780_init+0x22>
+ 1b8:	00 c0       	rjmp	.+0      	; 0x1ba <HD44780_init+0x28>
+ 1ba:	00 00       	nop
+ 1bc:	83 e0       	ldi	r24, 0x03	; 3
+ 1be:	0e 94 6e 00 	call	0xdc	; 0xdc <HD44780_write_nibble>
+ 1c2:	81 ee       	ldi	r24, 0xE1	; 225
+ 1c4:	94 e0       	ldi	r25, 0x04	; 4
+ 1c6:	01 97       	sbiw	r24, 0x01	; 1
+ 1c8:	f1 f7       	brne	.-4      	; 0x1c6 <HD44780_init+0x34>
+ 1ca:	00 c0       	rjmp	.+0      	; 0x1cc <HD44780_init+0x3a>
+ 1cc:	00 00       	nop
+ 1ce:	83 e0       	ldi	r24, 0x03	; 3
+ 1d0:	0e 94 6e 00 	call	0xdc	; 0xdc <HD44780_write_nibble>
+ 1d4:	81 ee       	ldi	r24, 0xE1	; 225
+ 1d6:	94 e0       	ldi	r25, 0x04	; 4
+ 1d8:	01 97       	sbiw	r24, 0x01	; 1
+ 1da:	f1 f7       	brne	.-4      	; 0x1d8 <HD44780_init+0x46>
+ 1dc:	00 c0       	rjmp	.+0      	; 0x1de <HD44780_init+0x4c>
+ 1de:	00 00       	nop
+ 1e0:	83 e0       	ldi	r24, 0x03	; 3
+ 1e2:	0e 94 6e 00 	call	0xdc	; 0xdc <HD44780_write_nibble>
+ 1e6:	81 ee       	ldi	r24, 0xE1	; 225
+ 1e8:	94 e0       	ldi	r25, 0x04	; 4
+ 1ea:	01 97       	sbiw	r24, 0x01	; 1
+ 1ec:	f1 f7       	brne	.-4      	; 0x1ea <HD44780_init+0x58>
+ 1ee:	00 c0       	rjmp	.+0      	; 0x1f0 <HD44780_init+0x5e>
+ 1f0:	00 00       	nop
+ 1f2:	82 e0       	ldi	r24, 0x02	; 2
+ 1f4:	0e 94 6e 00 	call	0xdc	; 0xdc <HD44780_write_nibble>
+ 1f8:	88 e2       	ldi	r24, 0x28	; 40
+ 1fa:	0e 94 c1 00 	call	0x182	; 0x182 <HD44780_command>
+ 1fe:	10 92 14 01 	sts	0x0114, r1	; 0x800114 <HD44780_displayparams>
+ 202:	88 e0       	ldi	r24, 0x08	; 8
+ 204:	0e 94 c1 00 	call	0x182	; 0x182 <HD44780_command>
+ 208:	08 95       	ret
 
-00000222 <HD44780_puts>:
+0000020a <HD44780_on>:
+ 20a:	80 91 14 01 	lds	r24, 0x0114	; 0x800114 <HD44780_displayparams>
+ 20e:	98 2f       	mov	r25, r24
+ 210:	94 60       	ori	r25, 0x04	; 4
+ 212:	90 93 14 01 	sts	0x0114, r25	; 0x800114 <HD44780_displayparams>
+ 216:	8c 60       	ori	r24, 0x0C	; 12
+ 218:	0e 94 c1 00 	call	0x182	; 0x182 <HD44780_command>
+ 21c:	08 95       	ret
+
+0000021e <HD44780_clear>:
+ 21e:	81 e0       	ldi	r24, 0x01	; 1
+ 220:	0e 94 c1 00 	call	0x182	; 0x182 <HD44780_command>
+ 224:	83 ed       	ldi	r24, 0xD3	; 211
+ 226:	90 e3       	ldi	r25, 0x30	; 48
+ 228:	01 97       	sbiw	r24, 0x01	; 1
+ 22a:	f1 f7       	brne	.-4      	; 0x228 <HD44780_clear+0xa>
+ 22c:	00 c0       	rjmp	.+0      	; 0x22e <HD44780_clear+0x10>
+ 22e:	00 00       	nop
+ 230:	08 95       	ret
+
+00000232 <HD44780_puts>:
 }
 
 void HD44780_puts(char *string) {
- 222:	cf 93       	push	r28
- 224:	df 93       	push	r29
- 226:	ec 01       	movw	r28, r24
+ 232:	cf 93       	push	r28
+ 234:	df 93       	push	r29
+ 236:	ec 01       	movw	r28, r24
   for (char *it = string; *it; it++) {
- 228:	88 81       	ld	r24, Y
- 22a:	88 23       	and	r24, r24
- 22c:	31 f0       	breq	.+12     	; 0x23a <HD44780_puts+0x18>
- 22e:	21 96       	adiw	r28, 0x01	; 1
+ 238:	88 81       	ld	r24, Y
+ 23a:	88 23       	and	r24, r24
+ 23c:	31 f0       	breq	.+12     	; 0x24a <HD44780_puts+0x18>
+ 23e:	21 96       	adiw	r28, 0x01	; 1
 	//_delay_ms(2);   // seems to be not necessary, but in case something is wrong add it
     HD44780_write(*it);
- 230:	0e 94 bd 00 	call	0x17a	; 0x17a <HD44780_write>
+ 240:	0e 94 c5 00 	call	0x18a	; 0x18a <HD44780_write>
   _delay_ms(5);  //todo: test is it necessary
   HD44780_command(HD44780_SETDDRAMADDR | (col + offsets[row]));
 }
 
 void HD44780_puts(char *string) {
   for (char *it = string; *it; it++) {
- 234:	89 91       	ld	r24, Y+
- 236:	81 11       	cpse	r24, r1
- 238:	fb cf       	rjmp	.-10     	; 0x230 <HD44780_puts+0xe>
+ 244:	89 91       	ld	r24, Y+
+ 246:	81 11       	cpse	r24, r1
+ 248:	fb cf       	rjmp	.-10     	; 0x240 <HD44780_puts+0xe>
 	//_delay_ms(2);   // seems to be not necessary, but in case something is wrong add it
     HD44780_write(*it);
   }
 }
- 23a:	df 91       	pop	r29
- 23c:	cf 91       	pop	r28
- 23e:	08 95       	ret
+ 24a:	df 91       	pop	r29
+ 24c:	cf 91       	pop	r28
+ 24e:	08 95       	ret
 
-00000240 <main>:
+00000250 <main>:
+    //_delay_ms(100);		// Wait for stable power 
+    //init_time_keeping();
+    //init_event_counting();
+    //sei();
+
+	HD44780_init();
+ 250:	0e 94 c9 00 	call	0x192	; 0x192 <HD44780_init>
+	HD44780_on();
+ 254:	0e 94 05 01 	call	0x20a	; 0x20a <HD44780_on>
+	HD44780_clear();
+ 258:	0e 94 0f 01 	call	0x21e	; 0x21e <HD44780_clear>
+	//HD44780_puts(msg);
+	
+	for (;;) {
+//		_delay_ms(1000);
+
+		LCD_LED_SET;
+ 25c:	5f 9a       	sbi	0x0b, 7	; 11
 	#else
 		//round up by default
 		__ticks_dc = (uint32_t)(ceil(fabs(__tmp)));
 	#endif
 
 	__builtin_avr_delay_cycles(__ticks_dc);
- 240:	2f ef       	ldi	r18, 0xFF	; 255
- 242:	81 ee       	ldi	r24, 0xE1	; 225
- 244:	94 e0       	ldi	r25, 0x04	; 4
- 246:	21 50       	subi	r18, 0x01	; 1
- 248:	80 40       	sbci	r24, 0x00	; 0
- 24a:	90 40       	sbci	r25, 0x00	; 0
- 24c:	e1 f7       	brne	.-8      	; 0x246 <main+0x6>
- 24e:	00 c0       	rjmp	.+0      	; 0x250 <main+0x10>
- 250:	00 00       	nop
+ 25e:	2f ef       	ldi	r18, 0xFF	; 255
+ 260:	89 e6       	ldi	r24, 0x69	; 105
+ 262:	98 e1       	ldi	r25, 0x18	; 24
+ 264:	21 50       	subi	r18, 0x01	; 1
+ 266:	80 40       	sbci	r24, 0x00	; 0
+ 268:	90 40       	sbci	r25, 0x00	; 0
+ 26a:	e1 f7       	brne	.-8      	; 0x264 <main+0x14>
+ 26c:	00 c0       	rjmp	.+0      	; 0x26e <main+0x1e>
+ 26e:	00 00       	nop
+		_delay_ms(500);
+		LCD_LED_RESET;
+ 270:	5f 98       	cbi	0x0b, 7	; 11
+ 272:	2f ef       	ldi	r18, 0xFF	; 255
+ 274:	89 e6       	ldi	r24, 0x69	; 105
+ 276:	98 e1       	ldi	r25, 0x18	; 24
+ 278:	21 50       	subi	r18, 0x01	; 1
+ 27a:	80 40       	sbci	r24, 0x00	; 0
+ 27c:	90 40       	sbci	r25, 0x00	; 0
+ 27e:	e1 f7       	brne	.-8      	; 0x278 <main+0x28>
+ 280:	00 c0       	rjmp	.+0      	; 0x282 <main+0x32>
+ 282:	00 00       	nop
+		_delay_ms(500);
 
-	// tests
-	static uint8_t buff_empty_txt[15] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
-	
-    _delay_ms(100);		/* Wait for stable power */
-    init_time_keeping();
- 252:	0e 94 53 00 	call	0xa6	; 0xa6 <init_time_keeping>
-    //init_event_counting();
-    sei();
- 256:	78 94       	sei
-
-	HD44780_init();
- 258:	0e 94 c1 00 	call	0x182	; 0x182 <HD44780_init>
-	HD44780_on();
- 25c:	0e 94 fd 00 	call	0x1fa	; 0x1fa <HD44780_on>
-	HD44780_clear();
- 260:	0e 94 07 01 	call	0x20e	; 0x20e <HD44780_clear>
- 264:	2f ef       	ldi	r18, 0xFF	; 255
- 266:	83 ed       	ldi	r24, 0xD3	; 211
- 268:	90 e3       	ldi	r25, 0x30	; 48
- 26a:	21 50       	subi	r18, 0x01	; 1
- 26c:	80 40       	sbci	r24, 0x00	; 0
- 26e:	90 40       	sbci	r25, 0x00	; 0
- 270:	e1 f7       	brne	.-8      	; 0x26a <main+0x2a>
- 272:	00 c0       	rjmp	.+0      	; 0x274 <main+0x34>
- 274:	00 00       	nop
-	
-	
-	for (;;) {
-		_delay_ms(1000);
 		
 		getTicksT0(buff_txt);
- 276:	80 e1       	ldi	r24, 0x10	; 16
- 278:	91 e0       	ldi	r25, 0x01	; 1
- 27a:	0e 94 5d 00 	call	0xba	; 0xba <getTicksT0>
+ 284:	80 e0       	ldi	r24, 0x00	; 0
+ 286:	91 e0       	ldi	r25, 0x01	; 1
+ 288:	0e 94 53 00 	call	0xa6	; 0xa6 <getTicksT0>
 
-		HD44780_puts(buff_empty_txt);
- 27e:	81 e0       	ldi	r24, 0x01	; 1
- 280:	91 e0       	ldi	r25, 0x01	; 1
- 282:	0e 94 11 01 	call	0x222	; 0x222 <HD44780_puts>
- 286:	2f ef       	ldi	r18, 0xFF	; 255
- 288:	89 ef       	ldi	r24, 0xF9	; 249
- 28a:	90 e0       	ldi	r25, 0x00	; 0
- 28c:	21 50       	subi	r18, 0x01	; 1
- 28e:	80 40       	sbci	r24, 0x00	; 0
- 290:	90 40       	sbci	r25, 0x00	; 0
- 292:	e1 f7       	brne	.-8      	; 0x28c <main+0x4c>
- 294:	00 c0       	rjmp	.+0      	; 0x296 <main+0x56>
- 296:	00 00       	nop
-		_delay_ms(20);
+//		HD44780_puts(buff_empty_txt);
+//		_delay_ms(20);
+		HD44780_clear();
+ 28c:	0e 94 0f 01 	call	0x21e	; 0x21e <HD44780_clear>
 		HD44780_puts(buff_txt);
- 298:	80 e1       	ldi	r24, 0x10	; 16
- 29a:	91 e0       	ldi	r25, 0x01	; 1
- 29c:	0e 94 11 01 	call	0x222	; 0x222 <HD44780_puts>
+ 290:	80 e0       	ldi	r24, 0x00	; 0
+ 292:	91 e0       	ldi	r25, 0x01	; 1
+ 294:	0e 94 19 01 	call	0x232	; 0x232 <HD44780_puts>
 	}
- 2a0:	e1 cf       	rjmp	.-62     	; 0x264 <main+0x24>
+ 298:	e1 cf       	rjmp	.-62     	; 0x25c <main+0xc>
 
-000002a2 <__ultoa_ncheck>:
- 2a2:	bb 27       	eor	r27, r27
+0000029a <__ultoa_ncheck>:
+ 29a:	bb 27       	eor	r27, r27
 
-000002a4 <__ultoa_common>:
- 2a4:	fa 01       	movw	r30, r20
- 2a6:	a6 2f       	mov	r26, r22
- 2a8:	62 17       	cp	r22, r18
- 2aa:	71 05       	cpc	r23, r1
- 2ac:	81 05       	cpc	r24, r1
- 2ae:	91 05       	cpc	r25, r1
- 2b0:	33 0b       	sbc	r19, r19
- 2b2:	30 fb       	bst	r19, 0
- 2b4:	66 f0       	brts	.+24     	; 0x2ce <__ultoa_common+0x2a>
- 2b6:	aa 27       	eor	r26, r26
- 2b8:	66 0f       	add	r22, r22
- 2ba:	77 1f       	adc	r23, r23
- 2bc:	88 1f       	adc	r24, r24
- 2be:	99 1f       	adc	r25, r25
- 2c0:	aa 1f       	adc	r26, r26
- 2c2:	a2 17       	cp	r26, r18
- 2c4:	10 f0       	brcs	.+4      	; 0x2ca <__ultoa_common+0x26>
- 2c6:	a2 1b       	sub	r26, r18
- 2c8:	63 95       	inc	r22
- 2ca:	38 50       	subi	r19, 0x08	; 8
- 2cc:	a9 f7       	brne	.-22     	; 0x2b8 <__ultoa_common+0x14>
- 2ce:	a0 5d       	subi	r26, 0xD0	; 208
- 2d0:	aa 33       	cpi	r26, 0x3A	; 58
- 2d2:	08 f0       	brcs	.+2      	; 0x2d6 <__ultoa_common+0x32>
- 2d4:	a9 5d       	subi	r26, 0xD9	; 217
- 2d6:	a1 93       	st	Z+, r26
- 2d8:	36 f7       	brtc	.-52     	; 0x2a6 <__ultoa_common+0x2>
- 2da:	b1 11       	cpse	r27, r1
- 2dc:	b1 93       	st	Z+, r27
- 2de:	10 82       	st	Z, r1
- 2e0:	ca 01       	movw	r24, r20
- 2e2:	0c 94 73 01 	jmp	0x2e6	; 0x2e6 <strrev>
+0000029c <__ultoa_common>:
+ 29c:	fa 01       	movw	r30, r20
+ 29e:	a6 2f       	mov	r26, r22
+ 2a0:	62 17       	cp	r22, r18
+ 2a2:	71 05       	cpc	r23, r1
+ 2a4:	81 05       	cpc	r24, r1
+ 2a6:	91 05       	cpc	r25, r1
+ 2a8:	33 0b       	sbc	r19, r19
+ 2aa:	30 fb       	bst	r19, 0
+ 2ac:	66 f0       	brts	.+24     	; 0x2c6 <__ultoa_common+0x2a>
+ 2ae:	aa 27       	eor	r26, r26
+ 2b0:	66 0f       	add	r22, r22
+ 2b2:	77 1f       	adc	r23, r23
+ 2b4:	88 1f       	adc	r24, r24
+ 2b6:	99 1f       	adc	r25, r25
+ 2b8:	aa 1f       	adc	r26, r26
+ 2ba:	a2 17       	cp	r26, r18
+ 2bc:	10 f0       	brcs	.+4      	; 0x2c2 <__ultoa_common+0x26>
+ 2be:	a2 1b       	sub	r26, r18
+ 2c0:	63 95       	inc	r22
+ 2c2:	38 50       	subi	r19, 0x08	; 8
+ 2c4:	a9 f7       	brne	.-22     	; 0x2b0 <__ultoa_common+0x14>
+ 2c6:	a0 5d       	subi	r26, 0xD0	; 208
+ 2c8:	aa 33       	cpi	r26, 0x3A	; 58
+ 2ca:	08 f0       	brcs	.+2      	; 0x2ce <__ultoa_common+0x32>
+ 2cc:	a9 5d       	subi	r26, 0xD9	; 217
+ 2ce:	a1 93       	st	Z+, r26
+ 2d0:	36 f7       	brtc	.-52     	; 0x29e <__ultoa_common+0x2>
+ 2d2:	b1 11       	cpse	r27, r1
+ 2d4:	b1 93       	st	Z+, r27
+ 2d6:	10 82       	st	Z, r1
+ 2d8:	ca 01       	movw	r24, r20
+ 2da:	0c 94 6f 01 	jmp	0x2de	; 0x2de <strrev>
 
-000002e6 <strrev>:
- 2e6:	dc 01       	movw	r26, r24
- 2e8:	fc 01       	movw	r30, r24
- 2ea:	67 2f       	mov	r22, r23
- 2ec:	71 91       	ld	r23, Z+
- 2ee:	77 23       	and	r23, r23
- 2f0:	e1 f7       	brne	.-8      	; 0x2ea <strrev+0x4>
- 2f2:	32 97       	sbiw	r30, 0x02	; 2
- 2f4:	04 c0       	rjmp	.+8      	; 0x2fe <strrev+0x18>
- 2f6:	7c 91       	ld	r23, X
- 2f8:	6d 93       	st	X+, r22
- 2fa:	70 83       	st	Z, r23
- 2fc:	62 91       	ld	r22, -Z
- 2fe:	ae 17       	cp	r26, r30
- 300:	bf 07       	cpc	r27, r31
- 302:	c8 f3       	brcs	.-14     	; 0x2f6 <strrev+0x10>
- 304:	08 95       	ret
+000002de <strrev>:
+ 2de:	dc 01       	movw	r26, r24
+ 2e0:	fc 01       	movw	r30, r24
+ 2e2:	67 2f       	mov	r22, r23
+ 2e4:	71 91       	ld	r23, Z+
+ 2e6:	77 23       	and	r23, r23
+ 2e8:	e1 f7       	brne	.-8      	; 0x2e2 <strrev+0x4>
+ 2ea:	32 97       	sbiw	r30, 0x02	; 2
+ 2ec:	04 c0       	rjmp	.+8      	; 0x2f6 <strrev+0x18>
+ 2ee:	7c 91       	ld	r23, X
+ 2f0:	6d 93       	st	X+, r22
+ 2f2:	70 83       	st	Z, r23
+ 2f4:	62 91       	ld	r22, -Z
+ 2f6:	ae 17       	cp	r26, r30
+ 2f8:	bf 07       	cpc	r27, r31
+ 2fa:	c8 f3       	brcs	.-14     	; 0x2ee <strrev+0x10>
+ 2fc:	08 95       	ret
 
-00000306 <_exit>:
- 306:	f8 94       	cli
+000002fe <_exit>:
+ 2fe:	f8 94       	cli
 
-00000308 <__stop_program>:
- 308:	ff cf       	rjmp	.-2      	; 0x308 <__stop_program>
+00000300 <__stop_program>:
+ 300:	ff cf       	rjmp	.-2      	; 0x300 <__stop_program>

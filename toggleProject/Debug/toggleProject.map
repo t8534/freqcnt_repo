@@ -58,6 +58,8 @@ Discarded input sections
                 0x00000000      0x148 freq_cnt.o
  .text.FREQCNT_GetFrequencyTxt
                 0x00000000      0x28a freq_cnt.o
+ .text.init_time_keeping
+                0x00000000       0x14 freq_cnt.o
  .text.TIM0_OVF_vect
                 0x00000000       0x4a freq_cnt.o
  .text.init_event_counting
@@ -462,7 +464,7 @@ END GROUP
 .rela.plt
  *(.rela.plt)
 
-.text           0x00000000      0x30a
+.text           0x00000000      0x302
  *(.vectors)
  .vectors       0x00000000       0x68 C:/Program Files/Atmel/Studio/7.0/Packs/atmel/ATmega_DFP/1.1.130/gcc/dev/atmega328p/avr5/crtatmega328p.o
                 0x00000000                __vector_default
@@ -549,50 +551,47 @@ END GROUP
                 0x000000a2                __vector_20
                 0x000000a6                . = ALIGN (0x2)
  *(.text.*)
- .text.init_time_keeping
-                0x000000a6       0x14 freq_cnt.o
-                0x000000a6                init_time_keeping
  .text.getTicksT0
-                0x000000ba       0x12 freq_cnt.o
-                0x000000ba                getTicksT0
+                0x000000a6       0x36 freq_cnt.o
+                0x000000a6                getTicksT0
  .text.HD44780_write_nibble
-                0x000000cc       0x52 HD44780.o
-                0x000000cc                HD44780_write_nibble
+                0x000000dc       0x52 HD44780.o
+                0x000000dc                HD44780_write_nibble
  .text.HD44780_send
-                0x0000011e       0x54 HD44780.o
-                0x0000011e                HD44780_send
+                0x0000012e       0x54 HD44780.o
+                0x0000012e                HD44780_send
  .text.HD44780_command
-                0x00000172        0x8 HD44780.o
-                0x00000172                HD44780_command
+                0x00000182        0x8 HD44780.o
+                0x00000182                HD44780_command
  .text.HD44780_write
-                0x0000017a        0x8 HD44780.o
-                0x0000017a                HD44780_write
+                0x0000018a        0x8 HD44780.o
+                0x0000018a                HD44780_write
  .text.HD44780_init
-                0x00000182       0x78 HD44780.o
-                0x00000182                HD44780_init
+                0x00000192       0x78 HD44780.o
+                0x00000192                HD44780_init
  .text.HD44780_on
-                0x000001fa       0x14 HD44780.o
-                0x000001fa                HD44780_on
+                0x0000020a       0x14 HD44780.o
+                0x0000020a                HD44780_on
  .text.HD44780_clear
-                0x0000020e       0x14 HD44780.o
-                0x0000020e                HD44780_clear
+                0x0000021e       0x14 HD44780.o
+                0x0000021e                HD44780_clear
  .text.HD44780_puts
-                0x00000222       0x1e HD44780.o
-                0x00000222                HD44780_puts
- .text.main     0x00000240       0x62 main.o
-                0x00000240                main
+                0x00000232       0x1e HD44780.o
+                0x00000232                HD44780_puts
+ .text.main     0x00000250       0x4a main.o
+                0x00000250                main
  .text.avr-libc
-                0x000002a2       0x44 c:/program files/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/../../../../avr/lib/avr5\libc.a(ultoa_ncheck.o)
-                0x000002a2                __ultoa_ncheck
-                0x000002a4                __ultoa_common
+                0x0000029a       0x44 c:/program files/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/../../../../avr/lib/avr5\libc.a(ultoa_ncheck.o)
+                0x0000029a                __ultoa_ncheck
+                0x0000029c                __ultoa_common
  .text.avr-libc
-                0x000002e6       0x20 c:/program files/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/../../../../avr/lib/avr5\libc.a(strrev.o)
-                0x000002e6                strrev
-                0x00000306                . = ALIGN (0x2)
+                0x000002de       0x20 c:/program files/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/../../../../avr/lib/avr5\libc.a(strrev.o)
+                0x000002de                strrev
+                0x000002fe                . = ALIGN (0x2)
  *(.fini9)
- .fini9         0x00000306        0x0 c:/program files/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/avr5\libgcc.a(_exit.o)
-                0x00000306                _exit
-                0x00000306                exit
+ .fini9         0x000002fe        0x0 c:/program files/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/avr5\libgcc.a(_exit.o)
+                0x000002fe                _exit
+                0x000002fe                exit
  *(.fini9)
  *(.fini8)
  *(.fini8)
@@ -611,40 +610,41 @@ END GROUP
  *(.fini1)
  *(.fini1)
  *(.fini0)
- .fini0         0x00000306        0x4 c:/program files/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/avr5\libgcc.a(_exit.o)
+ .fini0         0x000002fe        0x4 c:/program files/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/avr5\libgcc.a(_exit.o)
  *(.fini0)
-                0x0000030a                _etext = .
+                0x00000302                _etext = .
 
-.data           0x00800100        0x0 load address 0x0000030a
+.data           0x00800100       0x10 load address 0x00000302
                 0x00800100                PROVIDE (__data_start, .)
  *(.data)
  *(.data*)
+ .data.buff_txt
+                0x00800100        0xf main.o
  *(.rodata)
  *(.rodata*)
  *(.gnu.linkonce.d*)
-                0x00800100                . = ALIGN (0x2)
-                0x00800100                _edata = .
-                0x00800100                PROVIDE (__data_end, .)
+                0x00800110                . = ALIGN (0x2)
+ *fill*         0x0080010f        0x1 
+                0x00800110                _edata = .
+                0x00800110                PROVIDE (__data_end, .)
 
-.bss            0x00800100       0x1f
-                0x00800100                PROVIDE (__bss_start, .)
+.bss            0x00800110        0x5
+                0x00800110                PROVIDE (__bss_start, .)
  *(.bss)
  *(.bss*)
+ .bss.t.2260    0x00800110        0x4 freq_cnt.o
  .bss.HD44780_displayparams
-                0x00800100        0x1 HD44780.o
- .bss.buff_empty_txt.2004
-                0x00800101        0xf main.o
- .bss.buff_txt  0x00800110        0xf main.o
+                0x00800114        0x1 HD44780.o
  *(COMMON)
-                0x0080011f                PROVIDE (__bss_end, .)
-                0x0000030a                __data_load_start = LOADADDR (.data)
-                0x0000030a                __data_load_end = (__data_load_start + SIZEOF (.data))
+                0x00800115                PROVIDE (__bss_end, .)
+                0x00000302                __data_load_start = LOADADDR (.data)
+                0x00000312                __data_load_end = (__data_load_start + SIZEOF (.data))
 
-.noinit         0x0080011f        0x0
+.noinit         0x00800115        0x0
                 [!provide]                PROVIDE (__noinit_start, .)
  *(.noinit*)
                 [!provide]                PROVIDE (__noinit_end, .)
-                0x0080011f                _end = .
+                0x00800115                _end = .
                 [!provide]                PROVIDE (__heap_start, .)
 
 .eeprom         0x00810000        0x0
@@ -723,26 +723,26 @@ END GROUP
 .debug_pubnames
  *(.debug_pubnames)
 
-.debug_info     0x00000000     0x1f99
+.debug_info     0x00000000     0x1f47
  *(.debug_info .gnu.linkonce.wi.*)
  .debug_info    0x00000000      0x5f4 C:/Program Files/Atmel/Studio/7.0/Packs/atmel/ATmega_DFP/1.1.130/gcc/dev/atmega328p/avr5/crtatmega328p.o
- .debug_info    0x000005f4      0x9a1 freq_cnt.o
- .debug_info    0x00000f95      0xd76 HD44780.o
- .debug_info    0x00001d0b      0x28e main.o
+ .debug_info    0x000005f4      0x98f freq_cnt.o
+ .debug_info    0x00000f83      0xd76 HD44780.o
+ .debug_info    0x00001cf9      0x24e main.o
 
-.debug_abbrev   0x00000000      0xce8
+.debug_abbrev   0x00000000      0xcf5
  *(.debug_abbrev)
  .debug_abbrev  0x00000000      0x5a2 C:/Program Files/Atmel/Studio/7.0/Packs/atmel/ATmega_DFP/1.1.130/gcc/dev/atmega328p/avr5/crtatmega328p.o
- .debug_abbrev  0x000005a2      0x417 freq_cnt.o
- .debug_abbrev  0x000009b9      0x1d4 HD44780.o
- .debug_abbrev  0x00000b8d      0x15b main.o
+ .debug_abbrev  0x000005a2      0x40e freq_cnt.o
+ .debug_abbrev  0x000009b0      0x1d4 HD44780.o
+ .debug_abbrev  0x00000b84      0x171 main.o
 
-.debug_line     0x00000000      0xf2b
+.debug_line     0x00000000      0xf2a
  *(.debug_line .debug_line.* .debug_line_end)
  .debug_line    0x00000000      0x133 C:/Program Files/Atmel/Studio/7.0/Packs/atmel/ATmega_DFP/1.1.130/gcc/dev/atmega328p/avr5/crtatmega328p.o
- .debug_line    0x00000133      0x6b5 freq_cnt.o
- .debug_line    0x000007e8      0x5c2 HD44780.o
- .debug_line    0x00000daa      0x181 main.o
+ .debug_line    0x00000133      0x6bb freq_cnt.o
+ .debug_line    0x000007ee      0x5c2 HD44780.o
+ .debug_line    0x00000db0      0x17a main.o
 
 .debug_frame    0x00000000      0x444
  *(.debug_frame)
@@ -758,12 +758,12 @@ END GROUP
  .debug_str     0x000005b8      0x251 HD44780.o
                                 0x429 (size before relaxing)
  .debug_str     0x00000809       0x29 main.o
-                                0x235 (size before relaxing)
+                                0x223 (size before relaxing)
 
-.debug_loc      0x00000000      0xdf4
+.debug_loc      0x00000000      0xe48
  *(.debug_loc)
- .debug_loc     0x00000000      0xaa5 freq_cnt.o
- .debug_loc     0x00000aa5      0x34f HD44780.o
+ .debug_loc     0x00000000      0xaf9 freq_cnt.o
+ .debug_loc     0x00000af9      0x34f HD44780.o
 
 .debug_macinfo
  *(.debug_macinfo)

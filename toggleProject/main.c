@@ -41,12 +41,12 @@
 #include "HD44780.h"
 
 // Blinking LED for tests.
-#define LCD_LED_CONFIG	DDRB |=  (1 << PB4)
-#define LCD_LED_SET		PORTB |= (1 << PB4)
-#define LCD_LED_RESET	PORTB &= ~(1 << PB4)
+#define LCD_LED_CONFIG	DDRD |=  (1 << PD7)
+#define LCD_LED_SET		PORTD |= (1 << PD7)
+#define LCD_LED_RESET	PORTD &= ~(1 << PD7)
 
 
-static uint8_t buff_txt[15];
+static uint8_t buff_txt[15] = {'a', 'r', 'e', 'k', ' ', '1', '2', '3', '4', '5', 'A', 'B', 'C', 'D', 'E'};
 
 int main(void)
 {
@@ -101,26 +101,38 @@ int main(void)
 	}
 	*/
 
+
+
 	// tests
-	static uint8_t buff_empty_txt[15] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+	uint8_t buff_empty_txt[15] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+	char *msg = "1234567890ABCDEF";
 	
-    _delay_ms(100);		/* Wait for stable power */
-    init_time_keeping();
+	//todo: not working when uncoment it.
+    //_delay_ms(100);		// Wait for stable power 
+    //init_time_keeping();
     //init_event_counting();
-    sei();
+    //sei();
 
 	HD44780_init();
 	HD44780_on();
 	HD44780_clear();
-	
+	//HD44780_puts(buff_txt);
+	//HD44780_puts(msg);
 	
 	for (;;) {
-		_delay_ms(1000);
+//		_delay_ms(1000);
+
+		LCD_LED_SET;
+		_delay_ms(500);
+		LCD_LED_RESET;
+		_delay_ms(500);
+
 		
 		getTicksT0(buff_txt);
 
-		HD44780_puts(buff_empty_txt);
-		_delay_ms(20);
+//		HD44780_puts(buff_empty_txt);
+//		_delay_ms(20);
+		HD44780_clear();
 		HD44780_puts(buff_txt);
 	}
 
