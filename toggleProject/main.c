@@ -63,8 +63,8 @@ int main(void)
     }
 */
 
-	// HD44780 lcd test
-/*
+	// HD44780 lcd test - working
+	/*
 	char *msg = "1234567890ABCDEF";
 
 	HD44780_init();
@@ -76,11 +76,11 @@ int main(void)
 	while (1)
 	{
 		LCD_LED_SET;
-		_delay_ms(500);
+		_delay_ms(250);
 		LCD_LED_RESET;
-		_delay_ms(500);
+		_delay_ms(250);
 	}
-*/
+	*/
 
 	//////////////////////////////////////////////////////////////////////////////
 	// Frequency counter
@@ -118,6 +118,10 @@ int main(void)
 	HD44780_clear();
 	//HD44780_puts(buff_txt);
 	//HD44780_puts(msg);
+	
+	init_time_keeping();
+	sei();
+	
 	
 	for (;;) {
 //		_delay_ms(1000);

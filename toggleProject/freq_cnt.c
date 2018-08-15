@@ -72,6 +72,8 @@
 #include <avr/io.h>
 #include <avr/interrupt.h>
 #include <util/delay.h>
+#include <stdbool.h>
+
 
 #include "freq_cnt.h"
 
@@ -124,6 +126,9 @@ static struct counter volatile *current;
 
 #define WD_TOP 4
 static volatile signed char fast_wd = WD_TOP;
+
+// Free running counter based on T0
+static volatile unsigned long timer0_overflow_count = 0;
 
 
 void FREQCNT_Init(void)
@@ -198,19 +203,6 @@ void FREQCNT_GetFrequencyTxt(uint8_t *buff)
 }
 
 
-
-/*
- * API functions for the display. A different kind
- * of display can be used if those functions are
- * reimplemnted.
- */
-/*
-static void lcd_init(void);
-static void lcd_home(void);
-static void lcd_putc(char c);
-*/
-
-
 /*
 #if DEBUG
 void debug_show_state(uint8_t n)
@@ -274,60 +266,14 @@ void debug_show_state(uint8_t n)
 //  16:64  -> tick = 4us,    overflow = 256 x 4us    =   1024us
 //  16:256 -> tick = 16us,   overflow = 256 x 16us   =   4096us
 //
+//
+// This is T0 - free running timer to calculate time of counting predefined number
+// of falling edges of measured frequency signal.
+// The falling edge counters are counted by T1.
 void init_time_keeping(void)  // todo: after tests move back to static
 {
-	
-	///////////////////////////////////////////////////////////////////////////
-	// Atiny 84
-    ///////////////////////////////////////////////////////////////////////////
-	/*
-    //
-    // Set prescaler to 64. Using a 20Mhz clock, that will give
-    // a timer tick time of appr. 3.2 us, and timer overflow appr.
-    // 819 us. The Timer 0 is 8 bit. 819/3.2 = 255.9375
-    //
-	 // We have 16 MHz clock
-	 // The prescaled clock has a frequency: of either fCLK_I/O/8, fCLK_I/O/64, fCLK_I/O/256, or fCLK_I/O/1024.
-	 // 16/64 = 2.5 us -> 640us while timer overflow
-	 // 16/8  = 20 uS -> 5129 us while timer overflow
-	 
-	 
-    TCCR0B = _BV(CS01) | _BV(CS00); // Set prescaler to clk/64
 
-    // Enable the overflow interrupt for time 0 
-
-	// When the TOIE0 bit is written to one, and the I-bit in the Status Register is set, the
-	// Timer/Counter0 Overflow interrupt is enabled. The corresponding interrupt is executed if an
-	// overflow in Timer/Counter0 occurs, i.e., when the TOV0 bit is set in the Timer/Counter 0 Interrupt
-	// Flag Register – TIFR0.
-	
-    TIMSK0 = _BV(TOIE0);
-	*/
-	
-	////////////////////////////////////////////////////////////////////////////////
-	// Code for T0 atmega32u4
-	////////////////////////////////////////////////////////////////////////////////
-
-	/*
-	// Set prescaler to clk/64 -> this is 2.5us per tic, with 16MHz clock.
-	// it is 256 x 2.5 = 640 us.
-	TCCR0B = _BV(CS01) | _BV(CS00); 
-	
-    // Enable the overflow interrupt for time 0 
-	// When the TOIE0 bit is written to one, and the I-bit in the Status Register is set, the
-    // Timer/Counter0 Overflow interrupt is enabled. The corresponding interrupt is executed if an
-    // overflow in Timer/Counter0 occurs, i.e., when the TOV0 bit is set in the Timer/Counter 0 Interrupt
-    // Flag Register – TIFR0.
-	
-    TIMSK0 = _BV(TOIE0); 
-	*/
-
-
-	///////////////////////////////////////////////////////////////////////////
-	// Code for Atmega328p
-	
 	TCCR0A = 0x00;  // Normal mode, TOP=0xFF, TOV flag set on MAX = 0xFF.
-	
 	TCCR0B = 0x00;  // Normal mode, 
 	
 	// MCU clock 8 MHz
@@ -346,11 +292,10 @@ void init_time_keeping(void)  // todo: after tests move back to static
 	
 }
 
-static volatile unsigned long timer0_overflow_count = 0;   // move it up
 
-// ISR from T0 overflow
-ISR(TIM0_OVF_vect)
+ISR(TIMER0_OVF_vect)
 {
+	//todo: check, there is no limits for overflow
     timer0_overflow_count++;
 }
 
@@ -367,6 +312,7 @@ static tick_t cli_ticks(void)
 
     m = timer0_overflow_count;
     t = TCNT0;  // Timer data
+	//todo why do we have this line ? We are here from ISR T1
     if (TIFR0 & _BV(TOV0) && t < 255) { // Timer Interrupt Flag Register (TIFR0), The Timer/Counter Overflow Flag (TOV0)
 		m++;
     }
@@ -653,7 +599,8 @@ void init_event_counting(void)  //todo after tests move back to static
  * Interrupt service routine for the slow counting mode.
  */
  // This is ISR from external pin irq.
-ISR(EXT_INT0_vect)
+//ISR(EXT_INT0_vect)
+ISR(INT0_vect)  // atmega328p
 {
     tick_t cs = cli_ticks();
 
@@ -756,7 +703,8 @@ static void inline set_timer_cmp_reg(uint8_t log2ne)
 /*
  * Interrupt service routine for the fast counting mode.
  */
-ISR(TIM1_COMPA_vect)
+//ISR(TIM1_COMPA_vect)
+ISR(TIMER1_COMPA_vect)  //atmgea 328p 
 {
     tick_t ticks = cli_ticks();
 
@@ -1180,11 +1128,11 @@ void getTicksT0(char *buff)
 	static tick_t t = 0;
 
 
-//	cli();
-//	t = cli_ticks();
-//	sei();
+	cli();
+	t = cli_ticks();
+	sei();
 
-	t = t + 1;
+	//t = t + 1;
 
 	//char bufor[ROZMIAR];
 	//int liczba;
