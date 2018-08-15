@@ -49,7 +49,8 @@ void FREQCNT_GetFrequencyTxt(uint8_t *buff);
 
 // for tests only
 void init_time_keeping(void);
+void init_event_counting(void);
 void getTicksT0(char *buff);
-
+void getT1Counts(char *buff);
 
 

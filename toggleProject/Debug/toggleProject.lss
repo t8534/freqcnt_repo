@@ -3,38 +3,38 @@ toggleProject.elf:     file format elf32-avr
 
 Sections:
 Idx Name          Size      VMA       LMA       File off  Algn
-  0 .data         00000026  00800100  0000074c  000007e0  2**0
+  0 .data         0000001a  00800100  000003fe  00000492  2**0
                   CONTENTS, ALLOC, LOAD, DATA
-  1 .text         0000074c  00000000  00000000  00000094  2**1
+  1 .text         000003fe  00000000  00000000  00000094  2**1
                   CONTENTS, ALLOC, LOAD, READONLY, CODE
-  2 .bss          0000000d  00800126  00800126  00000806  2**0
+  2 .bss          0000000b  0080011a  0080011a  000004ac  2**0
                   ALLOC
-  3 .comment      00000030  00000000  00000000  00000806  2**0
+  3 .comment      00000030  00000000  00000000  000004ac  2**0
                   CONTENTS, READONLY
-  4 .note.gnu.avr.deviceinfo 00000040  00000000  00000000  00000838  2**2
+  4 .note.gnu.avr.deviceinfo 00000040  00000000  00000000  000004dc  2**2
                   CONTENTS, READONLY
-  5 .debug_aranges 00000160  00000000  00000000  00000878  2**0
+  5 .debug_aranges 00000168  00000000  00000000  0000051c  2**0
                   CONTENTS, READONLY, DEBUGGING
-  6 .debug_info   00001f8a  00000000  00000000  000009d8  2**0
+  6 .debug_info   00001e78  00000000  00000000  00000684  2**0
                   CONTENTS, READONLY, DEBUGGING
-  7 .debug_abbrev 00000cdb  00000000  00000000  00002962  2**0
+  7 .debug_abbrev 00000cad  00000000  00000000  000024fc  2**0
                   CONTENTS, READONLY, DEBUGGING
-  8 .debug_line   00000f6c  00000000  00000000  0000363d  2**0
+  8 .debug_line   00000d68  00000000  00000000  000031a9  2**0
                   CONTENTS, READONLY, DEBUGGING
-  9 .debug_frame  00000450  00000000  00000000  000045ac  2**2
+  9 .debug_frame  000003b8  00000000  00000000  00003f14  2**2
                   CONTENTS, READONLY, DEBUGGING
- 10 .debug_str    00000829  00000000  00000000  000049fc  2**0
+ 10 .debug_str    00000830  00000000  00000000  000042cc  2**0
                   CONTENTS, READONLY, DEBUGGING
- 11 .debug_loc    00000e91  00000000  00000000  00005225  2**0
+ 11 .debug_loc    00000b92  00000000  00000000  00004afc  2**0
                   CONTENTS, READONLY, DEBUGGING
- 12 .debug_ranges 00000160  00000000  00000000  000060b6  2**0
+ 12 .debug_ranges 00000138  00000000  00000000  0000568e  2**0
                   CONTENTS, READONLY, DEBUGGING
 
 Disassembly of section .text:
 
 00000000 <__vectors>:
    0:	0c 94 34 00 	jmp	0x68	; 0x68 <__ctors_end>
-   4:	0c 94 82 00 	jmp	0x104	; 0x104 <__vector_1>
+   4:	0c 94 a3 00 	jmp	0x146	; 0x146 <__vector_1>
    8:	0c 94 51 00 	jmp	0xa2	; 0xa2 <__bad_interrupt>
    c:	0c 94 51 00 	jmp	0xa2	; 0xa2 <__bad_interrupt>
   10:	0c 94 51 00 	jmp	0xa2	; 0xa2 <__bad_interrupt>
@@ -44,7 +44,7 @@ Disassembly of section .text:
   20:	0c 94 51 00 	jmp	0xa2	; 0xa2 <__bad_interrupt>
   24:	0c 94 51 00 	jmp	0xa2	; 0xa2 <__bad_interrupt>
   28:	0c 94 51 00 	jmp	0xa2	; 0xa2 <__bad_interrupt>
-  2c:	0c 94 08 01 	jmp	0x210	; 0x210 <__vector_11>
+  2c:	0c 94 ad 00 	jmp	0x15a	; 0x15a <__vector_11>
   30:	0c 94 51 00 	jmp	0xa2	; 0xa2 <__bad_interrupt>
   34:	0c 94 51 00 	jmp	0xa2	; 0xa2 <__bad_interrupt>
   38:	0c 94 51 00 	jmp	0xa2	; 0xa2 <__bad_interrupt>
@@ -72,18 +72,18 @@ Disassembly of section .text:
   74:	11 e0       	ldi	r17, 0x01	; 1
   76:	a0 e0       	ldi	r26, 0x00	; 0
   78:	b1 e0       	ldi	r27, 0x01	; 1
-  7a:	ec e4       	ldi	r30, 0x4C	; 76
-  7c:	f7 e0       	ldi	r31, 0x07	; 7
+  7a:	ee ef       	ldi	r30, 0xFE	; 254
+  7c:	f3 e0       	ldi	r31, 0x03	; 3
   7e:	02 c0       	rjmp	.+4      	; 0x84 <__do_copy_data+0x10>
   80:	05 90       	lpm	r0, Z+
   82:	0d 92       	st	X+, r0
-  84:	a6 32       	cpi	r26, 0x26	; 38
+  84:	aa 31       	cpi	r26, 0x1A	; 26
   86:	b1 07       	cpc	r27, r17
   88:	d9 f7       	brne	.-10     	; 0x80 <__do_copy_data+0xc>
 
 0000008a <__do_clear_bss>:
   8a:	21 e0       	ldi	r18, 0x01	; 1
-  8c:	a6 e2       	ldi	r26, 0x26	; 38
+  8c:	aa e1       	ldi	r26, 0x1A	; 26
   8e:	b1 e0       	ldi	r27, 0x01	; 1
   90:	01 c0       	rjmp	.+2      	; 0x94 <.do_clear_bss_start>
 
@@ -91,22 +91,22 @@ Disassembly of section .text:
   92:	1d 92       	st	X+, r1
 
 00000094 <.do_clear_bss_start>:
-  94:	a3 33       	cpi	r26, 0x33	; 51
+  94:	a5 32       	cpi	r26, 0x25	; 37
   96:	b2 07       	cpc	r27, r18
   98:	e1 f7       	brne	.-8      	; 0x92 <.do_clear_bss_loop>
-  9a:	0e 94 4a 03 	call	0x694	; 0x694 <main>
-  9e:	0c 94 a4 03 	jmp	0x748	; 0x748 <_exit>
+  9a:	0e 94 a1 01 	call	0x342	; 0x342 <main>
+  9e:	0c 94 fd 01 	jmp	0x3fa	; 0x3fa <_exit>
 
 000000a2 <__bad_interrupt>:
   a2:	0c 94 00 00 	jmp	0	; 0x0 <__vectors>
 
 000000a6 <init_time_keeping>:
-void FREQCNT_Init(void)
-{
-    _delay_ms(100);		/* Wait for stable power */
-    init_time_keeping();
-    init_event_counting();
-    sei();
+	//
+	// char * ultoa(unsigned long val, char * s, int radix)
+	ultoa(t, buff, 10);
+
+	
+}
   a6:	14 bc       	out	0x24, r1	; 36
   a8:	15 bc       	out	0x25, r1	; 37
   aa:	83 e0       	ldi	r24, 0x03	; 3
@@ -128,17 +128,17 @@ void FREQCNT_Init(void)
   c6:	9f 93       	push	r25
   c8:	af 93       	push	r26
   ca:	bf 93       	push	r27
-  cc:	80 91 2c 01 	lds	r24, 0x012C	; 0x80012c <timer0_overflow_count>
-  d0:	90 91 2d 01 	lds	r25, 0x012D	; 0x80012d <timer0_overflow_count+0x1>
-  d4:	a0 91 2e 01 	lds	r26, 0x012E	; 0x80012e <timer0_overflow_count+0x2>
-  d8:	b0 91 2f 01 	lds	r27, 0x012F	; 0x80012f <timer0_overflow_count+0x3>
+  cc:	80 91 1e 01 	lds	r24, 0x011E	; 0x80011e <timer0_overflow_count>
+  d0:	90 91 1f 01 	lds	r25, 0x011F	; 0x80011f <timer0_overflow_count+0x1>
+  d4:	a0 91 20 01 	lds	r26, 0x0120	; 0x800120 <timer0_overflow_count+0x2>
+  d8:	b0 91 21 01 	lds	r27, 0x0121	; 0x800121 <timer0_overflow_count+0x3>
   dc:	01 96       	adiw	r24, 0x01	; 1
   de:	a1 1d       	adc	r26, r1
   e0:	b1 1d       	adc	r27, r1
-  e2:	80 93 2c 01 	sts	0x012C, r24	; 0x80012c <timer0_overflow_count>
-  e6:	90 93 2d 01 	sts	0x012D, r25	; 0x80012d <timer0_overflow_count+0x1>
-  ea:	a0 93 2e 01 	sts	0x012E, r26	; 0x80012e <timer0_overflow_count+0x2>
-  ee:	b0 93 2f 01 	sts	0x012F, r27	; 0x80012f <timer0_overflow_count+0x3>
+  e2:	80 93 1e 01 	sts	0x011E, r24	; 0x80011e <timer0_overflow_count>
+  e6:	90 93 1f 01 	sts	0x011F, r25	; 0x80011f <timer0_overflow_count+0x1>
+  ea:	a0 93 20 01 	sts	0x0120, r26	; 0x800120 <timer0_overflow_count+0x2>
+  ee:	b0 93 21 01 	sts	0x0121, r27	; 0x800121 <timer0_overflow_count+0x3>
   f2:	bf 91       	pop	r27
   f4:	af 91       	pop	r26
   f6:	9f 91       	pop	r25
@@ -149,1077 +149,443 @@ void FREQCNT_Init(void)
  100:	1f 90       	pop	r1
  102:	18 95       	reti
 
-00000104 <__vector_1>:
- * Interrupt service routine for the slow counting mode.
- */
- // This is ISR from external pin irq.
-//ISR(EXT_INT0_vect)
-ISR(INT0_vect)  // atmega328p
+00000104 <init_event_counting>:
+ 104:	e9 e6       	ldi	r30, 0x69	; 105
+ 106:	f0 e0       	ldi	r31, 0x00	; 0
+ 108:	10 82       	st	Z, r1
+ 10a:	82 e0       	ldi	r24, 0x02	; 2
+ 10c:	80 83       	st	Z, r24
+ 10e:	1d ba       	out	0x1d, r1	; 29
+ 110:	91 e0       	ldi	r25, 0x01	; 1
+ 112:	9d bb       	out	0x1d, r25	; 29
+ 114:	10 92 80 00 	sts	0x0080, r1	; 0x800080 <__TEXT_REGION_LENGTH__+0x7e0080>
+ 118:	9e e0       	ldi	r25, 0x0E	; 14
+ 11a:	90 93 81 00 	sts	0x0081, r25	; 0x800081 <__TEXT_REGION_LENGTH__+0x7e0081>
+ 11e:	24 e0       	ldi	r18, 0x04	; 4
+ 120:	30 e0       	ldi	r19, 0x00	; 0
+ 122:	30 93 89 00 	sts	0x0089, r19	; 0x800089 <__TEXT_REGION_LENGTH__+0x7e0089>
+ 126:	20 93 88 00 	sts	0x0088, r18	; 0x800088 <__TEXT_REGION_LENGTH__+0x7e0088>
+ 12a:	10 92 85 00 	sts	0x0085, r1	; 0x800085 <__TEXT_REGION_LENGTH__+0x7e0085>
+ 12e:	10 92 84 00 	sts	0x0084, r1	; 0x800084 <__TEXT_REGION_LENGTH__+0x7e0084>
+ 132:	80 93 6f 00 	sts	0x006F, r24	; 0x80006f <__TEXT_REGION_LENGTH__+0x7e006f>
+ 136:	b1 9a       	sbi	0x16, 1	; 22
+ 138:	80 e0       	ldi	r24, 0x00	; 0
+ 13a:	91 e0       	ldi	r25, 0x01	; 1
+ 13c:	90 93 23 01 	sts	0x0123, r25	; 0x800123 <current+0x1>
+ 140:	80 93 22 01 	sts	0x0122, r24	; 0x800122 <current>
+ 144:	08 95       	ret
+
+00000146 <__vector_1>:
+ 146:	1f 92       	push	r1
+ 148:	0f 92       	push	r0
+ 14a:	0f b6       	in	r0, 0x3f	; 63
+ 14c:	0f 92       	push	r0
+ 14e:	11 24       	eor	r1, r1
+ 150:	0f 90       	pop	r0
+ 152:	0f be       	out	0x3f, r0	; 63
+ 154:	0f 90       	pop	r0
+ 156:	1f 90       	pop	r1
+ 158:	18 95       	reti
+
+0000015a <__vector_11>:
+ 15a:	1f 92       	push	r1
+ 15c:	0f 92       	push	r0
+ 15e:	0f b6       	in	r0, 0x3f	; 63
+ 160:	0f 92       	push	r0
+ 162:	11 24       	eor	r1, r1
+ 164:	8f 93       	push	r24
+ 166:	9f 93       	push	r25
+ 168:	af 93       	push	r26
+ 16a:	bf 93       	push	r27
+ 16c:	84 e0       	ldi	r24, 0x04	; 4
+ 16e:	90 e0       	ldi	r25, 0x00	; 0
+ 170:	90 93 89 00 	sts	0x0089, r25	; 0x800089 <__TEXT_REGION_LENGTH__+0x7e0089>
+ 174:	80 93 88 00 	sts	0x0088, r24	; 0x800088 <__TEXT_REGION_LENGTH__+0x7e0088>
+ 178:	80 91 1a 01 	lds	r24, 0x011A	; 0x80011a <__data_end>
+ 17c:	90 91 1b 01 	lds	r25, 0x011B	; 0x80011b <__data_end+0x1>
+ 180:	a0 91 1c 01 	lds	r26, 0x011C	; 0x80011c <__data_end+0x2>
+ 184:	b0 91 1d 01 	lds	r27, 0x011D	; 0x80011d <__data_end+0x3>
+ 188:	01 96       	adiw	r24, 0x01	; 1
+ 18a:	a1 1d       	adc	r26, r1
+ 18c:	b1 1d       	adc	r27, r1
+ 18e:	80 93 1a 01 	sts	0x011A, r24	; 0x80011a <__data_end>
+ 192:	90 93 1b 01 	sts	0x011B, r25	; 0x80011b <__data_end+0x1>
+ 196:	a0 93 1c 01 	sts	0x011C, r26	; 0x80011c <__data_end+0x2>
+ 19a:	b0 93 1d 01 	sts	0x011D, r27	; 0x80011d <__data_end+0x3>
+ 19e:	bf 91       	pop	r27
+ 1a0:	af 91       	pop	r26
+ 1a2:	9f 91       	pop	r25
+ 1a4:	8f 91       	pop	r24
+ 1a6:	0f 90       	pop	r0
+ 1a8:	0f be       	out	0x3f, r0	; 63
+ 1aa:	0f 90       	pop	r0
+ 1ac:	1f 90       	pop	r1
+ 1ae:	18 95       	reti
+
+000001b0 <getT1Counts>:
+
+
+void getT1Counts(char *buff)
 {
- 104:	1f 92       	push	r1
- 106:	0f 92       	push	r0
- 108:	0f b6       	in	r0, 0x3f	; 63
- 10a:	0f 92       	push	r0
- 10c:	11 24       	eor	r1, r1
- 10e:	0f 93       	push	r16
- 110:	1f 93       	push	r17
- 112:	2f 93       	push	r18
- 114:	3f 93       	push	r19
- 116:	4f 93       	push	r20
- 118:	5f 93       	push	r21
- 11a:	6f 93       	push	r22
- 11c:	7f 93       	push	r23
- 11e:	8f 93       	push	r24
- 120:	9f 93       	push	r25
- 122:	af 93       	push	r26
- 124:	bf 93       	push	r27
- 126:	ef 93       	push	r30
- 128:	ff 93       	push	r31
-static tick_t cli_ticks(void)
-{
-    uint8_t t;
-    tick_t m;
-
-    m = timer0_overflow_count;
- 12a:	80 91 2c 01 	lds	r24, 0x012C	; 0x80012c <timer0_overflow_count>
- 12e:	90 91 2d 01 	lds	r25, 0x012D	; 0x80012d <timer0_overflow_count+0x1>
- 132:	a0 91 2e 01 	lds	r26, 0x012E	; 0x80012e <timer0_overflow_count+0x2>
- 136:	b0 91 2f 01 	lds	r27, 0x012F	; 0x80012f <timer0_overflow_count+0x3>
-    t = TCNT0;  // Timer data
- 13a:	26 b5       	in	r18, 0x26	; 38
-	//todo why do we have this line ? We are here from ISR T1
-    if (TIFR0 & _BV(TOV0) && t < 255) { // Timer Interrupt Flag Register (TIFR0), The Timer/Counter Overflow Flag (TOV0)
- 13c:	a8 9b       	sbis	0x15, 0	; 21
- 13e:	05 c0       	rjmp	.+10     	; 0x14a <__vector_1+0x46>
- 140:	2f 3f       	cpi	r18, 0xFF	; 255
- 142:	19 f0       	breq	.+6      	; 0x14a <__vector_1+0x46>
-		m++;
- 144:	01 96       	adiw	r24, 0x01	; 1
- 146:	a1 1d       	adc	r26, r1
- 148:	b1 1d       	adc	r27, r1
-    }
-    return (m << 8) | t;
- 14a:	ba 2f       	mov	r27, r26
- 14c:	a9 2f       	mov	r26, r25
- 14e:	98 2f       	mov	r25, r24
- 150:	88 27       	eor	r24, r24
- 152:	82 2b       	or	r24, r18
-//ISR(EXT_INT0_vect)
-ISR(INT0_vect)  // atmega328p
-{
-    tick_t cs = cli_ticks();
-
-    if (slow_cnt.first_time) {
- 154:	20 91 11 01 	lds	r18, 0x0111	; 0x800111 <slow_cnt+0x5>
- 158:	22 23       	and	r18, r18
- 15a:	41 f0       	breq	.+16     	; 0x16c <__vector_1+0x68>
-	/* We can't calculate a period because it's the first time. */
-	slow_cnt.first_time = 0;
- 15c:	ec e0       	ldi	r30, 0x0C	; 12
- 15e:	f1 e0       	ldi	r31, 0x01	; 1
- 160:	15 82       	std	Z+5, r1	; 0x05
-	slow_cnt.prev_ticks = cs;
- 162:	87 83       	std	Z+7, r24	; 0x07
- 164:	90 87       	std	Z+8, r25	; 0x08
- 166:	a1 87       	std	Z+9, r26	; 0x09
- 168:	b2 87       	std	Z+10, r27	; 0x0a
- 16a:	3f c0       	rjmp	.+126    	; 0x1ea <__vector_1+0xe6>
-    } else {
-	/*
-	 * Calculate the length of period that just ended. We don't need
-	 * to update log2num_events since it is always 0 (= one event).
-	 */
-	tick_t period = cs - slow_cnt.prev_ticks;
- 16c:	ec e0       	ldi	r30, 0x0C	; 12
- 16e:	f1 e0       	ldi	r31, 0x01	; 1
- 170:	47 81       	ldd	r20, Z+7	; 0x07
- 172:	50 85       	ldd	r21, Z+8	; 0x08
- 174:	61 85       	ldd	r22, Z+9	; 0x09
- 176:	72 85       	ldd	r23, Z+10	; 0x0a
- 178:	8c 01       	movw	r16, r24
- 17a:	9d 01       	movw	r18, r26
- 17c:	04 1b       	sub	r16, r20
- 17e:	15 0b       	sbc	r17, r21
- 180:	26 0b       	sbc	r18, r22
- 182:	37 0b       	sbc	r19, r23
-	slow_cnt.period = period;
- 184:	00 83       	st	Z, r16
- 186:	11 83       	std	Z+1, r17	; 0x01
- 188:	22 83       	std	Z+2, r18	; 0x02
- 18a:	33 83       	std	Z+3, r19	; 0x03
-	slow_cnt.prev_ticks = cs;
- 18c:	87 83       	std	Z+7, r24	; 0x07
- 18e:	90 87       	std	Z+8, r25	; 0x08
- 190:	a1 87       	std	Z+9, r26	; 0x09
- 192:	b2 87       	std	Z+10, r27	; 0x0a
-	 * quickly. Note that the external pin interrupt has a higher
-	 * priority then any of the timer interrupts, so if the
-	 * incoming frequency is too high no other interrupt routine
-	 * than the external interrupt will ever be called.
-	 */
-	if (period < 100UL) {
- 194:	04 36       	cpi	r16, 0x64	; 100
- 196:	11 05       	cpc	r17, r1
- 198:	21 05       	cpc	r18, r1
- 19a:	31 05       	cpc	r19, r1
- 19c:	30 f5       	brcc	.+76     	; 0x1ea <__vector_1+0xe6>
-	    
-		//GIMSK = 0;
-		EIMSK = 0;
- 19e:	1d ba       	out	0x1d, r1	; 29
-		
-	    fast_cnt.period = MAX_PERIOD;
- 1a0:	e1 e0       	ldi	r30, 0x01	; 1
- 1a2:	f1 e0       	ldi	r31, 0x01	; 1
- 1a4:	4f ef       	ldi	r20, 0xFF	; 255
- 1a6:	5f ef       	ldi	r21, 0xFF	; 255
- 1a8:	ba 01       	movw	r22, r20
- 1aa:	40 83       	st	Z, r20
- 1ac:	51 83       	std	Z+1, r21	; 0x01
- 1ae:	62 83       	std	Z+2, r22	; 0x02
- 1b0:	73 83       	std	Z+3, r23	; 0x03
-	    fast_cnt.first_time = 1;
- 1b2:	21 e0       	ldi	r18, 0x01	; 1
- 1b4:	25 83       	std	Z+5, r18	; 0x05
-	    fast_cnt.current_log2num_events = 1;
- 1b6:	26 83       	std	Z+6, r18	; 0x06
-	    fast_cnt.prev_ticks = cs;
- 1b8:	87 83       	std	Z+7, r24	; 0x07
- 1ba:	90 87       	std	Z+8, r25	; 0x08
- 1bc:	a1 87       	std	Z+9, r26	; 0x09
- 1be:	b2 87       	std	Z+10, r27	; 0x0a
-		// generate a waveform output on the OC1x pin.
-		// The Output Compare Registers are 16-bit in size. To ensure that both the high and low bytes are
-		// written simultaneously when the CPU writes to these registers, the access is performed using an
-		// 8-bit temporary high byte register (TEMP). This temporary register is shared by all the other 16-
-		// bit registers. See “Accessing 16-bit Registers” on page 105.
-	    OCR1A = (1 << fast_cnt.current_log2num_events) - 1;
- 1c0:	26 81       	ldd	r18, Z+6	; 0x06
- 1c2:	81 e0       	ldi	r24, 0x01	; 1
- 1c4:	90 e0       	ldi	r25, 0x00	; 0
- 1c6:	02 c0       	rjmp	.+4      	; 0x1cc <__vector_1+0xc8>
- 1c8:	88 0f       	add	r24, r24
- 1ca:	99 1f       	adc	r25, r25
- 1cc:	2a 95       	dec	r18
- 1ce:	e2 f7       	brpl	.-8      	; 0x1c8 <__vector_1+0xc4>
- 1d0:	01 97       	sbiw	r24, 0x01	; 1
- 1d2:	90 93 89 00 	sts	0x0089, r25	; 0x800089 <__TEXT_REGION_LENGTH__+0x7e0089>
- 1d6:	80 93 88 00 	sts	0x0088, r24	; 0x800088 <__TEXT_REGION_LENGTH__+0x7e0088>
-
-	    TCNT1 = 0;
- 1da:	10 92 85 00 	sts	0x0085, r1	; 0x800085 <__TEXT_REGION_LENGTH__+0x7e0085>
- 1de:	10 92 84 00 	sts	0x0084, r1	; 0x800084 <__TEXT_REGION_LENGTH__+0x7e0084>
-	    current = &fast_cnt;
- 1e2:	f0 93 31 01 	sts	0x0131, r31	; 0x800131 <current+0x1>
- 1e6:	e0 93 30 01 	sts	0x0130, r30	; 0x800130 <current>
-	}
-    }
-}
- 1ea:	ff 91       	pop	r31
- 1ec:	ef 91       	pop	r30
- 1ee:	bf 91       	pop	r27
- 1f0:	af 91       	pop	r26
- 1f2:	9f 91       	pop	r25
- 1f4:	8f 91       	pop	r24
- 1f6:	7f 91       	pop	r23
- 1f8:	6f 91       	pop	r22
- 1fa:	5f 91       	pop	r21
- 1fc:	4f 91       	pop	r20
- 1fe:	3f 91       	pop	r19
- 200:	2f 91       	pop	r18
- 202:	1f 91       	pop	r17
- 204:	0f 91       	pop	r16
- 206:	0f 90       	pop	r0
- 208:	0f be       	out	0x3f, r0	; 63
- 20a:	0f 90       	pop	r0
- 20c:	1f 90       	pop	r1
- 20e:	18 95       	reti
-
-00000210 <__vector_11>:
-/*
- * Interrupt service routine for the fast counting mode.
- */
-//ISR(TIM1_COMPA_vect)
-ISR(TIMER1_COMPA_vect)  //atmgea 328p 
-{
- 210:	1f 92       	push	r1
- 212:	0f 92       	push	r0
- 214:	0f b6       	in	r0, 0x3f	; 63
- 216:	0f 92       	push	r0
- 218:	11 24       	eor	r1, r1
- 21a:	cf 92       	push	r12
- 21c:	df 92       	push	r13
- 21e:	ef 92       	push	r14
- 220:	ff 92       	push	r15
- 222:	0f 93       	push	r16
- 224:	1f 93       	push	r17
- 226:	2f 93       	push	r18
- 228:	3f 93       	push	r19
- 22a:	4f 93       	push	r20
- 22c:	5f 93       	push	r21
- 22e:	6f 93       	push	r22
- 230:	7f 93       	push	r23
- 232:	8f 93       	push	r24
- 234:	9f 93       	push	r25
- 236:	af 93       	push	r26
- 238:	bf 93       	push	r27
- 23a:	ef 93       	push	r30
- 23c:	ff 93       	push	r31
-static tick_t cli_ticks(void)
-{
-    uint8_t t;
-    tick_t m;
-
-    m = timer0_overflow_count;
- 23e:	40 91 2c 01 	lds	r20, 0x012C	; 0x80012c <timer0_overflow_count>
- 242:	50 91 2d 01 	lds	r21, 0x012D	; 0x80012d <timer0_overflow_count+0x1>
- 246:	60 91 2e 01 	lds	r22, 0x012E	; 0x80012e <timer0_overflow_count+0x2>
- 24a:	70 91 2f 01 	lds	r23, 0x012F	; 0x80012f <timer0_overflow_count+0x3>
-    t = TCNT0;  // Timer data
- 24e:	26 b5       	in	r18, 0x26	; 38
-	//todo why do we have this line ? We are here from ISR T1
-    if (TIFR0 & _BV(TOV0) && t < 255) { // Timer Interrupt Flag Register (TIFR0), The Timer/Counter Overflow Flag (TOV0)
- 250:	a8 9b       	sbis	0x15, 0	; 21
- 252:	06 c0       	rjmp	.+12     	; 0x260 <__vector_11+0x50>
- 254:	2f 3f       	cpi	r18, 0xFF	; 255
- 256:	21 f0       	breq	.+8      	; 0x260 <__vector_11+0x50>
-		m++;
- 258:	4f 5f       	subi	r20, 0xFF	; 255
- 25a:	5f 4f       	sbci	r21, 0xFF	; 255
- 25c:	6f 4f       	sbci	r22, 0xFF	; 255
- 25e:	7f 4f       	sbci	r23, 0xFF	; 255
-//ISR(TIM1_COMPA_vect)
-ISR(TIMER1_COMPA_vect)  //atmgea 328p 
-{
-    tick_t ticks = cli_ticks();
-
-    fast_wd = WD_TOP;
- 260:	84 e0       	ldi	r24, 0x04	; 4
- 262:	80 93 00 01 	sts	0x0100, r24	; 0x800100 <__data_start>
-
-    if (counter_high++ != cmp_high) {
- 266:	80 91 2b 01 	lds	r24, 0x012B	; 0x80012b <counter_high>
- 26a:	91 e0       	ldi	r25, 0x01	; 1
- 26c:	98 0f       	add	r25, r24
- 26e:	90 93 2b 01 	sts	0x012B, r25	; 0x80012b <counter_high>
- 272:	90 91 2a 01 	lds	r25, 0x012A	; 0x80012a <cmp_high>
- 276:	89 13       	cpse	r24, r25
- 278:	0b c1       	rjmp	.+534    	; 0x490 <__LOCK_REGION_LENGTH__+0x90>
-    t = TCNT0;  // Timer data
-	//todo why do we have this line ? We are here from ISR T1
-    if (TIFR0 & _BV(TOV0) && t < 255) { // Timer Interrupt Flag Register (TIFR0), The Timer/Counter Overflow Flag (TOV0)
-		m++;
-    }
-    return (m << 8) | t;
- 27a:	76 2f       	mov	r23, r22
- 27c:	65 2f       	mov	r22, r21
- 27e:	54 2f       	mov	r21, r20
- 280:	44 27       	eor	r20, r20
- 282:	6a 01       	movw	r12, r20
- 284:	7b 01       	movw	r14, r22
- 286:	c2 2a       	or	r12, r18
- 288:	97 01       	movw	r18, r14
- 28a:	86 01       	movw	r16, r12
-	 * Counter set up to count more than 2^16 events
-	 * (for high frequencies).
-	 */
-	return;
-    }
-    counter_high = 0;
- 28c:	10 92 2b 01 	sts	0x012B, r1	; 0x80012b <counter_high>
-
-    if (fast_cnt.first_time) {
- 290:	80 91 06 01 	lds	r24, 0x0106	; 0x800106 <fast_cnt+0x5>
- 294:	88 23       	and	r24, r24
- 296:	41 f0       	breq	.+16     	; 0x2a8 <__vector_11+0x98>
-	/*
-	 * The very first time. We can't calculate a period.
-	 */
-	fast_cnt.first_time = 0;
- 298:	e1 e0       	ldi	r30, 0x01	; 1
- 29a:	f1 e0       	ldi	r31, 0x01	; 1
- 29c:	15 82       	std	Z+5, r1	; 0x05
-	fast_cnt.prev_ticks = ticks;
- 29e:	07 83       	std	Z+7, r16	; 0x07
- 2a0:	10 87       	std	Z+8, r17	; 0x08
- 2a2:	21 87       	std	Z+9, r18	; 0x09
- 2a4:	32 87       	std	Z+10, r19	; 0x0a
-	return;
- 2a6:	f4 c0       	rjmp	.+488    	; 0x490 <__LOCK_REGION_LENGTH__+0x90>
-    }
-
-    /*
-     * Calculate the result for the period that was just finished.
-     */
-    uint8_t log2ne = fast_cnt.current_log2num_events;
- 2a8:	e1 e0       	ldi	r30, 0x01	; 1
- 2aa:	f1 e0       	ldi	r31, 0x01	; 1
- 2ac:	86 81       	ldd	r24, Z+6	; 0x06
-    fast_cnt.log2num_events = log2ne;
- 2ae:	84 83       	std	Z+4, r24	; 0x04
-    tick_t period = fast_cnt.period = ticks - fast_cnt.prev_ticks;
- 2b0:	47 81       	ldd	r20, Z+7	; 0x07
- 2b2:	50 85       	ldd	r21, Z+8	; 0x08
- 2b4:	61 85       	ldd	r22, Z+9	; 0x09
- 2b6:	72 85       	ldd	r23, Z+10	; 0x0a
- 2b8:	68 01       	movw	r12, r16
- 2ba:	79 01       	movw	r14, r18
- 2bc:	c4 1a       	sub	r12, r20
- 2be:	d5 0a       	sbc	r13, r21
- 2c0:	e6 0a       	sbc	r14, r22
- 2c2:	f7 0a       	sbc	r15, r23
- 2c4:	b7 01       	movw	r22, r14
- 2c6:	a6 01       	movw	r20, r12
- 2c8:	c0 82       	st	Z, r12
- 2ca:	d1 82       	std	Z+1, r13	; 0x01
- 2cc:	e2 82       	std	Z+2, r14	; 0x02
- 2ce:	f3 82       	std	Z+3, r15	; 0x03
-    fast_cnt.prev_ticks = ticks;
- 2d0:	07 83       	std	Z+7, r16	; 0x07
- 2d2:	10 87       	std	Z+8, r17	; 0x08
- 2d4:	21 87       	std	Z+9, r18	; 0x09
- 2d6:	32 87       	std	Z+10, r19	; 0x0a
-    /*
-     * Now see if we should adjust the number of events we are counting
-     * for each period.
-     */
-
-    if (period < MIN_PERIOD && log2ne < 20) {
- 2d8:	90 e1       	ldi	r25, 0x10	; 16
- 2da:	c9 16       	cp	r12, r25
- 2dc:	97 e2       	ldi	r25, 0x27	; 39
- 2de:	d9 06       	cpc	r13, r25
- 2e0:	e1 04       	cpc	r14, r1
- 2e2:	f1 04       	cpc	r15, r1
- 2e4:	08 f0       	brcs	.+2      	; 0x2e8 <__vector_11+0xd8>
- 2e6:	46 c0       	rjmp	.+140    	; 0x374 <__vector_11+0x164>
- 2e8:	84 31       	cpi	r24, 0x14	; 20
- 2ea:	08 f0       	brcs	.+2      	; 0x2ee <__vector_11+0xde>
- 2ec:	43 c0       	rjmp	.+134    	; 0x374 <__vector_11+0x164>
-	/*
-	 * Too short period. Count more events next time.
-	 */
-	do {
-	    log2ne++;
- 2ee:	8f 5f       	subi	r24, 0xFF	; 255
-	    period *= 2;
- 2f0:	44 0f       	add	r20, r20
- 2f2:	55 1f       	adc	r21, r21
- 2f4:	66 1f       	adc	r22, r22
- 2f6:	77 1f       	adc	r23, r23
-	} while (period < MIN_PERIOD && log2ne < 20);
- 2f8:	40 31       	cpi	r20, 0x10	; 16
- 2fa:	a7 e2       	ldi	r26, 0x27	; 39
- 2fc:	5a 07       	cpc	r21, r26
- 2fe:	61 05       	cpc	r22, r1
- 300:	71 05       	cpc	r23, r1
- 302:	18 f4       	brcc	.+6      	; 0x30a <__vector_11+0xfa>
- 304:	84 31       	cpi	r24, 0x14	; 20
- 306:	99 f7       	brne	.-26     	; 0x2ee <__vector_11+0xde>
- 308:	18 c0       	rjmp	.+48     	; 0x33a <__vector_11+0x12a>
-static volatile uint8_t counter_high;
-static volatile uint8_t cmp_high;
-
-static void inline set_timer_cmp_reg(uint8_t log2ne)
-{
-    if (log2ne <= 16) {
- 30a:	81 31       	cpi	r24, 0x11	; 17
- 30c:	b0 f4       	brcc	.+44     	; 0x33a <__vector_11+0x12a>
-	/*
-	 * Set up the counter from 2 up to 2^16 events.
-	 */
-	OCR1A = (1UL << log2ne) - 1;
- 30e:	c1 2c       	mov	r12, r1
- 310:	d1 2c       	mov	r13, r1
- 312:	76 01       	movw	r14, r12
- 314:	c3 94       	inc	r12
- 316:	08 2e       	mov	r0, r24
- 318:	04 c0       	rjmp	.+8      	; 0x322 <__vector_11+0x112>
- 31a:	cc 0c       	add	r12, r12
- 31c:	dd 1c       	adc	r13, r13
- 31e:	ee 1c       	adc	r14, r14
- 320:	ff 1c       	adc	r15, r15
- 322:	0a 94       	dec	r0
- 324:	d2 f7       	brpl	.-12     	; 0x31a <__vector_11+0x10a>
- 326:	b1 e0       	ldi	r27, 0x01	; 1
- 328:	cb 1a       	sub	r12, r27
- 32a:	d1 08       	sbc	r13, r1
- 32c:	d0 92 89 00 	sts	0x0089, r13	; 0x800089 <__TEXT_REGION_LENGTH__+0x7e0089>
- 330:	c0 92 88 00 	sts	0x0088, r12	; 0x800088 <__TEXT_REGION_LENGTH__+0x7e0088>
-	cmp_high = 0;
- 334:	10 92 2a 01 	sts	0x012A, r1	; 0x80012a <cmp_high>
- 338:	14 c0       	rjmp	.+40     	; 0x362 <__vector_11+0x152>
-    } else {
-	/*
-	 * Set up our extended counter to count more than
-	 * 2^16 events.
-	 */
-	OCR1A = 0xffff;
- 33a:	ef ef       	ldi	r30, 0xFF	; 255
- 33c:	ff ef       	ldi	r31, 0xFF	; 255
- 33e:	f0 93 89 00 	sts	0x0089, r31	; 0x800089 <__TEXT_REGION_LENGTH__+0x7e0089>
- 342:	e0 93 88 00 	sts	0x0088, r30	; 0x800088 <__TEXT_REGION_LENGTH__+0x7e0088>
-	cmp_high = (1 << (log2ne-16)) - 1;
- 346:	e1 e0       	ldi	r30, 0x01	; 1
- 348:	f0 e0       	ldi	r31, 0x00	; 0
- 34a:	90 ef       	ldi	r25, 0xF0	; 240
- 34c:	98 0f       	add	r25, r24
- 34e:	02 c0       	rjmp	.+4      	; 0x354 <__vector_11+0x144>
- 350:	ee 0f       	add	r30, r30
- 352:	ff 1f       	adc	r31, r31
- 354:	9a 95       	dec	r25
- 356:	e2 f7       	brpl	.-8      	; 0x350 <__vector_11+0x140>
- 358:	e1 50       	subi	r30, 0x01	; 1
- 35a:	e0 93 2a 01 	sts	0x012A, r30	; 0x80012a <cmp_high>
-	counter_high = 0;
- 35e:	10 92 2b 01 	sts	0x012B, r1	; 0x80012b <counter_high>
-	    period *= 2;
-	} while (period < MIN_PERIOD && log2ne < 20);
-	set_timer_cmp_reg(log2ne);
-	
-	//GIMSK = 0;
-	EIMSK = 0;
- 362:	1d ba       	out	0x1d, r1	; 29
-	
-	current = &fast_cnt;
- 364:	e1 e0       	ldi	r30, 0x01	; 1
- 366:	f1 e0       	ldi	r31, 0x01	; 1
- 368:	f0 93 31 01 	sts	0x0131, r31	; 0x800131 <current+0x1>
- 36c:	e0 93 30 01 	sts	0x0130, r30	; 0x800130 <current>
-	fast_cnt.current_log2num_events = log2ne;
- 370:	86 83       	std	Z+6, r24	; 0x06
- 372:	46 c0       	rjmp	.+140    	; 0x400 <__LOCK_REGION_LENGTH__>
-    } else if (period > MIN_PERIOD*3 && log2ne > 1) {
- 374:	41 33       	cpi	r20, 0x31	; 49
- 376:	95 e7       	ldi	r25, 0x75	; 117
- 378:	59 07       	cpc	r21, r25
- 37a:	61 05       	cpc	r22, r1
- 37c:	71 05       	cpc	r23, r1
- 37e:	08 f4       	brcc	.+2      	; 0x382 <__vector_11+0x172>
- 380:	80 c0       	rjmp	.+256    	; 0x482 <__LOCK_REGION_LENGTH__+0x82>
- 382:	82 30       	cpi	r24, 0x02	; 2
- 384:	08 f4       	brcc	.+2      	; 0x388 <__vector_11+0x178>
- 386:	75 c0       	rjmp	.+234    	; 0x472 <__LOCK_REGION_LENGTH__+0x72>
-	/*
-	 * Too long period. Count fewer events next time.
-	 */
-	do {
-	    log2ne--;
- 388:	81 50       	subi	r24, 0x01	; 1
-	    period /= 2;
- 38a:	76 95       	lsr	r23
- 38c:	67 95       	ror	r22
- 38e:	57 95       	ror	r21
- 390:	47 95       	ror	r20
-	} while (period > MIN_PERIOD*3 && log2ne > 1);
- 392:	41 33       	cpi	r20, 0x31	; 49
- 394:	a5 e7       	ldi	r26, 0x75	; 117
- 396:	5a 07       	cpc	r21, r26
- 398:	61 05       	cpc	r22, r1
- 39a:	71 05       	cpc	r23, r1
- 39c:	18 f0       	brcs	.+6      	; 0x3a4 <__vector_11+0x194>
- 39e:	81 30       	cpi	r24, 0x01	; 1
- 3a0:	99 f7       	brne	.-26     	; 0x388 <__vector_11+0x178>
- 3a2:	02 c0       	rjmp	.+4      	; 0x3a8 <__vector_11+0x198>
-static volatile uint8_t counter_high;
-static volatile uint8_t cmp_high;
-
-static void inline set_timer_cmp_reg(uint8_t log2ne)
-{
-    if (log2ne <= 16) {
- 3a4:	81 31       	cpi	r24, 0x11	; 17
- 3a6:	b0 f4       	brcc	.+44     	; 0x3d4 <__vector_11+0x1c4>
-	/*
-	 * Set up the counter from 2 up to 2^16 events.
-	 */
-	OCR1A = (1UL << log2ne) - 1;
- 3a8:	c1 2c       	mov	r12, r1
- 3aa:	d1 2c       	mov	r13, r1
- 3ac:	76 01       	movw	r14, r12
- 3ae:	c3 94       	inc	r12
- 3b0:	08 2e       	mov	r0, r24
- 3b2:	04 c0       	rjmp	.+8      	; 0x3bc <__vector_11+0x1ac>
- 3b4:	cc 0c       	add	r12, r12
- 3b6:	dd 1c       	adc	r13, r13
- 3b8:	ee 1c       	adc	r14, r14
- 3ba:	ff 1c       	adc	r15, r15
- 3bc:	0a 94       	dec	r0
- 3be:	d2 f7       	brpl	.-12     	; 0x3b4 <__vector_11+0x1a4>
- 3c0:	b1 e0       	ldi	r27, 0x01	; 1
- 3c2:	cb 1a       	sub	r12, r27
- 3c4:	d1 08       	sbc	r13, r1
- 3c6:	d0 92 89 00 	sts	0x0089, r13	; 0x800089 <__TEXT_REGION_LENGTH__+0x7e0089>
- 3ca:	c0 92 88 00 	sts	0x0088, r12	; 0x800088 <__TEXT_REGION_LENGTH__+0x7e0088>
-	cmp_high = 0;
- 3ce:	10 92 2a 01 	sts	0x012A, r1	; 0x80012a <cmp_high>
- 3d2:	14 c0       	rjmp	.+40     	; 0x3fc <__vector_11+0x1ec>
-    } else {
-	/*
-	 * Set up our extended counter to count more than
-	 * 2^16 events.
-	 */
-	OCR1A = 0xffff;
- 3d4:	ef ef       	ldi	r30, 0xFF	; 255
- 3d6:	ff ef       	ldi	r31, 0xFF	; 255
- 3d8:	f0 93 89 00 	sts	0x0089, r31	; 0x800089 <__TEXT_REGION_LENGTH__+0x7e0089>
- 3dc:	e0 93 88 00 	sts	0x0088, r30	; 0x800088 <__TEXT_REGION_LENGTH__+0x7e0088>
-	cmp_high = (1 << (log2ne-16)) - 1;
- 3e0:	e1 e0       	ldi	r30, 0x01	; 1
- 3e2:	f0 e0       	ldi	r31, 0x00	; 0
- 3e4:	90 ef       	ldi	r25, 0xF0	; 240
- 3e6:	98 0f       	add	r25, r24
- 3e8:	02 c0       	rjmp	.+4      	; 0x3ee <__vector_11+0x1de>
- 3ea:	ee 0f       	add	r30, r30
- 3ec:	ff 1f       	adc	r31, r31
- 3ee:	9a 95       	dec	r25
- 3f0:	e2 f7       	brpl	.-8      	; 0x3ea <__vector_11+0x1da>
- 3f2:	e1 50       	subi	r30, 0x01	; 1
- 3f4:	e0 93 2a 01 	sts	0x012A, r30	; 0x80012a <cmp_high>
-	counter_high = 0;
- 3f8:	10 92 2b 01 	sts	0x012B, r1	; 0x80012b <counter_high>
-	do {
-	    log2ne--;
-	    period /= 2;
-	} while (period > MIN_PERIOD*3 && log2ne > 1);
-	set_timer_cmp_reg(log2ne);
-	fast_cnt.current_log2num_events = log2ne;
- 3fc:	80 93 07 01 	sts	0x0107, r24	; 0x800107 <fast_cnt+0x6>
-
-    /*
-     * Check if we should change mode.
-     */
-
-    if (current == &fast_cnt) {
- 400:	e0 91 30 01 	lds	r30, 0x0130	; 0x800130 <current>
- 404:	f0 91 31 01 	lds	r31, 0x0131	; 0x800131 <current+0x1>
- 408:	e1 50       	subi	r30, 0x01	; 1
- 40a:	f1 40       	sbci	r31, 0x01	; 1
- 40c:	e9 f4       	brne	.+58     	; 0x448 <__LOCK_REGION_LENGTH__+0x48>
-	if (period > MIN_PERIOD*3 && log2ne == 1) {
- 40e:	41 33       	cpi	r20, 0x31	; 49
- 410:	a5 e7       	ldi	r26, 0x75	; 117
- 412:	5a 07       	cpc	r21, r26
- 414:	61 05       	cpc	r22, r1
- 416:	71 05       	cpc	r23, r1
- 418:	d8 f1       	brcs	.+118    	; 0x490 <__LOCK_REGION_LENGTH__+0x90>
- 41a:	81 30       	cpi	r24, 0x01	; 1
- 41c:	c9 f5       	brne	.+114    	; 0x490 <__LOCK_REGION_LENGTH__+0x90>
-	    /*
-	     * Too long period. Switch to slow mode.
-	     */
-		//GIMSK = _BV(INT0);
-		EIMSK = _BV(INT0);
- 41e:	8d bb       	out	0x1d, r24	; 29
-		
-	    slow_cnt.period = period / 2;
- 420:	76 95       	lsr	r23
- 422:	67 95       	ror	r22
- 424:	57 95       	ror	r21
- 426:	47 95       	ror	r20
- 428:	ec e0       	ldi	r30, 0x0C	; 12
- 42a:	f1 e0       	ldi	r31, 0x01	; 1
- 42c:	40 83       	st	Z, r20
- 42e:	51 83       	std	Z+1, r21	; 0x01
- 430:	62 83       	std	Z+2, r22	; 0x02
- 432:	73 83       	std	Z+3, r23	; 0x03
-	    slow_cnt.prev_ticks = ticks;
- 434:	07 83       	std	Z+7, r16	; 0x07
- 436:	10 87       	std	Z+8, r17	; 0x08
- 438:	21 87       	std	Z+9, r18	; 0x09
- 43a:	32 87       	std	Z+10, r19	; 0x0a
-	    slow_cnt.first_time = 1;
- 43c:	85 83       	std	Z+5, r24	; 0x05
-	    current = &slow_cnt;
- 43e:	f0 93 31 01 	sts	0x0131, r31	; 0x800131 <current+0x1>
- 442:	e0 93 30 01 	sts	0x0130, r30	; 0x800130 <current>
- 446:	24 c0       	rjmp	.+72     	; 0x490 <__LOCK_REGION_LENGTH__+0x90>
-	}
-    } else if (slow_cnt.period < MIN_PERIOD) {
- 448:	80 91 0c 01 	lds	r24, 0x010C	; 0x80010c <slow_cnt>
- 44c:	90 91 0d 01 	lds	r25, 0x010D	; 0x80010d <slow_cnt+0x1>
- 450:	a0 91 0e 01 	lds	r26, 0x010E	; 0x80010e <slow_cnt+0x2>
- 454:	b0 91 0f 01 	lds	r27, 0x010F	; 0x80010f <slow_cnt+0x3>
- 458:	80 31       	cpi	r24, 0x10	; 16
- 45a:	97 42       	sbci	r25, 0x27	; 39
- 45c:	a1 05       	cpc	r26, r1
- 45e:	b1 05       	cpc	r27, r1
- 460:	b8 f4       	brcc	.+46     	; 0x490 <__LOCK_REGION_LENGTH__+0x90>
-	/*
-	 * Running too fast for slow mode. Switch to fast mode.
-	 */
-	//GIMSK = 0;
-	EIMSK = 0;
- 462:	1d ba       	out	0x1d, r1	; 29
-	
-	current = &fast_cnt;
- 464:	81 e0       	ldi	r24, 0x01	; 1
- 466:	91 e0       	ldi	r25, 0x01	; 1
- 468:	90 93 31 01 	sts	0x0131, r25	; 0x800131 <current+0x1>
- 46c:	80 93 30 01 	sts	0x0130, r24	; 0x800130 <current>
- 470:	0f c0       	rjmp	.+30     	; 0x490 <__LOCK_REGION_LENGTH__+0x90>
-
-    /*
-     * Check if we should change mode.
-     */
-
-    if (current == &fast_cnt) {
- 472:	e0 91 30 01 	lds	r30, 0x0130	; 0x800130 <current>
- 476:	f0 91 31 01 	lds	r31, 0x0131	; 0x800131 <current+0x1>
- 47a:	e1 50       	subi	r30, 0x01	; 1
- 47c:	f1 40       	sbci	r31, 0x01	; 1
- 47e:	21 f7       	brne	.-56     	; 0x448 <__LOCK_REGION_LENGTH__+0x48>
- 480:	cc cf       	rjmp	.-104    	; 0x41a <__LOCK_REGION_LENGTH__+0x1a>
- 482:	80 91 30 01 	lds	r24, 0x0130	; 0x800130 <current>
- 486:	90 91 31 01 	lds	r25, 0x0131	; 0x800131 <current+0x1>
- 48a:	81 50       	subi	r24, 0x01	; 1
- 48c:	91 40       	sbci	r25, 0x01	; 1
- 48e:	e1 f6       	brne	.-72     	; 0x448 <__LOCK_REGION_LENGTH__+0x48>
-	//GIMSK = 0;
-	EIMSK = 0;
-	
-	current = &fast_cnt;
-    }
-}
- 490:	ff 91       	pop	r31
- 492:	ef 91       	pop	r30
- 494:	bf 91       	pop	r27
- 496:	af 91       	pop	r26
- 498:	9f 91       	pop	r25
- 49a:	8f 91       	pop	r24
- 49c:	7f 91       	pop	r23
- 49e:	6f 91       	pop	r22
- 4a0:	5f 91       	pop	r21
- 4a2:	4f 91       	pop	r20
- 4a4:	3f 91       	pop	r19
- 4a6:	2f 91       	pop	r18
- 4a8:	1f 91       	pop	r17
- 4aa:	0f 91       	pop	r16
- 4ac:	ff 90       	pop	r15
- 4ae:	ef 90       	pop	r14
- 4b0:	df 90       	pop	r13
- 4b2:	cf 90       	pop	r12
- 4b4:	0f 90       	pop	r0
- 4b6:	0f be       	out	0x3f, r0	; 63
- 4b8:	0f 90       	pop	r0
- 4ba:	1f 90       	pop	r1
- 4bc:	18 95       	reti
-
-000004be <getTicksT0>:
-///////////////////////////////////////////////////////////////////////////////
-
-
-
-void getTicksT0(char *buff)
-{
- 4be:	0f 93       	push	r16
- 4c0:	1f 93       	push	r17
- 4c2:	ac 01       	movw	r20, r24
-	static tick_t t = 0;
-
+ 1b0:	ac 01       	movw	r20, r24
+	unsigned long val = 0;
 
 	cli();
- 4c4:	f8 94       	cli
-static tick_t cli_ticks(void)
-{
-    uint8_t t;
-    tick_t m;
-
-    m = timer0_overflow_count;
- 4c6:	00 91 2c 01 	lds	r16, 0x012C	; 0x80012c <timer0_overflow_count>
- 4ca:	10 91 2d 01 	lds	r17, 0x012D	; 0x80012d <timer0_overflow_count+0x1>
- 4ce:	20 91 2e 01 	lds	r18, 0x012E	; 0x80012e <timer0_overflow_count+0x2>
- 4d2:	30 91 2f 01 	lds	r19, 0x012F	; 0x80012f <timer0_overflow_count+0x3>
-    t = TCNT0;  // Timer data
- 4d6:	96 b5       	in	r25, 0x26	; 38
-	//todo why do we have this line ? We are here from ISR T1
-    if (TIFR0 & _BV(TOV0) && t < 255) { // Timer Interrupt Flag Register (TIFR0), The Timer/Counter Overflow Flag (TOV0)
- 4d8:	a8 9b       	sbis	0x15, 0	; 21
- 4da:	06 c0       	rjmp	.+12     	; 0x4e8 <getTicksT0+0x2a>
- 4dc:	9f 3f       	cpi	r25, 0xFF	; 255
- 4de:	21 f0       	breq	.+8      	; 0x4e8 <getTicksT0+0x2a>
-		m++;
- 4e0:	0f 5f       	subi	r16, 0xFF	; 255
- 4e2:	1f 4f       	sbci	r17, 0xFF	; 255
- 4e4:	2f 4f       	sbci	r18, 0xFF	; 255
- 4e6:	3f 4f       	sbci	r19, 0xFF	; 255
-    }
-    return (m << 8) | t;
- 4e8:	32 2f       	mov	r19, r18
- 4ea:	21 2f       	mov	r18, r17
- 4ec:	10 2f       	mov	r17, r16
- 4ee:	00 27       	eor	r16, r16
- 4f0:	09 2b       	or	r16, r25
-{
-	static tick_t t = 0;
-
-
-	cli();
-	t = cli_ticks();
- 4f2:	00 93 26 01 	sts	0x0126, r16	; 0x800126 <__data_end>
- 4f6:	10 93 27 01 	sts	0x0127, r17	; 0x800127 <__data_end+0x1>
- 4fa:	20 93 28 01 	sts	0x0128, r18	; 0x800128 <__data_end+0x2>
- 4fe:	30 93 29 01 	sts	0x0129, r19	; 0x800129 <__data_end+0x3>
+ 1b2:	f8 94       	cli
+	val = tmr1_ovf_cnt;
+ 1b4:	60 91 1a 01 	lds	r22, 0x011A	; 0x80011a <__data_end>
+ 1b8:	70 91 1b 01 	lds	r23, 0x011B	; 0x80011b <__data_end+0x1>
+ 1bc:	80 91 1c 01 	lds	r24, 0x011C	; 0x80011c <__data_end+0x2>
+ 1c0:	90 91 1d 01 	lds	r25, 0x011D	; 0x80011d <__data_end+0x3>
 	sei();
- 502:	78 94       	sei
+ 1c4:	78 94       	sei
     } else if (__radix < 2 || __radix > 36) {
 	*__s = 0;
 	return __s;
     } else {
 	extern char *__ultoa_ncheck (unsigned long, char *, unsigned char);
 	return __ultoa_ncheck (__val, __s, __radix);
- 504:	60 91 26 01 	lds	r22, 0x0126	; 0x800126 <__data_end>
- 508:	70 91 27 01 	lds	r23, 0x0127	; 0x800127 <__data_end+0x1>
- 50c:	80 91 28 01 	lds	r24, 0x0128	; 0x800128 <__data_end+0x2>
- 510:	90 91 29 01 	lds	r25, 0x0129	; 0x800129 <__data_end+0x3>
- 514:	2a e0       	ldi	r18, 0x0A	; 10
- 516:	0e 94 72 03 	call	0x6e4	; 0x6e4 <__ultoa_ncheck>
-	//
-	// char * ultoa(unsigned long val, char * s, int radix)
-	ultoa(t, buff, 10);
+ 1c6:	2a e0       	ldi	r18, 0x0A	; 10
+ 1c8:	0e 94 cb 01 	call	0x396	; 0x396 <__ultoa_ncheck>
+ 1cc:	08 95       	ret
 
-	
-}
- 51a:	1f 91       	pop	r17
- 51c:	0f 91       	pop	r16
- 51e:	08 95       	ret
-
-00000520 <HD44780_write_nibble>:
+000001ce <HD44780_write_nibble>:
   if (row > 1) {
     row = 1;
   }
 
   _delay_ms(5);  //todo: test is it necessary
   HD44780_command(HD44780_SETDDRAMADDR | (col + offsets[row]));
- 520:	e1 ee       	ldi	r30, 0xE1	; 225
- 522:	f4 e0       	ldi	r31, 0x04	; 4
- 524:	31 97       	sbiw	r30, 0x01	; 1
- 526:	f1 f7       	brne	.-4      	; 0x524 <HD44780_write_nibble+0x4>
- 528:	00 c0       	rjmp	.+0      	; 0x52a <HD44780_write_nibble+0xa>
- 52a:	00 00       	nop
- 52c:	98 b1       	in	r25, 0x08	; 8
- 52e:	90 7f       	andi	r25, 0xF0	; 240
- 530:	98 b9       	out	0x08, r25	; 8
- 532:	98 b1       	in	r25, 0x08	; 8
- 534:	8f 70       	andi	r24, 0x0F	; 15
- 536:	89 2b       	or	r24, r25
- 538:	88 b9       	out	0x08, r24	; 8
- 53a:	89 ef       	ldi	r24, 0xF9	; 249
- 53c:	90 e0       	ldi	r25, 0x00	; 0
- 53e:	01 97       	sbiw	r24, 0x01	; 1
- 540:	f1 f7       	brne	.-4      	; 0x53e <HD44780_write_nibble+0x1e>
- 542:	00 c0       	rjmp	.+0      	; 0x544 <HD44780_write_nibble+0x24>
- 544:	00 00       	nop
- 546:	44 98       	cbi	0x08, 4	; 8
- 548:	e9 ef       	ldi	r30, 0xF9	; 249
- 54a:	f0 e0       	ldi	r31, 0x00	; 0
- 54c:	31 97       	sbiw	r30, 0x01	; 1
- 54e:	f1 f7       	brne	.-4      	; 0x54c <HD44780_write_nibble+0x2c>
- 550:	00 c0       	rjmp	.+0      	; 0x552 <HD44780_write_nibble+0x32>
- 552:	00 00       	nop
- 554:	44 9a       	sbi	0x08, 4	; 8
- 556:	89 ef       	ldi	r24, 0xF9	; 249
- 558:	90 e0       	ldi	r25, 0x00	; 0
- 55a:	01 97       	sbiw	r24, 0x01	; 1
- 55c:	f1 f7       	brne	.-4      	; 0x55a <HD44780_write_nibble+0x3a>
- 55e:	00 c0       	rjmp	.+0      	; 0x560 <HD44780_write_nibble+0x40>
- 560:	00 00       	nop
- 562:	44 98       	cbi	0x08, 4	; 8
- 564:	e9 ef       	ldi	r30, 0xF9	; 249
- 566:	f0 e0       	ldi	r31, 0x00	; 0
- 568:	31 97       	sbiw	r30, 0x01	; 1
- 56a:	f1 f7       	brne	.-4      	; 0x568 <HD44780_write_nibble+0x48>
- 56c:	00 c0       	rjmp	.+0      	; 0x56e <HD44780_write_nibble+0x4e>
- 56e:	00 00       	nop
- 570:	08 95       	ret
+ 1ce:	e1 ee       	ldi	r30, 0xE1	; 225
+ 1d0:	f4 e0       	ldi	r31, 0x04	; 4
+ 1d2:	31 97       	sbiw	r30, 0x01	; 1
+ 1d4:	f1 f7       	brne	.-4      	; 0x1d2 <HD44780_write_nibble+0x4>
+ 1d6:	00 c0       	rjmp	.+0      	; 0x1d8 <HD44780_write_nibble+0xa>
+ 1d8:	00 00       	nop
+ 1da:	98 b1       	in	r25, 0x08	; 8
+ 1dc:	90 7f       	andi	r25, 0xF0	; 240
+ 1de:	98 b9       	out	0x08, r25	; 8
+ 1e0:	98 b1       	in	r25, 0x08	; 8
+ 1e2:	8f 70       	andi	r24, 0x0F	; 15
+ 1e4:	89 2b       	or	r24, r25
+ 1e6:	88 b9       	out	0x08, r24	; 8
+ 1e8:	89 ef       	ldi	r24, 0xF9	; 249
+ 1ea:	90 e0       	ldi	r25, 0x00	; 0
+ 1ec:	01 97       	sbiw	r24, 0x01	; 1
+ 1ee:	f1 f7       	brne	.-4      	; 0x1ec <HD44780_write_nibble+0x1e>
+ 1f0:	00 c0       	rjmp	.+0      	; 0x1f2 <HD44780_write_nibble+0x24>
+ 1f2:	00 00       	nop
+ 1f4:	44 98       	cbi	0x08, 4	; 8
+ 1f6:	e9 ef       	ldi	r30, 0xF9	; 249
+ 1f8:	f0 e0       	ldi	r31, 0x00	; 0
+ 1fa:	31 97       	sbiw	r30, 0x01	; 1
+ 1fc:	f1 f7       	brne	.-4      	; 0x1fa <HD44780_write_nibble+0x2c>
+ 1fe:	00 c0       	rjmp	.+0      	; 0x200 <HD44780_write_nibble+0x32>
+ 200:	00 00       	nop
+ 202:	44 9a       	sbi	0x08, 4	; 8
+ 204:	89 ef       	ldi	r24, 0xF9	; 249
+ 206:	90 e0       	ldi	r25, 0x00	; 0
+ 208:	01 97       	sbiw	r24, 0x01	; 1
+ 20a:	f1 f7       	brne	.-4      	; 0x208 <HD44780_write_nibble+0x3a>
+ 20c:	00 c0       	rjmp	.+0      	; 0x20e <HD44780_write_nibble+0x40>
+ 20e:	00 00       	nop
+ 210:	44 98       	cbi	0x08, 4	; 8
+ 212:	e9 ef       	ldi	r30, 0xF9	; 249
+ 214:	f0 e0       	ldi	r31, 0x00	; 0
+ 216:	31 97       	sbiw	r30, 0x01	; 1
+ 218:	f1 f7       	brne	.-4      	; 0x216 <HD44780_write_nibble+0x48>
+ 21a:	00 c0       	rjmp	.+0      	; 0x21c <HD44780_write_nibble+0x4e>
+ 21c:	00 00       	nop
+ 21e:	08 95       	ret
 
-00000572 <HD44780_send>:
- 572:	cf 93       	push	r28
- 574:	c8 2f       	mov	r28, r24
- 576:	89 ef       	ldi	r24, 0xF9	; 249
- 578:	90 e0       	ldi	r25, 0x00	; 0
- 57a:	01 97       	sbiw	r24, 0x01	; 1
- 57c:	f1 f7       	brne	.-4      	; 0x57a <HD44780_send+0x8>
- 57e:	00 c0       	rjmp	.+0      	; 0x580 <HD44780_send+0xe>
- 580:	00 00       	nop
- 582:	66 23       	and	r22, r22
- 584:	11 f0       	breq	.+4      	; 0x58a <HD44780_send+0x18>
- 586:	45 9a       	sbi	0x08, 5	; 8
- 588:	01 c0       	rjmp	.+2      	; 0x58c <HD44780_send+0x1a>
- 58a:	45 98       	cbi	0x08, 5	; 8
- 58c:	89 ef       	ldi	r24, 0xF9	; 249
- 58e:	90 e0       	ldi	r25, 0x00	; 0
- 590:	01 97       	sbiw	r24, 0x01	; 1
- 592:	f1 f7       	brne	.-4      	; 0x590 <HD44780_send+0x1e>
- 594:	00 c0       	rjmp	.+0      	; 0x596 <HD44780_send+0x24>
- 596:	00 00       	nop
- 598:	28 98       	cbi	0x05, 0	; 5
- 59a:	89 ef       	ldi	r24, 0xF9	; 249
- 59c:	90 e0       	ldi	r25, 0x00	; 0
- 59e:	01 97       	sbiw	r24, 0x01	; 1
- 5a0:	f1 f7       	brne	.-4      	; 0x59e <HD44780_send+0x2c>
- 5a2:	00 c0       	rjmp	.+0      	; 0x5a4 <HD44780_send+0x32>
- 5a4:	00 00       	nop
- 5a6:	8c 2f       	mov	r24, r28
- 5a8:	82 95       	swap	r24
- 5aa:	8f 70       	andi	r24, 0x0F	; 15
- 5ac:	0e 94 90 02 	call	0x520	; 0x520 <HD44780_write_nibble>
- 5b0:	81 ee       	ldi	r24, 0xE1	; 225
- 5b2:	94 e0       	ldi	r25, 0x04	; 4
- 5b4:	01 97       	sbiw	r24, 0x01	; 1
- 5b6:	f1 f7       	brne	.-4      	; 0x5b4 <HD44780_send+0x42>
- 5b8:	00 c0       	rjmp	.+0      	; 0x5ba <HD44780_send+0x48>
- 5ba:	00 00       	nop
- 5bc:	8c 2f       	mov	r24, r28
- 5be:	0e 94 90 02 	call	0x520	; 0x520 <HD44780_write_nibble>
- 5c2:	cf 91       	pop	r28
- 5c4:	08 95       	ret
+00000220 <HD44780_send>:
+ 220:	cf 93       	push	r28
+ 222:	c8 2f       	mov	r28, r24
+ 224:	89 ef       	ldi	r24, 0xF9	; 249
+ 226:	90 e0       	ldi	r25, 0x00	; 0
+ 228:	01 97       	sbiw	r24, 0x01	; 1
+ 22a:	f1 f7       	brne	.-4      	; 0x228 <HD44780_send+0x8>
+ 22c:	00 c0       	rjmp	.+0      	; 0x22e <HD44780_send+0xe>
+ 22e:	00 00       	nop
+ 230:	66 23       	and	r22, r22
+ 232:	11 f0       	breq	.+4      	; 0x238 <HD44780_send+0x18>
+ 234:	45 9a       	sbi	0x08, 5	; 8
+ 236:	01 c0       	rjmp	.+2      	; 0x23a <HD44780_send+0x1a>
+ 238:	45 98       	cbi	0x08, 5	; 8
+ 23a:	89 ef       	ldi	r24, 0xF9	; 249
+ 23c:	90 e0       	ldi	r25, 0x00	; 0
+ 23e:	01 97       	sbiw	r24, 0x01	; 1
+ 240:	f1 f7       	brne	.-4      	; 0x23e <HD44780_send+0x1e>
+ 242:	00 c0       	rjmp	.+0      	; 0x244 <HD44780_send+0x24>
+ 244:	00 00       	nop
+ 246:	28 98       	cbi	0x05, 0	; 5
+ 248:	89 ef       	ldi	r24, 0xF9	; 249
+ 24a:	90 e0       	ldi	r25, 0x00	; 0
+ 24c:	01 97       	sbiw	r24, 0x01	; 1
+ 24e:	f1 f7       	brne	.-4      	; 0x24c <HD44780_send+0x2c>
+ 250:	00 c0       	rjmp	.+0      	; 0x252 <HD44780_send+0x32>
+ 252:	00 00       	nop
+ 254:	8c 2f       	mov	r24, r28
+ 256:	82 95       	swap	r24
+ 258:	8f 70       	andi	r24, 0x0F	; 15
+ 25a:	0e 94 e7 00 	call	0x1ce	; 0x1ce <HD44780_write_nibble>
+ 25e:	81 ee       	ldi	r24, 0xE1	; 225
+ 260:	94 e0       	ldi	r25, 0x04	; 4
+ 262:	01 97       	sbiw	r24, 0x01	; 1
+ 264:	f1 f7       	brne	.-4      	; 0x262 <HD44780_send+0x42>
+ 266:	00 c0       	rjmp	.+0      	; 0x268 <HD44780_send+0x48>
+ 268:	00 00       	nop
+ 26a:	8c 2f       	mov	r24, r28
+ 26c:	0e 94 e7 00 	call	0x1ce	; 0x1ce <HD44780_write_nibble>
+ 270:	cf 91       	pop	r28
+ 272:	08 95       	ret
 
-000005c6 <HD44780_command>:
- 5c6:	60 e0       	ldi	r22, 0x00	; 0
- 5c8:	0e 94 b9 02 	call	0x572	; 0x572 <HD44780_send>
- 5cc:	08 95       	ret
+00000274 <HD44780_command>:
+ 274:	60 e0       	ldi	r22, 0x00	; 0
+ 276:	0e 94 10 01 	call	0x220	; 0x220 <HD44780_send>
+ 27a:	08 95       	ret
 
-000005ce <HD44780_write>:
- 5ce:	61 e0       	ldi	r22, 0x01	; 1
- 5d0:	0e 94 b9 02 	call	0x572	; 0x572 <HD44780_send>
- 5d4:	08 95       	ret
+0000027c <HD44780_write>:
+ 27c:	61 e0       	ldi	r22, 0x01	; 1
+ 27e:	0e 94 10 01 	call	0x220	; 0x220 <HD44780_send>
+ 282:	08 95       	ret
 
-000005d6 <HD44780_init>:
- 5d6:	3d 9a       	sbi	0x07, 5	; 7
- 5d8:	20 9a       	sbi	0x04, 0	; 4
- 5da:	3c 9a       	sbi	0x07, 4	; 7
- 5dc:	87 b1       	in	r24, 0x07	; 7
- 5de:	8f 60       	ori	r24, 0x0F	; 15
- 5e0:	87 b9       	out	0x07, r24	; 7
- 5e2:	85 ea       	ldi	r24, 0xA5	; 165
- 5e4:	9e e0       	ldi	r25, 0x0E	; 14
- 5e6:	01 97       	sbiw	r24, 0x01	; 1
- 5e8:	f1 f7       	brne	.-4      	; 0x5e6 <HD44780_init+0x10>
- 5ea:	00 c0       	rjmp	.+0      	; 0x5ec <HD44780_init+0x16>
- 5ec:	00 00       	nop
- 5ee:	44 98       	cbi	0x08, 4	; 8
- 5f0:	45 98       	cbi	0x08, 5	; 8
- 5f2:	28 98       	cbi	0x05, 0	; 5
- 5f4:	80 e0       	ldi	r24, 0x00	; 0
- 5f6:	94 e0       	ldi	r25, 0x04	; 4
- 5f8:	01 97       	sbiw	r24, 0x01	; 1
- 5fa:	f1 f7       	brne	.-4      	; 0x5f8 <HD44780_init+0x22>
- 5fc:	00 c0       	rjmp	.+0      	; 0x5fe <HD44780_init+0x28>
- 5fe:	00 00       	nop
- 600:	83 e0       	ldi	r24, 0x03	; 3
- 602:	0e 94 90 02 	call	0x520	; 0x520 <HD44780_write_nibble>
- 606:	81 ee       	ldi	r24, 0xE1	; 225
- 608:	94 e0       	ldi	r25, 0x04	; 4
- 60a:	01 97       	sbiw	r24, 0x01	; 1
- 60c:	f1 f7       	brne	.-4      	; 0x60a <HD44780_init+0x34>
- 60e:	00 c0       	rjmp	.+0      	; 0x610 <HD44780_init+0x3a>
- 610:	00 00       	nop
- 612:	83 e0       	ldi	r24, 0x03	; 3
- 614:	0e 94 90 02 	call	0x520	; 0x520 <HD44780_write_nibble>
- 618:	81 ee       	ldi	r24, 0xE1	; 225
- 61a:	94 e0       	ldi	r25, 0x04	; 4
- 61c:	01 97       	sbiw	r24, 0x01	; 1
- 61e:	f1 f7       	brne	.-4      	; 0x61c <HD44780_init+0x46>
- 620:	00 c0       	rjmp	.+0      	; 0x622 <HD44780_init+0x4c>
- 622:	00 00       	nop
- 624:	83 e0       	ldi	r24, 0x03	; 3
- 626:	0e 94 90 02 	call	0x520	; 0x520 <HD44780_write_nibble>
- 62a:	81 ee       	ldi	r24, 0xE1	; 225
- 62c:	94 e0       	ldi	r25, 0x04	; 4
- 62e:	01 97       	sbiw	r24, 0x01	; 1
- 630:	f1 f7       	brne	.-4      	; 0x62e <HD44780_init+0x58>
- 632:	00 c0       	rjmp	.+0      	; 0x634 <HD44780_init+0x5e>
- 634:	00 00       	nop
- 636:	82 e0       	ldi	r24, 0x02	; 2
- 638:	0e 94 90 02 	call	0x520	; 0x520 <HD44780_write_nibble>
- 63c:	88 e2       	ldi	r24, 0x28	; 40
- 63e:	0e 94 e3 02 	call	0x5c6	; 0x5c6 <HD44780_command>
- 642:	10 92 32 01 	sts	0x0132, r1	; 0x800132 <HD44780_displayparams>
- 646:	88 e0       	ldi	r24, 0x08	; 8
- 648:	0e 94 e3 02 	call	0x5c6	; 0x5c6 <HD44780_command>
- 64c:	08 95       	ret
+00000284 <HD44780_init>:
+ 284:	3d 9a       	sbi	0x07, 5	; 7
+ 286:	20 9a       	sbi	0x04, 0	; 4
+ 288:	3c 9a       	sbi	0x07, 4	; 7
+ 28a:	87 b1       	in	r24, 0x07	; 7
+ 28c:	8f 60       	ori	r24, 0x0F	; 15
+ 28e:	87 b9       	out	0x07, r24	; 7
+ 290:	85 ea       	ldi	r24, 0xA5	; 165
+ 292:	9e e0       	ldi	r25, 0x0E	; 14
+ 294:	01 97       	sbiw	r24, 0x01	; 1
+ 296:	f1 f7       	brne	.-4      	; 0x294 <HD44780_init+0x10>
+ 298:	00 c0       	rjmp	.+0      	; 0x29a <HD44780_init+0x16>
+ 29a:	00 00       	nop
+ 29c:	44 98       	cbi	0x08, 4	; 8
+ 29e:	45 98       	cbi	0x08, 5	; 8
+ 2a0:	28 98       	cbi	0x05, 0	; 5
+ 2a2:	80 e0       	ldi	r24, 0x00	; 0
+ 2a4:	94 e0       	ldi	r25, 0x04	; 4
+ 2a6:	01 97       	sbiw	r24, 0x01	; 1
+ 2a8:	f1 f7       	brne	.-4      	; 0x2a6 <HD44780_init+0x22>
+ 2aa:	00 c0       	rjmp	.+0      	; 0x2ac <HD44780_init+0x28>
+ 2ac:	00 00       	nop
+ 2ae:	83 e0       	ldi	r24, 0x03	; 3
+ 2b0:	0e 94 e7 00 	call	0x1ce	; 0x1ce <HD44780_write_nibble>
+ 2b4:	81 ee       	ldi	r24, 0xE1	; 225
+ 2b6:	94 e0       	ldi	r25, 0x04	; 4
+ 2b8:	01 97       	sbiw	r24, 0x01	; 1
+ 2ba:	f1 f7       	brne	.-4      	; 0x2b8 <HD44780_init+0x34>
+ 2bc:	00 c0       	rjmp	.+0      	; 0x2be <HD44780_init+0x3a>
+ 2be:	00 00       	nop
+ 2c0:	83 e0       	ldi	r24, 0x03	; 3
+ 2c2:	0e 94 e7 00 	call	0x1ce	; 0x1ce <HD44780_write_nibble>
+ 2c6:	81 ee       	ldi	r24, 0xE1	; 225
+ 2c8:	94 e0       	ldi	r25, 0x04	; 4
+ 2ca:	01 97       	sbiw	r24, 0x01	; 1
+ 2cc:	f1 f7       	brne	.-4      	; 0x2ca <HD44780_init+0x46>
+ 2ce:	00 c0       	rjmp	.+0      	; 0x2d0 <HD44780_init+0x4c>
+ 2d0:	00 00       	nop
+ 2d2:	83 e0       	ldi	r24, 0x03	; 3
+ 2d4:	0e 94 e7 00 	call	0x1ce	; 0x1ce <HD44780_write_nibble>
+ 2d8:	81 ee       	ldi	r24, 0xE1	; 225
+ 2da:	94 e0       	ldi	r25, 0x04	; 4
+ 2dc:	01 97       	sbiw	r24, 0x01	; 1
+ 2de:	f1 f7       	brne	.-4      	; 0x2dc <HD44780_init+0x58>
+ 2e0:	00 c0       	rjmp	.+0      	; 0x2e2 <HD44780_init+0x5e>
+ 2e2:	00 00       	nop
+ 2e4:	82 e0       	ldi	r24, 0x02	; 2
+ 2e6:	0e 94 e7 00 	call	0x1ce	; 0x1ce <HD44780_write_nibble>
+ 2ea:	88 e2       	ldi	r24, 0x28	; 40
+ 2ec:	0e 94 3a 01 	call	0x274	; 0x274 <HD44780_command>
+ 2f0:	10 92 24 01 	sts	0x0124, r1	; 0x800124 <HD44780_displayparams>
+ 2f4:	88 e0       	ldi	r24, 0x08	; 8
+ 2f6:	0e 94 3a 01 	call	0x274	; 0x274 <HD44780_command>
+ 2fa:	08 95       	ret
 
-0000064e <HD44780_on>:
- 64e:	80 91 32 01 	lds	r24, 0x0132	; 0x800132 <HD44780_displayparams>
- 652:	98 2f       	mov	r25, r24
- 654:	94 60       	ori	r25, 0x04	; 4
- 656:	90 93 32 01 	sts	0x0132, r25	; 0x800132 <HD44780_displayparams>
- 65a:	8c 60       	ori	r24, 0x0C	; 12
- 65c:	0e 94 e3 02 	call	0x5c6	; 0x5c6 <HD44780_command>
- 660:	08 95       	ret
+000002fc <HD44780_on>:
+ 2fc:	80 91 24 01 	lds	r24, 0x0124	; 0x800124 <HD44780_displayparams>
+ 300:	98 2f       	mov	r25, r24
+ 302:	94 60       	ori	r25, 0x04	; 4
+ 304:	90 93 24 01 	sts	0x0124, r25	; 0x800124 <HD44780_displayparams>
+ 308:	8c 60       	ori	r24, 0x0C	; 12
+ 30a:	0e 94 3a 01 	call	0x274	; 0x274 <HD44780_command>
+ 30e:	08 95       	ret
 
-00000662 <HD44780_clear>:
- 662:	81 e0       	ldi	r24, 0x01	; 1
- 664:	0e 94 e3 02 	call	0x5c6	; 0x5c6 <HD44780_command>
- 668:	83 ed       	ldi	r24, 0xD3	; 211
- 66a:	90 e3       	ldi	r25, 0x30	; 48
- 66c:	01 97       	sbiw	r24, 0x01	; 1
- 66e:	f1 f7       	brne	.-4      	; 0x66c <HD44780_clear+0xa>
- 670:	00 c0       	rjmp	.+0      	; 0x672 <HD44780_clear+0x10>
- 672:	00 00       	nop
- 674:	08 95       	ret
+00000310 <HD44780_clear>:
+ 310:	81 e0       	ldi	r24, 0x01	; 1
+ 312:	0e 94 3a 01 	call	0x274	; 0x274 <HD44780_command>
+ 316:	83 ed       	ldi	r24, 0xD3	; 211
+ 318:	90 e3       	ldi	r25, 0x30	; 48
+ 31a:	01 97       	sbiw	r24, 0x01	; 1
+ 31c:	f1 f7       	brne	.-4      	; 0x31a <HD44780_clear+0xa>
+ 31e:	00 c0       	rjmp	.+0      	; 0x320 <HD44780_clear+0x10>
+ 320:	00 00       	nop
+ 322:	08 95       	ret
 
-00000676 <HD44780_puts>:
+00000324 <HD44780_puts>:
 }
 
 void HD44780_puts(char *string) {
- 676:	cf 93       	push	r28
- 678:	df 93       	push	r29
- 67a:	ec 01       	movw	r28, r24
+ 324:	cf 93       	push	r28
+ 326:	df 93       	push	r29
+ 328:	ec 01       	movw	r28, r24
   for (char *it = string; *it; it++) {
- 67c:	88 81       	ld	r24, Y
- 67e:	88 23       	and	r24, r24
- 680:	31 f0       	breq	.+12     	; 0x68e <HD44780_puts+0x18>
- 682:	21 96       	adiw	r28, 0x01	; 1
+ 32a:	88 81       	ld	r24, Y
+ 32c:	88 23       	and	r24, r24
+ 32e:	31 f0       	breq	.+12     	; 0x33c <HD44780_puts+0x18>
+ 330:	21 96       	adiw	r28, 0x01	; 1
 	//_delay_ms(2);   // seems to be not necessary, but in case something is wrong add it
     HD44780_write(*it);
- 684:	0e 94 e7 02 	call	0x5ce	; 0x5ce <HD44780_write>
+ 332:	0e 94 3e 01 	call	0x27c	; 0x27c <HD44780_write>
   _delay_ms(5);  //todo: test is it necessary
   HD44780_command(HD44780_SETDDRAMADDR | (col + offsets[row]));
 }
 
 void HD44780_puts(char *string) {
   for (char *it = string; *it; it++) {
- 688:	89 91       	ld	r24, Y+
- 68a:	81 11       	cpse	r24, r1
- 68c:	fb cf       	rjmp	.-10     	; 0x684 <HD44780_puts+0xe>
+ 336:	89 91       	ld	r24, Y+
+ 338:	81 11       	cpse	r24, r1
+ 33a:	fb cf       	rjmp	.-10     	; 0x332 <HD44780_puts+0xe>
 	//_delay_ms(2);   // seems to be not necessary, but in case something is wrong add it
     HD44780_write(*it);
   }
 }
- 68e:	df 91       	pop	r29
- 690:	cf 91       	pop	r28
- 692:	08 95       	ret
+ 33c:	df 91       	pop	r29
+ 33e:	cf 91       	pop	r28
+ 340:	08 95       	ret
 
-00000694 <main>:
+00000342 <main>:
     //_delay_ms(100);		// Wait for stable power 
     //init_time_keeping();
     //init_event_counting();
     //sei();
 
 	HD44780_init();
- 694:	0e 94 eb 02 	call	0x5d6	; 0x5d6 <HD44780_init>
+ 342:	0e 94 42 01 	call	0x284	; 0x284 <HD44780_init>
 	HD44780_on();
- 698:	0e 94 27 03 	call	0x64e	; 0x64e <HD44780_on>
+ 346:	0e 94 7e 01 	call	0x2fc	; 0x2fc <HD44780_on>
 	HD44780_clear();
- 69c:	0e 94 31 03 	call	0x662	; 0x662 <HD44780_clear>
+ 34a:	0e 94 88 01 	call	0x310	; 0x310 <HD44780_clear>
 	//HD44780_puts(buff_txt);
 	//HD44780_puts(msg);
 	
 	init_time_keeping();
- 6a0:	0e 94 53 00 	call	0xa6	; 0xa6 <init_time_keeping>
+ 34e:	0e 94 53 00 	call	0xa6	; 0xa6 <init_time_keeping>
+	init_event_counting();
+ 352:	0e 94 82 00 	call	0x104	; 0x104 <init_event_counting>
 	sei();
- 6a4:	78 94       	sei
+ 356:	78 94       	sei
 	
 	
 	for (;;) {
 //		_delay_ms(1000);
 
 		LCD_LED_SET;
- 6a6:	5f 9a       	sbi	0x0b, 7	; 11
+ 358:	5f 9a       	sbi	0x0b, 7	; 11
 	#else
 		//round up by default
 		__ticks_dc = (uint32_t)(ceil(fabs(__tmp)));
 	#endif
 
 	__builtin_avr_delay_cycles(__ticks_dc);
- 6a8:	2f ef       	ldi	r18, 0xFF	; 255
- 6aa:	89 e6       	ldi	r24, 0x69	; 105
- 6ac:	98 e1       	ldi	r25, 0x18	; 24
- 6ae:	21 50       	subi	r18, 0x01	; 1
- 6b0:	80 40       	sbci	r24, 0x00	; 0
- 6b2:	90 40       	sbci	r25, 0x00	; 0
- 6b4:	e1 f7       	brne	.-8      	; 0x6ae <main+0x1a>
- 6b6:	00 c0       	rjmp	.+0      	; 0x6b8 <main+0x24>
- 6b8:	00 00       	nop
-		_delay_ms(500);
+ 35a:	2f ef       	ldi	r18, 0xFF	; 255
+ 35c:	81 ee       	ldi	r24, 0xE1	; 225
+ 35e:	94 e0       	ldi	r25, 0x04	; 4
+ 360:	21 50       	subi	r18, 0x01	; 1
+ 362:	80 40       	sbci	r24, 0x00	; 0
+ 364:	90 40       	sbci	r25, 0x00	; 0
+ 366:	e1 f7       	brne	.-8      	; 0x360 <main+0x1e>
+ 368:	00 c0       	rjmp	.+0      	; 0x36a <main+0x28>
+ 36a:	00 00       	nop
+		_delay_ms(100);
 		LCD_LED_RESET;
- 6ba:	5f 98       	cbi	0x0b, 7	; 11
- 6bc:	2f ef       	ldi	r18, 0xFF	; 255
- 6be:	89 e6       	ldi	r24, 0x69	; 105
- 6c0:	98 e1       	ldi	r25, 0x18	; 24
- 6c2:	21 50       	subi	r18, 0x01	; 1
- 6c4:	80 40       	sbci	r24, 0x00	; 0
- 6c6:	90 40       	sbci	r25, 0x00	; 0
- 6c8:	e1 f7       	brne	.-8      	; 0x6c2 <main+0x2e>
- 6ca:	00 c0       	rjmp	.+0      	; 0x6cc <main+0x38>
- 6cc:	00 00       	nop
-		_delay_ms(500);
-
+ 36c:	5f 98       	cbi	0x0b, 7	; 11
+ 36e:	2f ef       	ldi	r18, 0xFF	; 255
+ 370:	81 ee       	ldi	r24, 0xE1	; 225
+ 372:	94 e0       	ldi	r25, 0x04	; 4
+ 374:	21 50       	subi	r18, 0x01	; 1
+ 376:	80 40       	sbci	r24, 0x00	; 0
+ 378:	90 40       	sbci	r25, 0x00	; 0
+ 37a:	e1 f7       	brne	.-8      	; 0x374 <main+0x32>
+ 37c:	00 c0       	rjmp	.+0      	; 0x37e <main+0x3c>
+ 37e:	00 00       	nop
+		_delay_ms(100);
 		
-		getTicksT0(buff_txt);
- 6ce:	87 e1       	ldi	r24, 0x17	; 23
- 6d0:	91 e0       	ldi	r25, 0x01	; 1
- 6d2:	0e 94 5f 02 	call	0x4be	; 0x4be <getTicksT0>
+		//getTicksT0(buff_txt);
+		getT1Counts(buff_txt);
+ 380:	8b e0       	ldi	r24, 0x0B	; 11
+ 382:	91 e0       	ldi	r25, 0x01	; 1
+ 384:	0e 94 d8 00 	call	0x1b0	; 0x1b0 <getT1Counts>
 
-//		HD44780_puts(buff_empty_txt);
-//		_delay_ms(20);
 		HD44780_clear();
- 6d6:	0e 94 31 03 	call	0x662	; 0x662 <HD44780_clear>
+ 388:	0e 94 88 01 	call	0x310	; 0x310 <HD44780_clear>
 		HD44780_puts(buff_txt);
- 6da:	87 e1       	ldi	r24, 0x17	; 23
- 6dc:	91 e0       	ldi	r25, 0x01	; 1
- 6de:	0e 94 3b 03 	call	0x676	; 0x676 <HD44780_puts>
+ 38c:	8b e0       	ldi	r24, 0x0B	; 11
+ 38e:	91 e0       	ldi	r25, 0x01	; 1
+ 390:	0e 94 92 01 	call	0x324	; 0x324 <HD44780_puts>
 	}
- 6e2:	e1 cf       	rjmp	.-62     	; 0x6a6 <main+0x12>
+ 394:	e1 cf       	rjmp	.-62     	; 0x358 <main+0x16>
 
-000006e4 <__ultoa_ncheck>:
- 6e4:	bb 27       	eor	r27, r27
+00000396 <__ultoa_ncheck>:
+ 396:	bb 27       	eor	r27, r27
 
-000006e6 <__ultoa_common>:
- 6e6:	fa 01       	movw	r30, r20
- 6e8:	a6 2f       	mov	r26, r22
- 6ea:	62 17       	cp	r22, r18
- 6ec:	71 05       	cpc	r23, r1
- 6ee:	81 05       	cpc	r24, r1
- 6f0:	91 05       	cpc	r25, r1
- 6f2:	33 0b       	sbc	r19, r19
- 6f4:	30 fb       	bst	r19, 0
- 6f6:	66 f0       	brts	.+24     	; 0x710 <__ultoa_common+0x2a>
- 6f8:	aa 27       	eor	r26, r26
- 6fa:	66 0f       	add	r22, r22
- 6fc:	77 1f       	adc	r23, r23
- 6fe:	88 1f       	adc	r24, r24
- 700:	99 1f       	adc	r25, r25
- 702:	aa 1f       	adc	r26, r26
- 704:	a2 17       	cp	r26, r18
- 706:	10 f0       	brcs	.+4      	; 0x70c <__ultoa_common+0x26>
- 708:	a2 1b       	sub	r26, r18
- 70a:	63 95       	inc	r22
- 70c:	38 50       	subi	r19, 0x08	; 8
- 70e:	a9 f7       	brne	.-22     	; 0x6fa <__ultoa_common+0x14>
- 710:	a0 5d       	subi	r26, 0xD0	; 208
- 712:	aa 33       	cpi	r26, 0x3A	; 58
- 714:	08 f0       	brcs	.+2      	; 0x718 <__ultoa_common+0x32>
- 716:	a9 5d       	subi	r26, 0xD9	; 217
- 718:	a1 93       	st	Z+, r26
- 71a:	36 f7       	brtc	.-52     	; 0x6e8 <__ultoa_common+0x2>
- 71c:	b1 11       	cpse	r27, r1
- 71e:	b1 93       	st	Z+, r27
- 720:	10 82       	st	Z, r1
- 722:	ca 01       	movw	r24, r20
- 724:	0c 94 94 03 	jmp	0x728	; 0x728 <strrev>
+00000398 <__ultoa_common>:
+ 398:	fa 01       	movw	r30, r20
+ 39a:	a6 2f       	mov	r26, r22
+ 39c:	62 17       	cp	r22, r18
+ 39e:	71 05       	cpc	r23, r1
+ 3a0:	81 05       	cpc	r24, r1
+ 3a2:	91 05       	cpc	r25, r1
+ 3a4:	33 0b       	sbc	r19, r19
+ 3a6:	30 fb       	bst	r19, 0
+ 3a8:	66 f0       	brts	.+24     	; 0x3c2 <__ultoa_common+0x2a>
+ 3aa:	aa 27       	eor	r26, r26
+ 3ac:	66 0f       	add	r22, r22
+ 3ae:	77 1f       	adc	r23, r23
+ 3b0:	88 1f       	adc	r24, r24
+ 3b2:	99 1f       	adc	r25, r25
+ 3b4:	aa 1f       	adc	r26, r26
+ 3b6:	a2 17       	cp	r26, r18
+ 3b8:	10 f0       	brcs	.+4      	; 0x3be <__ultoa_common+0x26>
+ 3ba:	a2 1b       	sub	r26, r18
+ 3bc:	63 95       	inc	r22
+ 3be:	38 50       	subi	r19, 0x08	; 8
+ 3c0:	a9 f7       	brne	.-22     	; 0x3ac <__ultoa_common+0x14>
+ 3c2:	a0 5d       	subi	r26, 0xD0	; 208
+ 3c4:	aa 33       	cpi	r26, 0x3A	; 58
+ 3c6:	08 f0       	brcs	.+2      	; 0x3ca <__ultoa_common+0x32>
+ 3c8:	a9 5d       	subi	r26, 0xD9	; 217
+ 3ca:	a1 93       	st	Z+, r26
+ 3cc:	36 f7       	brtc	.-52     	; 0x39a <__ultoa_common+0x2>
+ 3ce:	b1 11       	cpse	r27, r1
+ 3d0:	b1 93       	st	Z+, r27
+ 3d2:	10 82       	st	Z, r1
+ 3d4:	ca 01       	movw	r24, r20
+ 3d6:	0c 94 ed 01 	jmp	0x3da	; 0x3da <strrev>
 
-00000728 <strrev>:
- 728:	dc 01       	movw	r26, r24
- 72a:	fc 01       	movw	r30, r24
- 72c:	67 2f       	mov	r22, r23
- 72e:	71 91       	ld	r23, Z+
- 730:	77 23       	and	r23, r23
- 732:	e1 f7       	brne	.-8      	; 0x72c <strrev+0x4>
- 734:	32 97       	sbiw	r30, 0x02	; 2
- 736:	04 c0       	rjmp	.+8      	; 0x740 <strrev+0x18>
- 738:	7c 91       	ld	r23, X
- 73a:	6d 93       	st	X+, r22
- 73c:	70 83       	st	Z, r23
- 73e:	62 91       	ld	r22, -Z
- 740:	ae 17       	cp	r26, r30
- 742:	bf 07       	cpc	r27, r31
- 744:	c8 f3       	brcs	.-14     	; 0x738 <strrev+0x10>
- 746:	08 95       	ret
+000003da <strrev>:
+ 3da:	dc 01       	movw	r26, r24
+ 3dc:	fc 01       	movw	r30, r24
+ 3de:	67 2f       	mov	r22, r23
+ 3e0:	71 91       	ld	r23, Z+
+ 3e2:	77 23       	and	r23, r23
+ 3e4:	e1 f7       	brne	.-8      	; 0x3de <strrev+0x4>
+ 3e6:	32 97       	sbiw	r30, 0x02	; 2
+ 3e8:	04 c0       	rjmp	.+8      	; 0x3f2 <strrev+0x18>
+ 3ea:	7c 91       	ld	r23, X
+ 3ec:	6d 93       	st	X+, r22
+ 3ee:	70 83       	st	Z, r23
+ 3f0:	62 91       	ld	r22, -Z
+ 3f2:	ae 17       	cp	r26, r30
+ 3f4:	bf 07       	cpc	r27, r31
+ 3f6:	c8 f3       	brcs	.-14     	; 0x3ea <strrev+0x10>
+ 3f8:	08 95       	ret
 
-00000748 <_exit>:
- 748:	f8 94       	cli
+000003fa <_exit>:
+ 3fa:	f8 94       	cli
 
-0000074a <__stop_program>:
- 74a:	ff cf       	rjmp	.-2      	; 0x74a <__stop_program>
+000003fc <__stop_program>:
+ 3fc:	ff cf       	rjmp	.-2      	; 0x3fc <__stop_program>

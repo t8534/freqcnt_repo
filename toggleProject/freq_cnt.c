@@ -130,6 +130,8 @@ static volatile signed char fast_wd = WD_TOP;
 // Free running counter based on T0
 static volatile unsigned long timer0_overflow_count = 0;
 
+//todo: this is for tests only, remove after that
+static volatile unsigned long tmr1_ovf_cnt = 0;
 
 void FREQCNT_Init(void)
 {
@@ -534,7 +536,8 @@ void init_event_counting(void)  //todo after tests move back to static
 	////////////////////////////////////////////////////////////////////////
 	// Code related to atmega328p
 	////////////////////////////////////////////////////////////////////////
-	
+
+
 	//todo for pin ISR (slow freq algo)
 	
 	// Configure for INT0, but it could be INT6, INT3:0
@@ -570,7 +573,12 @@ void init_event_counting(void)  //todo after tests move back to static
 	// CS11 = 1
 	// CS10 = 0
 	TCCR1B = _BV(WGM12) | _BV(CS12) | _BV(CS11);
-	set_timer_cmp_reg(fast_cnt.current_log2num_events);  //todo: check is something to change inside
+	
+	//todo: For test purposes, replace setting 
+	//set_timer_cmp_reg(fast_cnt.current_log2num_events);  //todo: check is something to change inside
+	OCR1A = 0x04;  // todo: test, we will count only 4 ticks and than ISR
+	
+	
 	TCNT1 = 0;  // Clear data counter.
 
 	// If interrupts are globally enabled (I-flag in the Status Register is set),
@@ -583,15 +591,12 @@ void init_event_counting(void)  //todo after tests move back to static
 	// Alternatively, OCF1A can be cleared by writing a logic one to its bit location.
 	TIFR1 |= _BV(OCF1A);  // Clear the flag related on interrupt when OCR1A match TCNT1
 
-    /*
-     * Start up in slow mode. The interrupt handler for slow
-     * mode will shift to fast mode if the frequency is too high.
-     */
+    //
+    // Start up in slow mode. The interrupt handler for slow
+    // mode will shift to fast mode if the frequency is too high.
+    //
 
     current = &slow_cnt;
-
-	
-	
 	
 }
 
@@ -602,54 +607,62 @@ void init_event_counting(void)  //todo after tests move back to static
 //ISR(EXT_INT0_vect)
 ISR(INT0_vect)  // atmega328p
 {
+	// tests
+
+
+
+
+	//todo: this is orgi, for test purposes I switch it off
+/*	
     tick_t cs = cli_ticks();
-
     if (slow_cnt.first_time) {
-	/* We can't calculate a period because it's the first time. */
-	slow_cnt.first_time = 0;
-	slow_cnt.prev_ticks = cs;
+		// We can't calculate a period because it's the first time. 
+		slow_cnt.first_time = 0;
+		slow_cnt.prev_ticks = cs;
     } else {
-	/*
-	 * Calculate the length of period that just ended. We don't need
-	 * to update log2num_events since it is always 0 (= one event).
-	 */
-	tick_t period = cs - slow_cnt.prev_ticks;
-	slow_cnt.period = period;
-	slow_cnt.prev_ticks = cs;
+		//
+		// Calculate the length of period that just ended. We don't need
+		// to update log2num_events since it is always 0 (= one event).
+		//
+		tick_t period = cs - slow_cnt.prev_ticks;
+		slow_cnt.period = period;
+		slow_cnt.prev_ticks = cs;
 
-	/*
-	 * If the period is less than 100 ticks (320 us at 20Mhz), do
-	 * an emergency switch to fast counter mode. This is normally
-	 * handled by the interrupt routine for the fast mode, but if
-	 * the frequency rises quickly it might not react sufficiently
-	 * quickly. Note that the external pin interrupt has a higher
-	 * priority then any of the timer interrupts, so if the
-	 * incoming frequency is too high no other interrupt routine
-	 * than the external interrupt will ever be called.
-	 */
-	if (period < 100UL) {
+		//
+		// If the period is less than 100 ticks (320 us at 20Mhz), do
+		// an emergency switch to fast counter mode. This is normally
+		// handled by the interrupt routine for the fast mode, but if
+		// the frequency rises quickly it might not react sufficiently
+		// quickly. Note that the external pin interrupt has a higher
+		// priority then any of the timer interrupts, so if the
+		// incoming frequency is too high no other interrupt routine
+		// than the external interrupt will ever be called.
+		//
+		if (period < 100UL) {
 	    
-		//GIMSK = 0;
-		EIMSK = 0;
+			//GIMSK = 0;
+			EIMSK = 0;
 		
-	    fast_cnt.period = MAX_PERIOD;
-	    fast_cnt.first_time = 1;
-	    fast_cnt.current_log2num_events = 1;
-	    fast_cnt.prev_ticks = cs;
+			fast_cnt.period = MAX_PERIOD;
+			fast_cnt.first_time = 1;
+			fast_cnt.current_log2num_events = 1;
+			fast_cnt.prev_ticks = cs;
 		
-		// The Output Compare Registers contain a 16-bit value that is continuously compared with the
-		// counter value (TCNT1). A match can be used to generate an Output Compare interrupt, or to
-		// generate a waveform output on the OC1x pin.
-		// The Output Compare Registers are 16-bit in size. To ensure that both the high and low bytes are
-		// written simultaneously when the CPU writes to these registers, the access is performed using an
-		// 8-bit temporary high byte register (TEMP). This temporary register is shared by all the other 16-
-		// bit registers. See “Accessing 16-bit Registers” on page 105.
-	    OCR1A = (1 << fast_cnt.current_log2num_events) - 1;
+			// The Output Compare Registers contain a 16-bit value that is continuously compared with the
+			// counter value (TCNT1). A match can be used to generate an Output Compare interrupt, or to
+			// generate a waveform output on the OC1x pin.
+			// The Output Compare Registers are 16-bit in size. To ensure that both the high and low bytes are
+			// written simultaneously when the CPU writes to these registers, the access is performed using an
+			// 8-bit temporary high byte register (TEMP). This temporary register is shared by all the other 16-
+			// bit registers. See “Accessing 16-bit Registers” on page 105.
+			OCR1A = (1 << fast_cnt.current_log2num_events) - 1;
 
-	    TCNT1 = 0;
-	    current = &fast_cnt;
-	}
+			TCNT1 = 0;
+			current = &fast_cnt;
+		}
     }
+*/	
+	
 }
 
 /*
@@ -706,94 +719,103 @@ static void inline set_timer_cmp_reg(uint8_t log2ne)
 //ISR(TIM1_COMPA_vect)
 ISR(TIMER1_COMPA_vect)  //atmgea 328p 
 {
+	// tests
+	OCR1A = 0x04;  // todo: test, we will count only 4 ticks and than ISR
+	tmr1_ovf_cnt++;
+
+
+	//todo: temporary for test purposes switch it off
+/*
     tick_t ticks = cli_ticks();
 
     fast_wd = WD_TOP;
 
     if (counter_high++ != cmp_high) {
-	/*
-	 * Counter set up to count more than 2^16 events
-	 * (for high frequencies).
-	 */
-	return;
+		//
+		// Counter set up to count more than 2^16 events
+		// (for high frequencies).
+		//
+		return;
     }
     counter_high = 0;
 
     if (fast_cnt.first_time) {
-	/*
-	 * The very first time. We can't calculate a period.
-	 */
-	fast_cnt.first_time = 0;
-	fast_cnt.prev_ticks = ticks;
-	return;
+		//
+		// The very first time. We can't calculate a period.
+		//
+		fast_cnt.first_time = 0;
+		fast_cnt.prev_ticks = ticks;
+		return;
     }
 
-    /*
-     * Calculate the result for the period that was just finished.
-     */
+    //
+    // Calculate the result for the period that was just finished.
+    //
     uint8_t log2ne = fast_cnt.current_log2num_events;
     fast_cnt.log2num_events = log2ne;
     tick_t period = fast_cnt.period = ticks - fast_cnt.prev_ticks;
     fast_cnt.prev_ticks = ticks;
 
-    /*
-     * Now see if we should adjust the number of events we are counting
-     * for each period.
-     */
+    //
+    // Now see if we should adjust the number of events we are counting
+    // for each period.
+    //
 
     if (period < MIN_PERIOD && log2ne < 20) {
-	/*
-	 * Too short period. Count more events next time.
-	 */
-	do {
-	    log2ne++;
-	    period *= 2;
-	} while (period < MIN_PERIOD && log2ne < 20);
-	set_timer_cmp_reg(log2ne);
+		//
+		// Too short period. Count more events next time.
+		//
+		do {
+			log2ne++;
+			period *= 2;
+		} while (period < MIN_PERIOD && log2ne < 20);
+		set_timer_cmp_reg(log2ne);
 	
-	//GIMSK = 0;
-	EIMSK = 0;
+		//GIMSK = 0;
+		EIMSK = 0;
 	
-	current = &fast_cnt;
-	fast_cnt.current_log2num_events = log2ne;
+		current = &fast_cnt;
+		fast_cnt.current_log2num_events = log2ne;
     } else if (period > MIN_PERIOD*3 && log2ne > 1) {
-	/*
-	 * Too long period. Count fewer events next time.
-	 */
-	do {
-	    log2ne--;
-	    period /= 2;
-	} while (period > MIN_PERIOD*3 && log2ne > 1);
-	set_timer_cmp_reg(log2ne);
-	fast_cnt.current_log2num_events = log2ne;
+		//
+		// Too long period. Count fewer events next time.
+		//
+		do {
+			log2ne--;
+			period /= 2;
+		} while (period > MIN_PERIOD*3 && log2ne > 1);
+		set_timer_cmp_reg(log2ne);
+		fast_cnt.current_log2num_events = log2ne;
     }
 
-    /*
-     * Check if we should change mode.
-     */
+    //
+    // Check if we should change mode.
+    // 
 
     if (current == &fast_cnt) {
-	if (period > MIN_PERIOD*3 && log2ne == 1) {
-	    /*
-	     * Too long period. Switch to slow mode.
-	     */
-		//GIMSK = _BV(INT0);
-		EIMSK = _BV(INT0);
+		if (period > MIN_PERIOD*3 && log2ne == 1) {
+			//
+			// Too long period. Switch to slow mode.
+			//
+			//GIMSK = _BV(INT0);
+			EIMSK = _BV(INT0);
 		
-	    slow_cnt.period = period / 2;
-	    slow_cnt.prev_ticks = ticks;
-	    slow_cnt.first_time = 1;
-	    current = &slow_cnt;
-	}
+			slow_cnt.period = period / 2;
+			slow_cnt.prev_ticks = ticks;
+			slow_cnt.first_time = 1;
+			current = &slow_cnt;
+		}
     } else if (slow_cnt.period < MIN_PERIOD) {
-	/*
-	 * Running too fast for slow mode. Switch to fast mode.
-	 */
-	//GIMSK = 0;
-	EIMSK = 0;
+		//
+		// Running too fast for slow mode. Switch to fast mode.
+		//
+		//GIMSK = 0;
+		EIMSK = 0;
 	
-	current = &fast_cnt;
+		current = &fast_cnt;
     }
+*/	
+	
 }
 
 /* ================================================================
@@ -929,14 +951,14 @@ static void show_line(char* s)
 	return;			/* No change */
     }
 
-    lcd_home();
+    //lcd_home();
     for (i = 0; i < 8 && s[i]; i++) {
 	prev_line[i] = s[i];
-	lcd_putc(s[i]);
+	//lcd_putc(s[i]);
     }
     prev_line[i] = '\0';
     while (i < 8) {
-	lcd_putc(' ');
+	//lcd_putc(' ');
 	i++;
     }
 }
@@ -1152,159 +1174,18 @@ void getTicksT0(char *buff)
 }
 
 
-/* ================================================================
- * HD44780 display support.
- * ================================================================
- */
-/*
-static void lcd_init(void)
+void getT1Counts(char *buff)
 {
-	HD44780_Init();
+	unsigned long val = 0;
+
+	cli();
+	val = tmr1_ovf_cnt;
+	sei();
+
+	ultoa(val, buff, 10);
+
 }
 
 
-static void lcd_home(void)
-{
-    HD44780_Home();
-}
 
 
-static void lcd_putc(char c)
-{
-    HD44780_Putc(c);
-}
-*/
-
-
-
-// ================================================================
-// DOG display support.
-// ================================================================
-//
-
-/*
-
-//
-// Define the different display models.
-//
-// M081 1 line by 8 chars.
-// M162 2 lines by 16 chars.
-// M163 3 lines by 16 chars.
-//
-
-#define DOG_LCD_M081 81
-#define DOG_LCD_M162 82
-#define DOG_LCD_M163 83
-#define DOG_MODEL DOG_LCD_M081
-
-#define DOG_LCD_CONTRAST 0x28
-
-
-// All pins for the DOG display must be connected to the same port.
-
-#define DOG_DDR DDRA
-#define DOG_PIN PINA
-#define DOG_PORT PORTA
-
-#define DOG_SI_BIT  PA0
-#define DOG_CLK_BIT PA1
-#define DOG_CSB_BIT PA2
-#define DOG_RS_BIT  PA3
-
-#define DOG_ALL_BITS (_BV(DOG_SI_BIT) | _BV(DOG_CLK_BIT) | _BV(DOG_CSB_BIT) | _BV(DOG_RS_BIT))
-
-static void spi_transfer(uint8_t value);
-static void set_instruction_set(uint8_t is);
-static inline void write_command(uint8_t value, unsigned execution_time)
-    __attribute__ ((always_inline));
-static void set_instruction_set(uint8_t is);
-static inline void execute(uint8_t value, unsigned execution_time)
-    __attribute__ ((always_inline));
-
-static void lcd_init(void)
-{
-    DOG_DDR |= DOG_ALL_BITS;
-    DOG_PORT |= DOG_ALL_BITS;
-
-    // The commands that follow are in instruction set 1. 
-    set_instruction_set(1);
-
-    // Bias 1/4. 
-    write_command(0x1D, 30);
-
-    // Set up contrast. (For 5V.) 
-    write_command(0x50 | (DOG_LCD_CONTRAST>>4), 30);
-    write_command(0x70 | (DOG_LCD_CONTRAST & 0x0F), 30);
-
-    // Set amplification ratio for the follower control. 
-    write_command(0x69, 30);
-
-    // Get back to the default instruction set. 
-    set_instruction_set(0);
-
-    // Clear the display 
-    write_command(0x01, 1100);
-
-    // Move cursor left to right; no autoscroll. 
-    write_command(0x04 | 0x02, 30);
-
-    // Display on; no cursor; no blink. 
-    write_command(0x08 | 0x04, 30);
-}
-
-static void lcd_home(void)
-{
-    write_command(0x80, 30);
-}
-
-static void lcd_putc(char c)
-{
-    DOG_PORT |= _BV(DOG_RS_BIT);
-    execute((uint8_t) c, 30);
-}
-
-//
-// Set instruction set. 'is' is in the range 1..3.
-//
-static void set_instruction_set(uint8_t is)
-{
-#if DOG_MODEL == DOG_LCD_M081
-    const uint8_t template = 0x30;
-#else
-    const uint8_t template = 0x38;
-#endif
-    write_command(template | is, 30);
-}
-
-static void write_command(uint8_t value, unsigned execution_time)
-{
-    DOG_PORT &= ~_BV(DOG_RS_BIT);
-    execute(value, execution_time);
-}
-
-static void inline execute(uint8_t value, unsigned execution_time)
-{
-    spi_transfer(value);
-    _delay_us(execution_time);
-}
-
-static void spi_transfer(uint8_t value)
-{
-    int i;
-
-    DOG_PORT |= _BV(DOG_CLK_BIT);
-    DOG_PORT &= ~_BV(DOG_CSB_BIT);
-    for (i = 7; i >= 0; i--) {
-	if (value & _BV(i)) {
-	    DOG_PORT |= _BV(DOG_SI_BIT);
-	} else {
-	    DOG_PORT &= ~_BV(DOG_SI_BIT);
-	}
-	DOG_PIN |= _BV(DOG_CLK_BIT);
-	_delay_us(1);
-	DOG_PIN |= _BV(DOG_CLK_BIT);
-    }
-    DOG_PORT |= _BV(DOG_CSB_BIT);
-}
-
-*/

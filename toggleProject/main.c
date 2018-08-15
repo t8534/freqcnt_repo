@@ -120,6 +120,7 @@ int main(void)
 	//HD44780_puts(msg);
 	
 	init_time_keeping();
+	init_event_counting();
 	sei();
 	
 	
@@ -127,15 +128,13 @@ int main(void)
 //		_delay_ms(1000);
 
 		LCD_LED_SET;
-		_delay_ms(500);
+		_delay_ms(100);
 		LCD_LED_RESET;
-		_delay_ms(500);
-
+		_delay_ms(100);
 		
-		getTicksT0(buff_txt);
+		//getTicksT0(buff_txt);
+		getT1Counts(buff_txt);
 
-//		HD44780_puts(buff_empty_txt);
-//		_delay_ms(20);
 		HD44780_clear();
 		HD44780_puts(buff_txt);
 	}
