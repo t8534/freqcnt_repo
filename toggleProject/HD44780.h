@@ -1,3 +1,14 @@
+
+
+//todo:
+// 1.
+// Add descriptions to the interfaces
+//
+// 2.
+// Move into .c communication wih uP, or into stay in HD44780.h, but
+// move interface functions into HD44780_if.h
+
+
 #pragma once
 
 #include <avr/io.h>

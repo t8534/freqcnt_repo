@@ -1,3 +1,11 @@
+
+// todo:
+// 1.
+// Add static to functions which are external
+//
+
+
+
 #include "HD44780.h"
 
 #include <stdarg.h>
