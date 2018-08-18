@@ -37,6 +37,7 @@ SUBDIRS :=
 
 # Add inputs and outputs from these tool invocations to the build variables 
 C_SRCS +=  \
+../freqcnt_window.c \
 ../HD44780.c \
 ../main.c
 
@@ -48,18 +49,22 @@ ASM_SRCS +=
 
 
 OBJS +=  \
+freqcnt_window.o \
 HD44780.o \
 main.o
 
 OBJS_AS_ARGS +=  \
+freqcnt_window.o \
 HD44780.o \
 main.o
 
 C_DEPS +=  \
+freqcnt_window.d \
 HD44780.d \
 main.d
 
 C_DEPS_AS_ARGS +=  \
+freqcnt_window.d \
 HD44780.d \
 main.d
 
@@ -77,6 +82,8 @@ LINKER_SCRIPT_DEP+=
 
 
 # AVR32/GNU C Compiler
+
+
 
 
 
