@@ -618,12 +618,12 @@ END GROUP
  .debug_abbrev  0x0000080a      0x1d4 HD44780.o
  .debug_abbrev  0x000009de      0x171 main.o
 
-.debug_line     0x00000000      0xb45
+.debug_line     0x00000000      0xb43
  *(.debug_line .debug_line.* .debug_line_end)
  .debug_line    0x00000000      0x133 C:/Program Files/Atmel/Studio/7.0/Packs/atmel/ATmega_DFP/1.1.130/gcc/dev/atmega328p/avr5/crtatmega328p.o
  .debug_line    0x00000133      0x2bf freqcnt_window.o
- .debug_line    0x000003f2      0x5c2 HD44780.o
- .debug_line    0x000009b4      0x191 main.o
+ .debug_line    0x000003f2      0x5c0 HD44780.o
+ .debug_line    0x000009b2      0x191 main.o
 
 .debug_frame    0x00000000      0x2f4
  *(.debug_frame)

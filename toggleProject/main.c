@@ -78,6 +78,7 @@ int main(void)
 
 
 	// tests
+	
 	uint8_t buff_empty_txt[15] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 	char *msg = "1234567890ABCDEF";
 	
