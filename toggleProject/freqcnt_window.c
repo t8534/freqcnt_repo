@@ -28,12 +28,8 @@
 // todo:
 //
 // 1.
-// Change windows size to be dynamic in depend on frequency.
+// Change windows size to be dynamic in depend on frequency ?
 //
-// 2.
-// Implementation for support t1_SampleOverflowCnt overflow.
-//
- 
  
 #include <stdio.h>
 #include <string.h>
@@ -48,48 +44,46 @@
 
 
 
-// 1s, this is more convenient we get frequency just in Hz.
+// Set measurement window to 1s, this is more convenient we get frequency just in Hz.
 // With 8:1 prescaler, the tick is 125ns, so overflow is at 32 us. 
 // To get 1 s counted, the T0 overflow ISR should be called 1000000 us / 32 us = 31250 times.
 #define FREQCNT_MEASUREMENT_WINDOW_SIZE_US	31250  // 1s
 
 
-//////// starting and stop timer 1
 #define START_TIMER1	TCCR1B |= (1<<CS12)|(1<<CS11)
 #define STOP_TIMER1		TCCR1B &= 0B11111000
 #define CLEAR_TIMER1	TCNT1 = 0
 
 typedef uint32_t tick_t;
 
-//todo: replace with tict_t
 static volatile tick_t t0_WindowOverflowCnt = 0;  // max = 4 294 967 295 
 static volatile tick_t t1_SampleOverflowCnt = 0;
 static volatile tick_t countedSamplesInWindow = 0;  // todo: probably not necessary, because window is constant
 
+static void InitWindowTimer(void);
+static void InitSampleCounter(void);
+
+
 //todo: tests, remove after.
-static volatile tick_t test_t0_WindowOverflowCnt = 0;
+//static volatile tick_t test_t0_WindowOverflowCnt = 0;
 
 void FREQCNT_Init(void)
 {
-    _delay_ms(100);		/* Wait for stable power */
-
 	cli();  // Disable interrupts until initialize items.
-	
-
-    sei();	// Enable interrupts for all.
-	
+	InitWindowTimer();
+	InitSampleCounter();
+    sei();	// Enable interrupts for all.	
 }
 
 
 
 
-// Timer T0
+// Timer T0 - Counting measurement window size.
 // todo: check the window size for max and min frequency
-//static void InitWindowTimer(void) //todo: after tests replace with static
-void InitWindowTimer(void)
+static void InitWindowTimer(void)
 {
 	//todo: test, remove after
-	test_t0_WindowOverflowCnt = 0x00;
+	//test_t0_WindowOverflowCnt = 0x00;
 
 
 	// Normal mode (mode 0), TOP = 0xFF, TOV flag set on 0xFF
@@ -117,24 +111,23 @@ void InitWindowTimer(void)
 }
 
 
-// ISR from T0 overflow
+// Overflow
 ISR(TIMER0_OVF_vect)
 {
 	// todo remove
-	DEBUG0_PIN_SET;
+	//DEBUG0_PIN_SET;
 	
 	// With 8 MHz clock, and :8 prescaler, the ISR is called every 1us
     t0_WindowOverflowCnt++;
-	
-	
 	if (t0_WindowOverflowCnt >= FREQCNT_MEASUREMENT_WINDOW_SIZE_US)
 	{
 		
 		// todo remove
-		DEBUG1_PIN_SET;
+		//DEBUG1_PIN_SET;
 		
 		
 		// We have just count 1 s, so get counted samples.
+
 		t0_WindowOverflowCnt = 0x00;
 		
 		// Read sample counter T1, reset counter T1 and sampleCnt variable.
@@ -146,27 +139,27 @@ ISR(TIMER0_OVF_vect)
 		TCNT1 = 0x00;
 		
 		// test
-		test_t0_WindowOverflowCnt++;
+		//test_t0_WindowOverflowCnt++;
 		
 		START_TIMER1;
 		sei();
 		
 		// todo remove
-		DEBUG1_PIN_RESET;
+		//DEBUG1_PIN_RESET;
 
 		
 	}
 	
 	
 	// todo remove
-	DEBUG0_PIN_RESET;
+	//DEBUG0_PIN_RESET;
 	
 }
 
 
-// This is T1 based
-//static void InitSampleCounter(void)  //todo: after tests replace with static
-void InitSampleCounter(void)
+// This is T1 based.
+// Counting external signal falling edges in the measurement window defined by T0.
+static void InitSampleCounter(void)
 {
 
 	// The simplest mode of operation is the Normal mode (TCCR1A.WGM1[3:0]=0x0). In this mode the
@@ -195,15 +188,13 @@ void InitSampleCounter(void)
 }
 
 
-// ISR from T1 overflow
-//ISR(TIMER1_COMPA_vect)  //todo: should be overflow ?
+// Overflow
 ISR(TIMER1_OVF_vect)
 {
 	//todo: remove
-	DEBUG2_PIN_SET;
+	//DEBUG2_PIN_SET;
 	
     t1_SampleOverflowCnt++;
-	
 	if (t1_SampleOverflowCnt >= ULONG_MAX)
 	{
 		t1_SampleOverflowCnt = 0x00;
@@ -213,12 +204,13 @@ ISR(TIMER1_OVF_vect)
 	}
 
 	//todo: remove
-	DEBUG2_PIN_RESET;
+	//DEBUG2_PIN_RESET;
 }
 
 
 
 /*
+// If we would like to measure period (for low frequency samples)
 ISR(INT0_vect)  // atmega328p
 {
 }
@@ -243,7 +235,6 @@ uint32_t FREQCNT_GetFrequencyHz()
 	
 	measuredFreqHz = samplesNbr;
 	
-	
 	return measuredFreqHz;
 }
 
@@ -251,14 +242,21 @@ uint32_t FREQCNT_GetFrequencyHz()
 // todo: should be displayed as scalable, with Hz, kHz, MHz.
 void FREQCNT_GetFrequencyTxt(unsigned char *buff)
 {
-	
+	unsigned long val = 0;
+
+	cli();
+	val = countedSamplesInWindow;
+	sei();
+
+	ultoa(val, buff, 10);
+
 }
 
 
 ///////////////////////////////////////////////////////////////////////////////
 // Tests
 ///////////////////////////////////////////////////////////////////////////////
-
+/*
 void getTicksT0(char *buff)
 {
 	static tick_t t = 0;
@@ -299,4 +297,4 @@ void getT1Counts(char *buff)
 	ultoa(val, buff, 10);
 
 }
-
+*/

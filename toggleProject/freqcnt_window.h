@@ -7,7 +7,7 @@
 
 
 // Debug pins
-
+/*
 // DEBUG PIN 0
 #define DEBUG0_PIN_CONFIG	DDRD |=  (1 << PD0)
 #define DEBUG0_PIN_SET		PORTD |= (1 << PD0)
@@ -22,15 +22,16 @@
 #define DEBUG2_PIN_CONFIG	DDRD |=  (1 << PD2)
 #define DEBUG2_PIN_SET		PORTD |= (1 << PD2)
 #define DEBUG2_PIN_RESET	PORTD &= ~(1 << PD2)
-
+*/
 
 void FREQCNT_Init(void);
 uint32_t FREQCNT_GetFrequencyHz();
 void FREQCNT_GetFrequencyTxt(unsigned char *buff);
 
 // tests
+/*
 void InitWindowTimer(void);
 void InitSampleCounter(void);
 void getTicksT0(char *buff);
 void getT1Counts(char *buff);
-
+*/

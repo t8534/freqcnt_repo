@@ -34,15 +34,8 @@ Discarded input sections
  .text          0x00000000        0x0 freqcnt_window.o
  .data          0x00000000        0x0 freqcnt_window.o
  .bss           0x00000000        0x0 freqcnt_window.o
- .text.FREQCNT_Init
-                0x00000000       0x12 freqcnt_window.o
  .text.FREQCNT_GetFrequencyHz
                 0x00000000       0x16 freqcnt_window.o
- .text.FREQCNT_GetFrequencyTxt
-                0x00000000        0x2 freqcnt_window.o
- .text.getTicksT0
-                0x00000000       0x3e freqcnt_window.o
- .bss.t.2150    0x00000000        0x4 freqcnt_window.o
  .text          0x00000000        0x0 HD44780.o
  .data          0x00000000        0x0 HD44780.o
  .bss           0x00000000        0x0 HD44780.o
@@ -329,7 +322,7 @@ END GROUP
 .rela.plt
  *(.rela.plt)
 
-.text           0x00000000      0x4e6
+.text           0x00000000      0x492
  *(.vectors)
  .vectors       0x00000000       0x68 C:/Program Files/Atmel/Studio/7.0/Packs/atmel/ATmega_DFP/1.1.130/gcc/dev/atmega328p/avr5/crtatmega328p.o
                 0x00000000                __vector_default
@@ -414,59 +407,56 @@ END GROUP
                 0x000000a2                __vector_20
                 0x000000a6                . = ALIGN (0x2)
  *(.text.*)
- .text.InitWindowTimer
-                0x000000a6       0x24 freqcnt_window.o
-                0x000000a6                InitWindowTimer
+ .text.FREQCNT_Init
+                0x000000a6       0x36 freqcnt_window.o
+                0x000000a6                FREQCNT_Init
  .text.__vector_16
-                0x000000ca      0x12a freqcnt_window.o
-                0x000000ca                __vector_16
- .text.InitSampleCounter
-                0x000001f4       0x22 freqcnt_window.o
-                0x000001f4                InitSampleCounter
+                0x000000dc       0xfa freqcnt_window.o
+                0x000000dc                __vector_16
  .text.__vector_13
-                0x00000216       0x7c freqcnt_window.o
-                0x00000216                __vector_13
- .text.getT1Counts
-                0x00000292       0x1e freqcnt_window.o
-                0x00000292                getT1Counts
+                0x000001d6       0x78 freqcnt_window.o
+                0x000001d6                __vector_13
+ .text.FREQCNT_GetFrequencyTxt
+                0x0000024e       0x1e freqcnt_window.o
+                0x0000024e                FREQCNT_GetFrequencyTxt
  .text.HD44780_write_nibble
-                0x000002b0       0x52 HD44780.o
-                0x000002b0                HD44780_write_nibble
+                0x0000026c       0x52 HD44780.o
+                0x0000026c                HD44780_write_nibble
  .text.HD44780_send
-                0x00000302       0x54 HD44780.o
-                0x00000302                HD44780_send
+                0x000002be       0x54 HD44780.o
+                0x000002be                HD44780_send
  .text.HD44780_command
-                0x00000356        0x8 HD44780.o
-                0x00000356                HD44780_command
+                0x00000312        0x8 HD44780.o
+                0x00000312                HD44780_command
  .text.HD44780_write
-                0x0000035e        0x8 HD44780.o
-                0x0000035e                HD44780_write
+                0x0000031a        0x8 HD44780.o
+                0x0000031a                HD44780_write
  .text.HD44780_init
-                0x00000366       0x78 HD44780.o
-                0x00000366                HD44780_init
+                0x00000322       0x78 HD44780.o
+                0x00000322                HD44780_init
  .text.HD44780_on
-                0x000003de       0x14 HD44780.o
-                0x000003de                HD44780_on
+                0x0000039a       0x14 HD44780.o
+                0x0000039a                HD44780_on
  .text.HD44780_clear
-                0x000003f2       0x14 HD44780.o
-                0x000003f2                HD44780_clear
+                0x000003ae       0x14 HD44780.o
+                0x000003ae                HD44780_clear
  .text.HD44780_puts
-                0x00000406       0x1e HD44780.o
-                0x00000406                HD44780_puts
- .text.main     0x00000424       0x5a main.o
-                0x00000424                main
+                0x000003c2       0x1e HD44780.o
+                0x000003c2                HD44780_puts
+ .text.main     0x000003e0       0x4a main.o
+                0x000003e0                main
  .text.avr-libc
-                0x0000047e       0x44 c:/program files/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/../../../../avr/lib/avr5\libc.a(ultoa_ncheck.o)
-                0x0000047e                __ultoa_ncheck
-                0x00000480                __ultoa_common
+                0x0000042a       0x44 c:/program files/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/../../../../avr/lib/avr5\libc.a(ultoa_ncheck.o)
+                0x0000042a                __ultoa_ncheck
+                0x0000042c                __ultoa_common
  .text.avr-libc
-                0x000004c2       0x20 c:/program files/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/../../../../avr/lib/avr5\libc.a(strrev.o)
-                0x000004c2                strrev
-                0x000004e2                . = ALIGN (0x2)
+                0x0000046e       0x20 c:/program files/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/../../../../avr/lib/avr5\libc.a(strrev.o)
+                0x0000046e                strrev
+                0x0000048e                . = ALIGN (0x2)
  *(.fini9)
- .fini9         0x000004e2        0x0 c:/program files/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/avr5\libgcc.a(_exit.o)
-                0x000004e2                _exit
-                0x000004e2                exit
+ .fini9         0x0000048e        0x0 c:/program files/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/avr5\libgcc.a(_exit.o)
+                0x0000048e                _exit
+                0x0000048e                exit
  *(.fini9)
  *(.fini8)
  *(.fini8)
@@ -485,48 +475,44 @@ END GROUP
  *(.fini1)
  *(.fini1)
  *(.fini0)
- .fini0         0x000004e2        0x4 c:/program files/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/avr5\libgcc.a(_exit.o)
+ .fini0         0x0000048e        0x4 c:/program files/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/avr5\libgcc.a(_exit.o)
  *(.fini0)
-                0x000004e6                _etext = .
+                0x00000492                _etext = .
 
-.data           0x00800100       0x10 load address 0x000004e6
+.data           0x00800100        0x0 load address 0x00000492
                 0x00800100                PROVIDE (__data_start, .)
  *(.data)
  *(.data*)
- .data.buff_txt
-                0x00800100        0xf main.o
  *(.rodata)
  *(.rodata*)
  *(.gnu.linkonce.d*)
-                0x00800110                . = ALIGN (0x2)
- *fill*         0x0080010f        0x1 
-                0x00800110                _edata = .
-                0x00800110                PROVIDE (__data_end, .)
+                0x00800100                . = ALIGN (0x2)
+                0x00800100                _edata = .
+                0x00800100                PROVIDE (__data_end, .)
 
-.bss            0x00800110       0x11
-                0x00800110                PROVIDE (__bss_start, .)
+.bss            0x00800100       0x1c
+                0x00800100                PROVIDE (__bss_start, .)
  *(.bss)
  *(.bss*)
- .bss.test_t0_WindowOverflowCnt
-                0x00800110        0x4 freqcnt_window.o
  .bss.countedSamplesInWindow
-                0x00800114        0x4 freqcnt_window.o
+                0x00800100        0x4 freqcnt_window.o
  .bss.t1_SampleOverflowCnt
-                0x00800118        0x4 freqcnt_window.o
+                0x00800104        0x4 freqcnt_window.o
  .bss.t0_WindowOverflowCnt
-                0x0080011c        0x4 freqcnt_window.o
+                0x00800108        0x4 freqcnt_window.o
  .bss.HD44780_displayparams
-                0x00800120        0x1 HD44780.o
+                0x0080010c        0x1 HD44780.o
+ .bss.buff_txt  0x0080010d        0xf main.o
  *(COMMON)
-                0x00800121                PROVIDE (__bss_end, .)
-                0x000004e6                __data_load_start = LOADADDR (.data)
-                0x000004f6                __data_load_end = (__data_load_start + SIZEOF (.data))
+                0x0080011c                PROVIDE (__bss_end, .)
+                0x00000492                __data_load_start = LOADADDR (.data)
+                0x00000492                __data_load_end = (__data_load_start + SIZEOF (.data))
 
-.noinit         0x00800121        0x0
+.noinit         0x0080011c        0x0
                 [!provide]                PROVIDE (__noinit_start, .)
  *(.noinit*)
                 [!provide]                PROVIDE (__noinit_end, .)
-                0x00800121                _end = .
+                0x0080011c                _end = .
                 [!provide]                PROVIDE (__heap_start, .)
 
 .eeprom         0x00810000        0x0
@@ -593,59 +579,59 @@ END GROUP
 .debug_sfnames
  *(.debug_sfnames)
 
-.debug_aranges  0x00000000      0x150
+.debug_aranges  0x00000000      0x130
  *(.debug_aranges)
  .debug_aranges
-                0x00000000       0x60 freqcnt_window.o
+                0x00000000       0x40 freqcnt_window.o
  .debug_aranges
-                0x00000060       0xd0 HD44780.o
+                0x00000040       0xd0 HD44780.o
  .debug_aranges
-                0x00000130       0x20 main.o
+                0x00000110       0x20 main.o
 
 .debug_pubnames
  *(.debug_pubnames)
 
-.debug_info     0x00000000     0x19d8
+.debug_info     0x00000000     0x185a
  *(.debug_info .gnu.linkonce.wi.*)
  .debug_info    0x00000000      0x5f4 C:/Program Files/Atmel/Studio/7.0/Packs/atmel/ATmega_DFP/1.1.130/gcc/dev/atmega328p/avr5/crtatmega328p.o
- .debug_info    0x000005f4      0x3fa freqcnt_window.o
- .debug_info    0x000009ee      0xd76 HD44780.o
- .debug_info    0x00001764      0x274 main.o
+ .debug_info    0x000005f4      0x2bb freqcnt_window.o
+ .debug_info    0x000008af      0xd76 HD44780.o
+ .debug_info    0x00001625      0x235 main.o
 
-.debug_abbrev   0x00000000      0xb40
+.debug_abbrev   0x00000000      0xa83
  *(.debug_abbrev)
  .debug_abbrev  0x00000000      0x5a2 C:/Program Files/Atmel/Studio/7.0/Packs/atmel/ATmega_DFP/1.1.130/gcc/dev/atmega328p/avr5/crtatmega328p.o
- .debug_abbrev  0x000005a2      0x259 freqcnt_window.o
- .debug_abbrev  0x000007fb      0x1d4 HD44780.o
- .debug_abbrev  0x000009cf      0x171 main.o
+ .debug_abbrev  0x000005a2      0x1b2 freqcnt_window.o
+ .debug_abbrev  0x00000754      0x1d4 HD44780.o
+ .debug_abbrev  0x00000928      0x15b main.o
 
-.debug_line     0x00000000      0xb80
+.debug_line     0x00000000      0xa49
  *(.debug_line .debug_line.* .debug_line_end)
  .debug_line    0x00000000      0x133 C:/Program Files/Atmel/Studio/7.0/Packs/atmel/ATmega_DFP/1.1.130/gcc/dev/atmega328p/avr5/crtatmega328p.o
- .debug_line    0x00000133      0x2e4 freqcnt_window.o
- .debug_line    0x00000417      0x5c0 HD44780.o
- .debug_line    0x000009d7      0x1a9 main.o
+ .debug_line    0x00000133      0x1e4 freqcnt_window.o
+ .debug_line    0x00000317      0x5c0 HD44780.o
+ .debug_line    0x000008d7      0x172 main.o
 
-.debug_frame    0x00000000      0x2f4
+.debug_frame    0x00000000      0x2b4
  *(.debug_frame)
- .debug_frame   0x00000000      0x114 freqcnt_window.o
- .debug_frame   0x00000114      0x1bc HD44780.o
- .debug_frame   0x000002d0       0x24 main.o
+ .debug_frame   0x00000000       0xd4 freqcnt_window.o
+ .debug_frame   0x000000d4      0x1bc HD44780.o
+ .debug_frame   0x00000290       0x24 main.o
 
-.debug_str      0x00000000      0x747
+.debug_str      0x00000000      0x71c
  *(.debug_str)
  .debug_str     0x00000000      0x208 C:/Program Files/Atmel/Studio/7.0/Packs/atmel/ATmega_DFP/1.1.130/gcc/dev/atmega328p/avr5/crtatmega328p.o
- .debug_str     0x00000208      0x2b7 freqcnt_window.o
-                                0x30b (size before relaxing)
- .debug_str     0x000004bf      0x25f HD44780.o
+ .debug_str     0x00000208      0x259 freqcnt_window.o
+                                0x298 (size before relaxing)
+ .debug_str     0x00000461      0x2a1 HD44780.o
                                 0x429 (size before relaxing)
- .debug_str     0x0000071e       0x29 main.o
-                                0x246 (size before relaxing)
+ .debug_str     0x00000702       0x1a main.o
+                                0x22e (size before relaxing)
 
-.debug_loc      0x00000000      0x60b
+.debug_loc      0x00000000      0x598
  *(.debug_loc)
- .debug_loc     0x00000000      0x2bc freqcnt_window.o
- .debug_loc     0x000002bc      0x34f HD44780.o
+ .debug_loc     0x00000000      0x249 freqcnt_window.o
+ .debug_loc     0x00000249      0x34f HD44780.o
 
 .debug_macinfo
  *(.debug_macinfo)
@@ -665,11 +651,11 @@ END GROUP
 .debug_pubtypes
  *(.debug_pubtypes)
 
-.debug_ranges   0x00000000      0x120
+.debug_ranges   0x00000000      0x100
  *(.debug_ranges)
- .debug_ranges  0x00000000       0x50 freqcnt_window.o
- .debug_ranges  0x00000050       0xc0 HD44780.o
- .debug_ranges  0x00000110       0x10 main.o
+ .debug_ranges  0x00000000       0x30 freqcnt_window.o
+ .debug_ranges  0x00000030       0xc0 HD44780.o
+ .debug_ranges  0x000000f0       0x10 main.o
 
 .debug_macro
  *(.debug_macro)
