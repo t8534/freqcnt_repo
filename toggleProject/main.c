@@ -88,6 +88,11 @@ int main(void)
     //init_event_counting();
     //sei();
 
+	// Debug pin init
+	DEBUG0_PIN_CONFIG;
+	DEBUG1_PIN_CONFIG;
+	DEBUG2_PIN_CONFIG;
+
 	HD44780_init();
 	HD44780_on();
 	HD44780_clear();
@@ -95,7 +100,7 @@ int main(void)
 	//HD44780_puts(msg);
 	
 	InitWindowTimer();
-	//InitSampleCounter();
+	InitSampleCounter();
 	sei();
 	
 	
