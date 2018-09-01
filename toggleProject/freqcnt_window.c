@@ -92,6 +92,12 @@ static void InitWindowTimer(void)
 	TCCR0A = 0x00;
 	
 	// Set prescaler.
+	// 16 MHz clock:
+	// 16MHz:1 = 62.5 ns. Overflow 62.5 x 256 = 16 000 ns = 16 us
+	// 16MHz:8 = 500 ns. Overflow 500 x 256 = 128 000 ns = 128 us
+	// 16MHz:64 = 4000 ns = 4 us. Overflow 4 us x 256 = 1024 us
+	
+	// 8MHz clock:
 	// 8MHz/1 = 125 ns. Overflow 32 us - here we could count exactly 1s, so it is better - change code to use it !
 	// 8MHz/8 = 1us. Overflow 256 us - seems to be the best, easy to count 4x256 = 1ms
 	// 8MHz/64 = 8us. Overflow 2048 us

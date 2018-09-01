@@ -7,7 +7,7 @@
 
 #include <avr/io.h>
 
-#define F_CPU 16000000UL
+//#define F_CPU 16000000UL  // set i the project properties
 #include "util/delay.h"
 
 #include "HD44780.h"
