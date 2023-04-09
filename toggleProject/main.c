@@ -3,7 +3,15 @@
  *
  * Created: 2018-07-22 18:45:12
  * Author : arek
+ *
  */ 
+
+// Make a tests with PWM.
+// Compare frequence of PWM output read by:
+// Freqmeter
+// Oscilloscope USSR
+// Saelogic
+//
 
 #include <avr/io.h>
 
